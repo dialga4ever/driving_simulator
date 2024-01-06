@@ -15,7 +15,7 @@ ouai ouai
 
 
 ## Tech Stack
-**Base:**C++
+**Base:** C++
 **Libreries:** OpenGL,SFML
 
 ## Info
