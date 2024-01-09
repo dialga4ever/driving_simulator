@@ -6,7 +6,7 @@
 
 - [@dialga4ever](https://github.com/dialga4ever)
 
-- [@Antoine2525](https://github.com/Antoine2525)
+- [@AntoineVuattoux](https://github.com/AntoineVuattoux)
 ## Usage/Examples
 
 ```shell
