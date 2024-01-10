@@ -8,18 +8,6 @@ void updateCursorSprite(sf::Sprite *tarket,sf::RenderWindow *window){
     tarket->setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(*window)));
 }
 
-void createButtonWithText(sf::Sprite *self,sf::Texture *Texture,sf::Text *t,const sf::String &textureAddress,const sf::String &text,int x,sf::RenderWindow *window,sf::Font f){
-    spriteLoadFromFilePos(self,Texture,textureAddress,window->getSize().y/2,x);
-    self->scale({1,0.5});
-    centerOrigin(self);
-    t->setFont(f); 
-    t->setString("Select level");
-    t->setCharacterSize(24); 
-    t->setFillColor(sf::Color::Black);
-    t->setStyle(sf::Text::Bold | sf::Text::Underlined);
-    t->setPosition(self->getPosition());
-    centerTextOrigin(t);
-}
 
 
 int main()
@@ -34,9 +22,17 @@ int main()
     
     sf::Sprite play;
     sf::Texture playTexture;
+    spriteLoadFromFilePos(&play,&playTexture,"./src/texture/test.jpg",window.getSize().y/2,200);
+    play.scale({1,0.5});
     centerOrigin(&play);
     sf::Text playText;
-    createButtonWithText(&play,&playTexture,&playText,"./src/texture/test.jpg","Select level",200,&window,font);
+    playText.setFont(font); 
+    playText.setString("Select level");
+    playText.setCharacterSize(24); 
+    playText.setFillColor(sf::Color::Black);
+    playText.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    playText.setPosition(play.getPosition());
+    centerTextOrigin(&playText);
 
 
 
