@@ -25,4 +25,6 @@ class Car{
     void deceleration();
 
     void deplacement();
+
+    void reinisialisationCar(int, int);
 };

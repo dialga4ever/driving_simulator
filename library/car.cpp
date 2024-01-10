@@ -15,36 +15,67 @@ using namespace sf;
         speed = 0;
         dir = 0;
         maxDir=30;
-        rectangle.setSize({100,100});
-        rectangle.setOrigin(50,50);
+        rectangle.setSize({30,20});
+        rectangle.setOrigin(15,10);
         rectangle.setOutlineColor(Color::Blue);
-        rectangle.setOutlineThickness(10);
+        //rectangle.setOutlineThickness(10);
         rectangle.setPosition(x,y);
     }
 
     void Car::move(){
         if (Keyboard::isKeyPressed(Keyboard::Left)){
                 //if(dir<maxDir){
-                    dir += 3;
+                if(speed != 0){
+                    if(speed > 3){
+                        dir -= 5;
+                    }else if(speed > 0){
+                        dir -= 3;
+                    }else if(speed > -1.5){
+                        dir += 2;
+                    }else{
+                        dir += 5;
+                    }
+                }
                 //}
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Right)){ 
                 //if(dir>-maxDir){
-                    dir -= 3;
+                if(speed != 0){
+                    if(speed > 3){
+                        dir += 5;
+                    }else if(speed > 0){
+                        dir += 3;
+                    }else if(speed > -1.5){
+                        dir -= 2;
+                    }else{
+                        dir -= 5;
+                    }
+                }
                 //}
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Up)){ 
-
-                if(speed < 5 || speed > 0){
-                    speed += 2;
+                if(speed < 0){
+                    speed += 1.5;
+                }else if(speed < 5){
+                    speed += 0.8;
                 }else{
-                    speed += 1;  
+                    speed += 0.4;  
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::Down)){
-                speed -= 2;
+                if(speed > 0.5){
+                    speed -= 2;
+                }else if(speed > -1){
+                    speed -= 1;
+                }else{
+                    speed -= 0.4;
+                }
+                
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Enter)){
+                reinisialisationCar(500,500);
             }
             
     }
@@ -57,17 +88,22 @@ using namespace sf;
             if(speed < 0){
                 speed = 0;
             }
-        }else if(speed > -3){
-            speed += 0.5;
+        }else if(speed > -2){
+            speed += 0.4;
             if(speed > 0){
                 speed = 0;
             }
         }else{
-            speed -= speed / 30;
+            speed -= speed / 10;
         }
     }
 
     void Car::deplacement(){
         rectangle.setRotation(dir);
         rectangle.move(cos(dir * PI / 180.0)*speed, sin(dir * PI / 180.0)*speed);
+    }
+
+    void Car::reinisialisationCar(int x, int y){
+        rectangle.setPosition(x,y);
+        rectangle.setRotation(0);
     }
