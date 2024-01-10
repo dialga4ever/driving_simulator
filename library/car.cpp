@@ -14,9 +14,9 @@ using namespace sf;
         y = y_y;
         speed = 0;
         dir = 0;
-
-        rectangle.setSize({150,150});
-        rectangle.setOrigin(75,75);
+        maxDir=30;
+        rectangle.setSize({100,100});
+        rectangle.setOrigin(50,50);
         rectangle.setOutlineColor(Color::Blue);
         rectangle.setOutlineThickness(10);
         rectangle.setPosition(x,y);
@@ -24,32 +24,41 @@ using namespace sf;
 
     void Car::move(){
         if (Keyboard::isKeyPressed(Keyboard::Left)){
-                dir += 3;
+                //if(dir<maxDir){
+                    dir += 3;
+                //}
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Right)){ 
-                dir -= 3;
+                //if(dir>-maxDir){
+                    dir -= 3;
+                //}
             }
 
             if (Keyboard::isKeyPressed(Keyboard::Up)){ 
-                speed += 0.5;
+
+                if(speed < 5 || speed > 0){
+                    speed += 2;
+                }else{
+                    speed += 1;  
+                }
             }
             if (Keyboard::isKeyPressed(Keyboard::Down)){
-                speed -= 0.5;
+                speed -= 2;
             }
-            //d
+            
     }
 
     void Car::deceleration(){
         if(speed > 3){
-            speed -= speed / 30;
+            speed -= speed / 10;
         }else if(speed > 0){
-            speed -= 0.05;
+            speed -= 0.5;
             if(speed < 0){
                 speed = 0;
             }
         }else if(speed > -3){
-            speed += 0.05;
+            speed += 0.5;
             if(speed > 0){
                 speed = 0;
             }

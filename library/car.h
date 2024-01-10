@@ -13,6 +13,7 @@ class Car{
     int y;
     float speed;
     int dir;// In degrees
+    int maxDir;
     RectangleShape rectangle;
 
     // Constructor

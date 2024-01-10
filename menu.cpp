@@ -75,12 +75,7 @@ int main()
     sf::Texture cursorTexture;
     spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/texture/cursor.png",window.getSize().y/2,window.getSize().x/2);
     cursor.scale({0.1,0.1});
-
     window.setMouseCursorVisible(false);
-    
-    //200
-    //450
-    //700
 
     while (window.isOpen())
     {
