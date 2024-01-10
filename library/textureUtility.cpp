@@ -3,7 +3,6 @@
 
 void spriteLoadFromFilePos(sf::Sprite *self,sf::Texture *quitTexture,const std::string &filename,int x,int y)
 {
-    printf("test\n");
     if (!quitTexture->loadFromFile(filename))
     {
         std::cout << "Error: Couldn't load texture\n";
