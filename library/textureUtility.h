@@ -19,3 +19,6 @@ void spriteLoadFromFilePos(sf::Sprite *self,sf::Texture *quitTexture, const std:
  * to center the origin of.
  */
 void centerOrigin(sf::Sprite *self);
+
+
+void centerTextOrigin(sf::Text *self);

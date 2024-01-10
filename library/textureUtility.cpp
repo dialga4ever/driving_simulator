@@ -16,3 +16,7 @@ void centerOrigin(sf::Sprite *self){
     sf::FloatRect test = self->getLocalBounds();
     self->setOrigin(test.left + test.width/2.0f,test.top  + test.height/2.0f);
 }
+void centerTextOrigin(sf::Text *self){
+    sf::FloatRect test = self->getLocalBounds();
+    self->setOrigin(test.left + test.width/2.0f,test.top  + test.height/2.0f);
+}
