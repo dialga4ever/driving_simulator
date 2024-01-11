@@ -10,8 +10,8 @@ using namespace sf;
 class Level{
 
     public:
-    vector<Sprite> obs;
-
+    map<string, Texture> textures;
+    vector<Sprite> obstacles;
     
     Level();
     Level(string path);
@@ -20,3 +20,7 @@ class Level{
 
     Sprite createObs(int x, int y);
 };
+
+void loadTextures(map<string, Texture> *textures);
+
+void loadObstacles(map<string, Texture> *textures, vector<Sprite> *obstacles);

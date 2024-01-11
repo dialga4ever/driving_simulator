@@ -1,8 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <map>
+#include <vector>
 #include "library/car.h"
 #include "library/textureUtility.h"
+#include "library/levelLoader.h"
 
 using namespace std;
 using namespace sf;
@@ -22,6 +25,21 @@ void updateCursorSprite(Sprite *tarket,RenderWindow *window){
 
 int main()
 {
+    // Stockage des textures
+    Level niv = Level();
+
+    loadTextures(&niv.textures);
+
+    loadObstacles(&niv.textures, &niv.obstacles);
+
+
+
+    Font font;
+    if (!font.loadFromFile("src/font/arial.ttf")){ printf("pas de font");}
+
+
+
+    // Ouverture de la fenêtre
     RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
 
@@ -30,11 +48,7 @@ int main()
 
     Car car(500, 500);// Création de la voiture
 
-    Font font;
-    if (!font.loadFromFile("src/font/arial.ttf"))
-    {
-        printf("pas de font");
-    }
+    
 
     
     Sprite play;
@@ -97,19 +111,18 @@ int main()
         switch (fenetre)
         {
         case 1:
-            while (window.pollEvent(event))
-            {     
+            while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
-                    window.close();
-
-
-                
+                    window.close();    
             }
             car.move();
             car.deceleration();
             car.deplacement();
 
             window.clear();
+            for(auto i : niv.obstacles){
+                window.draw(i);
+            }
             window.draw(car.rectangle);
             window.display();
             break;
@@ -133,6 +146,7 @@ int main()
             }
 
             window.clear();
+            
             window.draw(play);
             window.draw(upgrade);
             window.draw(quit);
