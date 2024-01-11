@@ -16,7 +16,7 @@ using namespace sf;
         dir = 0;
         maxDir=30;
         rectangle.setSize({30,20});
-        rectangle.setOrigin(15,10);
+        rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
         //rectangle.setOutlineThickness(10);
         rectangle.setPosition(x,y);
@@ -33,7 +33,7 @@ using namespace sf;
                     }else if(speed > -1.5){
                         dir += 2;
                     }else{
-                        dir += 5;
+                        dir += 3;
                     }
                 }
                 //}
@@ -49,7 +49,7 @@ using namespace sf;
                     }else if(speed > -1.5){
                         dir -= 2;
                     }else{
-                        dir -= 5;
+                        dir -= 3;
                     }
                 }
                 //}
