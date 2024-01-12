@@ -38,7 +38,7 @@ int main()
 
 
     // Ouverture de la fenêtre
-    RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(2000, 2000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
@@ -114,9 +114,17 @@ int main()
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Backspace)))
                     window.close();    
             }
-            car.move();
+            Car prev_car;
+            prev_car.copyCar(car);
+            printf("\n1  car  %d %d\n",car.x, car.y);
+            printf("prev_car  %d %d\n",prev_car.x, prev_car.y);
             
-            car.collision(&niv.obstacles);
+            car.move();
+            printf("2  car  %d %d\n",car.x, car.y);
+            printf("prev_car  %d %d\n",prev_car.x, prev_car.y);
+            car.deplacement(&niv.obstacles, prev_car);
+            printf("3  car  %d %d\n",car.x, car.y);
+            printf("prev_car  %d %d\n\n",prev_car.x, prev_car.y);
             car.deceleration();
 
 

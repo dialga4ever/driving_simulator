@@ -17,6 +17,7 @@ class Car{
     RectangleShape rectangle;
 
     // Constructor
+    Car();
     Car(int x_x, int y_y);
 
 
@@ -24,11 +25,13 @@ class Car{
 
     void deceleration();
 
-    void deplacement();
+    void deplacement(vector<Sprite> *obstacles, Car image);
 
     void reinisialisationCar(int, int);
 
     bool collision(vector<Sprite> *obstacles);
 
     void stop(int old_x, int old_y, int old_dir);
+
+    void copyCar(Car car);
 };
