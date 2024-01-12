@@ -18,13 +18,15 @@ using namespace sf;
         maxDir=8;
         maxSpeed=15;
         started=false;
-        rectangle.setSize({30,20});
+        rectangle.setSize({60,40});
         rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
-        rectangle.setPosition(x,y);rectangle.setSize({30,20});
-        wheel.setPosition(x+8,y);
-        wheel.setSize({5,2});
-        wheel.setFillColor(Color::Blue);
+        rectangle.setPosition(x,y);
+        rectangle.setSize({60,40});
+        wheel.setPosition(x+40,y);
+        wheel.setSize({15,6});
+        wheel.setFillColor(Color::Red);
+        wheel.setOrigin(0,0);
     }
 
     void Car::move(){
@@ -84,15 +86,20 @@ using namespace sf;
             reinisialisationCar(500,500);
         }
         if (Keyboard::isKeyPressed(Keyboard::E)){
-            started=true;
+            if(started){
+                started=false;
+            }
+            else{
+                started=true;
+            }
         }
     }
 
     void Car::deceleration(){
         if(speed > 3){
-            speed -= speed / 10;
+            speed -= speed / 60;
         }else if(speed > 0){
-            speed -= 0.5;
+            speed -= 0.1;
             if(speed < 0){
                 speed = 0;
             }
@@ -102,7 +109,7 @@ using namespace sf;
                 speed = 0;
             }
         }else{
-            speed -= speed / 10;
+            speed -= speed / 60;
         }
     }
 
@@ -128,23 +135,24 @@ using namespace sf;
 
         if(speed!=0){
             if(speed<0){
+                rectangle.setRotation(carDir+(-wheelDir/6));
+                carDir=carDir+(-wheelDir/6);
+            }else{
                 rectangle.setRotation(carDir+(wheelDir/3));
                 carDir=carDir+(wheelDir/3);
-            }else{
-                rectangle.setRotation(carDir+(wheelDir/2));
-                carDir=carDir+(wheelDir/2);
             }
         }
 
 
         rectangle.move(cos(carDir * PI / 180.0)*speed, sin(carDir * PI / 180.0)*speed);
-        wheel.move(cos(carDir * PI / 180.0)*speed, sin(carDir * PI / 180.0)*speed);
-        wheel.setRotation(rectangle.getRotation()+wheelDir);
+        wheel.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*40),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*40));
+
+        wheel.setRotation(rectangle.getRotation()+wheelDir*2);
     }
 
     void Car::reinisialisationCar(int x, int y){
         rectangle.setPosition(x,y);
         rectangle.setRotation(0);
-        wheel.setPosition(x,y);
-        wheel.setRotation(wheelDir);
+        wheel.setPosition(x-10,y+4);
+        wheel.setRotation(rectangle.getRotation()+wheelDir);
     }
