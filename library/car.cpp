@@ -18,6 +18,9 @@ using namespace sf;
         maxDir=8;
         maxSpeed=15;
         started=false;
+        maxRpm=7500;
+
+
         rectangle.setSize({60,40});
         rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
