@@ -111,6 +111,7 @@ int main()
 
             window.clear();
             window.draw(car.rectangle);
+            window.draw(car.wheel);
             window.display();
             break;
         default:

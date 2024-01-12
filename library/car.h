@@ -8,7 +8,7 @@ using namespace sf;
 class Car{
 
     public:
-
+    float started;
     int x;
     int y;
     float speed;
@@ -18,6 +18,7 @@ class Car{
     int maxSpeed;
     bool actif;
     RectangleShape rectangle;
+    RectangleShape wheel;
 
     // Constructor
     Car(int x_x, int y_y);
