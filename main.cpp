@@ -12,14 +12,12 @@ using namespace sf;
 
 #define PI 3.14159265
 
-bool IsSpriteCliked(Sprite tarket,RenderWindow *window){
+bool isSpriteCliked(Sprite tarket,RenderWindow *window){
     return tarket.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
 }
 void updateCursorSprite(Sprite *tarket,RenderWindow *window){
     tarket->setPosition(static_cast<Vector2f>(Mouse::getPosition(*window)));
 }
-
-
 
 
 
@@ -42,8 +40,9 @@ int main()
     // Ouverture de la fenêtre
     RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(60);
 
-    int fenetre =0;
+    int fenetre = 0;
 
 
     Car car(500, 500);// Création de la voiture
@@ -110,14 +109,16 @@ int main()
         Event event;
         switch (fenetre)
         {
-        case 1:
+        case 1:{
             while (window.pollEvent(event)){     
-                if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Backspace)))
                     window.close();    
             }
             car.move();
+            
+            car.collision(&niv.obstacles);
             car.deceleration();
-            car.deplacement();
+
 
             window.clear();
             for(auto i : niv.obstacles){
@@ -125,8 +126,8 @@ int main()
             }
             window.draw(car.rectangle);
             window.display();
-            break;
-        default:
+            break;}
+        default:{
             
             while (window.pollEvent(event))
             {
@@ -134,10 +135,10 @@ int main()
                     window.close();
                 if (event.mouseButton.button == Mouse::Left)
                 {
-                    if (IsSpriteCliked(quit,&window)){
+                    if (isSpriteCliked(quit,&window)){
                         window.close();
                     }
-                    if (IsSpriteCliked(play,&window)){
+                    if (isSpriteCliked(play,&window)){
                         fenetre = 1;
                     }
                 }
@@ -156,7 +157,7 @@ int main()
             window.draw(cursor);
 
             window.display();
-            break;
+            break;}
         }
 
 

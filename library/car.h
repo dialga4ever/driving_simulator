@@ -27,4 +27,8 @@ class Car{
     void deplacement();
 
     void reinisialisationCar(int, int);
+
+    bool collision(vector<Sprite> *obstacles);
+
+    void stop(int old_x, int old_y, int old_dir);
 };
