@@ -38,9 +38,15 @@ using namespace sf;
     }
 
     int Car::rpmToSpeed(){
-        if(rpm<=500){
-            return speed-(speed/10);
+        if(rpm<startRpm){
+            started=false;
+            return 0;
         }
+        if(rpm>maxRpm){
+            started=false;
+            return 0;
+        }
+        
 
 
         if(gear==0){
@@ -156,14 +162,14 @@ using namespace sf;
             }
             else{
                 if(rpm>500){
-                    rpm=rpm-100;
+                    rpm=rpm-10;
                 }
                 else{
                     if(started){
                         rpm=500;
                     }
                     else{
-                        rpm=rpm-100;
+                        rpm=rpm-10;
                         if(rpm<0){
                             rpm=0;
                         }
@@ -289,10 +295,44 @@ using namespace sf;
 
         //if sift is pressed slow down the car
         if (Keyboard::isKeyPressed(Keyboard::LShift)){
-            speed=speed/1.1;
+            embrayage=true;
         }
         else{
-            speed=rpmToSpeed();
+            if(embrayage){
+                int tempRpm=convertSpeedToRpm(gear);
+                //print all info
+                printf("rpm : %d\n",rpm);
+                printf("tempRpm : %d\n",tempRpm);
+                printf("speed : %f\n",speed);
+
+
+                if(tempRpm+200<rpm){
+                    rpm=tempRpm+500;
+                }
+                else{
+                    if(tempRpm-200>rpm){
+                        rpm=tempRpm-500;
+                    }
+                }
+                embrayage=false;
+            }
+            int newSpeed=rpmToSpeed();
+            if(newSpeed==0){
+                speed=speed/1.1;
+            }
+            else{
+                printf("newSpeed : %d\n",newSpeed);
+                printf("newSpeed : %f\n",speed);
+                if(abs(float(newSpeed-speed))<3){
+                    speed=newSpeed;
+                }
+                else{
+                    started=false;
+                    printf("Impossible de passer la vitesse tu a calé\n");
+                    speed=speed/1.1;
+                }
+                
+            }
         }
         
 

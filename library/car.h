@@ -10,6 +10,7 @@ class Car{
     public:
     bool started;
     bool isStarteting;
+    bool embrayage;
     int x;
     int y;
     float speed;

@@ -106,7 +106,6 @@ int main()
                 
             }
             car.move();
-            car.deceleration();
             car.deplacement();
 
             window.clear();
