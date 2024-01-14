@@ -8,7 +8,8 @@ using namespace sf;
 class Car{
 
     public:
-    float started;
+    bool started;
+    bool isStarteting;
     int x;
     int y;
     float speed;
@@ -17,12 +18,22 @@ class Car{
     int maxDir;
     int maxSpeed;
     bool actif;
+    int maxRpm;
+    int startRpm;
+    int rpm;
+    int power;
+    int gear;
+
     RectangleShape rectangle;
     RectangleShape wheel;
 
     // Constructor
     Car(int x_x, int y_y);
 
+    int rpmToSpeed();
+    int rpmToSpeed(int rpmToConvert, int gearToConvert);
+
+    int convertSpeedToRpm(int newGear);
 
     void move();
 
