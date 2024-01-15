@@ -96,15 +96,12 @@ void Car::deceleration(){
 void Car::deplacement(vector<Sprite> *obstacles, Car prev_car){
     
     if(collision(obstacles)){
-        printf("1\n");
         copyCar(prev_car);
-        prev_car.copyCar(*this);
         speed = 0;
     }else{
         
         
         prev_car.copyCar(*this);
-        copyCar(prev_car);
     }
 }
 

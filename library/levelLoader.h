@@ -12,6 +12,7 @@ class Level{
     public:
     map<string, Texture> textures;
     vector<Sprite> obstacles;
+    vector<Sprite> non_obstacles;
     
     Level();
     Level(string path);
@@ -23,4 +24,4 @@ class Level{
 
 void loadTextures(map<string, Texture> *textures);
 
-void loadObstacles(map<string, Texture> *textures, vector<Sprite> *obstacles);
+void loadObstacles(map<string, Texture> *textures, vector<Sprite> *obstacles, vector<Sprite> *non_obstacles);

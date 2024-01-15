@@ -28,7 +28,7 @@ int main()
 
     loadTextures(&niv.textures);
 
-    loadObstacles(&niv.textures, &niv.obstacles);
+    loadObstacles(&niv.textures, &niv.obstacles, &niv.non_obstacles);
 
 
 
@@ -116,20 +116,16 @@ int main()
             }
             Car prev_car;
             prev_car.copyCar(car);
-            printf("\n1  car  %d %d\n",car.x, car.y);
-            printf("prev_car  %d %d\n",prev_car.x, prev_car.y);
-            
             car.move();
-            printf("2  car  %d %d\n",car.x, car.y);
-            printf("prev_car  %d %d\n",prev_car.x, prev_car.y);
             car.deplacement(&niv.obstacles, prev_car);
-            printf("3  car  %d %d\n",car.x, car.y);
-            printf("prev_car  %d %d\n\n",prev_car.x, prev_car.y);
             car.deceleration();
 
 
             window.clear();
             for(auto i : niv.obstacles){
+                window.draw(i);
+            }
+            for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
             window.draw(car.rectangle);
