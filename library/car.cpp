@@ -30,20 +30,34 @@ using namespace sf;
         rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
         rectangle.setPosition(x,y);
-        rectangle.setSize({60,40});
-        wheel.setPosition(x+40,y);
-        wheel.setSize({15,6});
-        wheel.setFillColor(Color::Red);
-        wheel.setOrigin(0,0);
+        rectangle.setSize({75,40});
+        wheelLeft.setPosition(x+35,y);
+        wheelLeft.setSize({15,6});
+        wheelLeft.setFillColor(Color::Red);
+        wheelLeft.setOrigin(7,0);
+        wheelRight.setPosition(x+35,y);
+        wheelRight.setSize({15,6});
+        wheelRight.setFillColor(Color::Red);
+        wheelRight.setOrigin(7,0);
+
+
+        if (!carTexture.loadFromFile("src/texture/car.png"))
+        {
+            std::cout << "Error: Couldn't load texture\n";
+            
+        }
+        rectangle.setTexture(&carTexture);
     }
 
     int Car::rpmToSpeed(){
         if(rpm<startRpm){
+            printf("Tu a calé\n");
             started=false;
             return 0;
         }
-        if(rpm>maxRpm){
+        if(rpm>maxRpm+200){
             started=false;
+            printf("Tu a calé\n");
             return 0;
         }
         
@@ -86,15 +100,16 @@ using namespace sf;
         return 0;
     }
     int Car::convertSpeedToRpm(int newGear){
-        if (Keyboard::isKeyPressed(Keyboard::LShift)){
-            return startRpm;
-        }
+        //if (Keyboard::isKeyPressed(Keyboard::LShift)){
+        //    return startRpm;
+        //}
 
         int last=0;
         for(int i=500;i<maxRpm;i=i+100){
             if(rpmToSpeed(i,newGear)>speed){
                 printf("Curr : %d   rpmToSpeed :%d\n",i,rpmToSpeed(i,newGear));
                 printf("Curr Speed : %f\n",speed);
+                printf("Last: %d\n",last);
                 return last;
             }
             last=i;
@@ -106,49 +121,53 @@ using namespace sf;
 
 
     void Car::move(){
-
-        if(started){
-            if(Keyboard::isKeyPressed(Keyboard::LShift)){
-                printf("a\n");
-                if(Keyboard::isKeyPressed(Keyboard::Num0)){
-                    printf("b\n");
-                    gear=0;
-                    rpm=500;
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Num1)){
-                    gear=1;
-                    rpm=convertSpeedToRpm(1);
-                    if(rpm=0){
-                        started=false;
-                        printf("Impossible de passer la vitesse tu a calé\n");
-                    }
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Num2)){
-                    gear=2;
-                    rpm=convertSpeedToRpm(2);
-                    if(rpm==0){
-                        started=false;
-                        printf("Impossible de passer la vitesse tu a calé\n");
-                    }
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Num3)){
-                    gear=3;
-                    rpm=convertSpeedToRpm(3);
-                    printf("rpm forReal%d\n",rpm);
-                    if(rpm==0){
-                        started=false;
-                        printf("Impossible de passer la vitesse tu a calé\n");
-                    }
-                }
-                if(Keyboard::isKeyPressed(Keyboard::BackSpace)){
-                    gear=-1;
-                    rpm=convertSpeedToRpm(-1);
-                    if(rpm==0){
-                        started=false;
-                        printf("Impossible de passer la vitesse tu a calé\n");
-                    }
-                }
+        if(Keyboard::isKeyPressed(Keyboard::LShift)){
+            printf("a\n");
+            if(Keyboard::isKeyPressed(Keyboard::Num0)){
+                printf("b\n");
+                gear=0;
+                rpm=500;
             }
+            if(Keyboard::isKeyPressed(Keyboard::Num1)){
+                gear=1;
+                //rpm=convertSpeedToRpm(1);
+                //if(rpm=0){
+                //    printf("cA\n");
+                //    started=false;
+                //    printf("Impossible de passer la vitesse tu a calé\n");
+                //}
+            }
+            if(Keyboard::isKeyPressed(Keyboard::Num2)){
+                gear=2;
+                //rpm=convertSpeedToRpm(2);
+                //if(rpm==0){
+                //    printf("cB\n");
+                //    started=false;
+                //    printf("Impossible de passer la vitesse tu a calé\n");
+                //}
+            }
+            if(Keyboard::isKeyPressed(Keyboard::Num3)){
+                gear=3;
+                //rpm=convertSpeedToRpm(3);
+                //printf("rpm forReal%d\n",rpm);
+                //if(rpm==0){
+                //                            printf("cC\n");
+                //    started=false;
+                //    printf("Impossible de passer la vitesse tu a calé\n");
+                //}
+            }
+            if(Keyboard::isKeyPressed(Keyboard::BackSpace)){
+                gear=-1;
+                //rpm=convertSpeedToRpm(-1);
+                //if(rpm==0){                        printf("cD\n");
+
+                //    started=false;
+                //    printf("Impossible de passer la vitesse tu a calé\n");
+                //}
+            }
+        }
+        if(started){
+            
             if (Keyboard::isKeyPressed(Keyboard::Up)){
                 if(gear==0||started){
                     
@@ -178,14 +197,21 @@ using namespace sf;
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::Down)){
-                if(speed > 0.5){
-                    speed -= 2;
-                }else if(speed > -1){
-                    speed -= 1;
-                }else{
-                    speed -= 0.4;
+                if(!speed==0){
+                    if(speed>0){
+                    speed=speed-(200/(speed*speed));
+                    if(speed<0){
+                        speed=0;
+                    }
+                    }
+                    else{
+                        speed=speed+(200/(-speed*-speed));
+                        if(speed>0){
+                            speed=0;
+                        }
+                    }
+                    rpm=convertSpeedToRpm(gear);
                 }
-                
             }
             if (Keyboard::isKeyPressed(Keyboard::Left)){
                 actif=true;
@@ -199,7 +225,7 @@ using namespace sf;
                 }
             }
             else{
-                if (Keyboard::isKeyPressed(Keyboard::Right)){ 
+                if (Keyboard::isKeyPressed(Keyboard::Right)){
                     actif=true;
                     if(abs(wheelDir)<maxDir||wheelDir<0){
                         if(abs(speed) > 3){
@@ -226,6 +252,8 @@ using namespace sf;
             if(!isStarteting){
                 isStarteting=true;
                 if(started){
+                                            printf("cE\n");
+
                     started=false;
                     rpm=0;
                 }
@@ -260,10 +288,8 @@ using namespace sf;
     }
 
     void Car::deplacement(){
-        if(actif){
-            actif=false;
-        }
-        else{
+        if(!actif){
+            printf("AAA\n");
             if(speed!=0){
                 if(abs(wheelDir)<0.19){
                     wheelDir=0;
@@ -277,7 +303,9 @@ using namespace sf;
                     }
                 }
             }
+            
         }
+        actif=false;
 
         if(speed!=0){
             if(speed<0){
@@ -319,6 +347,9 @@ using namespace sf;
             int newSpeed=rpmToSpeed();
             if(newSpeed==0){
                 speed=speed/1.1;
+                if(speed<0.5){
+                    speed=0;
+                }
             }
             else{
                 printf("newSpeed : %d\n",newSpeed);
@@ -327,9 +358,9 @@ using namespace sf;
                     speed=newSpeed;
                 }
                 else{
-                    started=false;
-                    printf("Impossible de passer la vitesse tu a calé\n");
-                    speed=speed/1.1;
+                    rpm=convertSpeedToRpm(gear);
+                    speed=rpmToSpeed();
+                    printf("Maybe tu cale\n\n\n\n");
                 }
                 
             }
@@ -339,14 +370,15 @@ using namespace sf;
 
 
         rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
-        wheel.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*40),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*40));
+        wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)-(sin(rectangle.getRotation()*PI/180)*25),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)+(cos(rectangle.getRotation() * PI / 180.0)*25));
+        wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
 
-        wheel.setRotation(rectangle.getRotation()+wheelDir*2);
+
+        wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)+(sin(rectangle.getRotation()*PI/180)*10),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)-(cos(rectangle.getRotation() * PI / 180.0)*10));
+        wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
     }
 
     void Car::reinisialisationCar(int x, int y){
         rectangle.setPosition(x,y);
         rectangle.setRotation(0);
-        wheel.setPosition(x-10,y+4);
-        wheel.setRotation(rectangle.getRotation()+wheelDir);
     }

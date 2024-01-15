@@ -26,7 +26,10 @@ class Car{
     int gear;
 
     RectangleShape rectangle;
-    RectangleShape wheel;
+    RectangleShape wheelLeft;
+    RectangleShape wheelRight;
+    Texture carTexture;
+    Texture wheeltexture;
 
     // Constructor
     Car(int x_x, int y_y);

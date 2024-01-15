@@ -36,7 +36,15 @@ int main()
         printf("pas de font");
     }
 
-    
+    Text carInfo;
+    carInfo.setFont(font); 
+    carInfo.setString("Info");
+    carInfo.setCharacterSize(24); 
+    carInfo.setFillColor(Color::White);
+    carInfo.setStyle(Text::Bold | Text::Underlined);
+    carInfo.setPosition(0,0);
+
+
     Sprite play;
     Texture playTexture;
     centerOrigin(&play);
@@ -105,12 +113,22 @@ int main()
 
                 
             }
+
+            //printf("started : %d\n",started);
+            //printf("speed : %f\n",speed);
+            //printf("rpm : %d\n",rpm);
+            //printf("vitesse : %d\n",gear);
+            char s[256];
+            sprintf(s,"started : %s\nspeed : %f\nrpm : %d\nvitesse : %d\n",((car.started == 1) ? "true" : "false"),car.speed,car.rpm,car.gear);
+            carInfo.setString(s);
             car.move();
             car.deplacement();
 
             window.clear();
+            window.draw(car.wheelLeft);
+            window.draw(car.wheelRight);
             window.draw(car.rectangle);
-            window.draw(car.wheel);
+            window.draw(carInfo);
             window.display();
             break;
         default:
