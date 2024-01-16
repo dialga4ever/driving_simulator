@@ -6,7 +6,6 @@
 #include "library/car.h"
 #include "library/textureUtility.h"
 #include "library/levelLoader.h"
-
 using namespace std;
 using namespace sf;
 
@@ -26,9 +25,9 @@ int main()
     // Stockage des textures
     Level niv = Level();
 
-    loadTextures(&niv.textures);
+    niv.loadTextures();
 
-    loadObstacles(&niv.textures, &niv.obstacles, &niv.non_obstacles);
+    niv.loadObstacles();
 
 
 
@@ -38,14 +37,14 @@ int main()
 
 
     // Ouverture de la fenêtre
-    RenderWindow window(VideoMode(2000, 2000), "Driving Simulator", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
     int fenetre = 0;
 
 
-    Car car(500, 500);// Création de la voiture
+    Car car(500, 500, false);// Création de la voiture
 
     
 
@@ -104,12 +103,23 @@ int main()
     window.setMouseCursorVisible(false);
 
 
+
+  
+    Sprite phare;
+    phare.setTexture(niv.textures.at("phare.png"));
+    phare.setRotation(0);
+    phare.setPosition(200, 200);
+    centerOrigin(&phare);
+
+
     while (window.isOpen())
     {
         Event event;
         switch (fenetre)
         {
+
         case 1:{
+            // Fenetre de jeu principale
             while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Backspace)))
                     window.close();    
@@ -122,17 +132,20 @@ int main()
 
 
             window.clear();
-            for(auto i : niv.obstacles){
-                window.draw(i);
-            }
+
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
+            for(auto i : niv.obstacles){
+                window.draw(i);
+            }
             window.draw(car.rectangle);
+            window.draw(phare);
             window.display();
             break;}
+
         default:{
-            
+            //Fenetre du menu
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed)

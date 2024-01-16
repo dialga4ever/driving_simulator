@@ -12,13 +12,13 @@ class Car{
     int x;
     int y;
     float speed;
+    bool nocturne;
     int dir;// In degrees
-    int maxDir;
     RectangleShape rectangle;
 
     // Constructor
     Car();
-    Car(int x_x, int y_y);
+    Car(int x_x, int y_y, bool nocturne);
 
 
     void move();

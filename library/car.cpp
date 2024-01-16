@@ -9,12 +9,12 @@ using namespace sf;
 #define PI 3.14159265
 Car::Car(){}
 
-Car::Car(int x_x, int y_y){
+Car::Car(int x_x, int y_y, bool nocturne_){
     x = x_x;
     y = y_y;
     speed = 0;
     dir = 0;
-    maxDir=30;
+    nocturne = nocturne_;
     rectangle.setSize({30,20});
     rectangle.setOrigin(10,10);
     rectangle.setOutlineColor(Color::Blue);
@@ -99,8 +99,6 @@ void Car::deplacement(vector<Sprite> *obstacles, Car prev_car){
         copyCar(prev_car);
         speed = 0;
     }else{
-        
-        
         prev_car.copyCar(*this);
     }
 }
@@ -139,10 +137,10 @@ void Car::copyCar(Car car){
     y = car.rectangle.getPosition().y;
     speed = car.speed;
     dir = car.dir;
-    maxDir=30;
     rectangle.setSize(car.rectangle.getSize());
     rectangle.setOrigin(car.rectangle.getOrigin());
     rectangle.setOutlineColor(car.rectangle.getOutlineColor());
     rectangle.setPosition(car.rectangle.getPosition());
     rectangle.setRotation(car.rectangle.getRotation());
 }
+

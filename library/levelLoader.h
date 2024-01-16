@@ -20,8 +20,15 @@ class Level{
     void load(string path);
 
     Sprite createObs(int x, int y);
+
+    void loadTextures();
+
+    void loadObstacles();
+
+    Sprite placeObject(string image, int x, int y);
+
+    Sprite placeObject(string image, int x, int y, int rotation);
 };
 
-void loadTextures(map<string, Texture> *textures);
 
-void loadObstacles(map<string, Texture> *textures, vector<Sprite> *obstacles, vector<Sprite> *non_obstacles);
+
