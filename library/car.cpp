@@ -11,7 +11,18 @@ using namespace sf;
 
     Car::Car(){}
 
-    Car::Car(int x_x, int y_y){
+    Car::Car(int x_x, int y_y, bool nocturne_, map<string, Texture> *textures){
+        if(nocturne){
+            struct Phare phares;
+            phares.x = x_x + 75;
+            phares.y = y_y;
+            phares.image.setOrigin(10,10);
+            phares.image.setTexture(textures->at("phare.png"));
+        }
+        Car(x_x, y_y, nocturne_);
+    }
+
+    Car::Car(int x_x, int y_y, bool nocturne_){
         x = x_x;
         y = y_y;
         speed = 0;
@@ -25,10 +36,9 @@ using namespace sf;
         power=100;
         gear=0;
         rpm=0;
+        nocturne = nocturne_;
 
-
-
-        rectangle.setSize({60,40});
+        
         rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
         rectangle.setPosition(x,y);
@@ -120,7 +130,12 @@ using namespace sf;
 
         return 0;
     }
+class Phare{
+    int x;
+    int y;
 
+    Sprite image;
+};
 
     void Car::move(){
         if(Keyboard::isKeyPressed(Keyboard::LShift)){

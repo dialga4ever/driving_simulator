@@ -26,10 +26,16 @@ int main()
     RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
 
-    int fenetre =0;
+    int fenetre = 0;
 
+    // Stockage des textures
+    Level niv = Level();
 
-    Car car(500, 500);// Création de la voiture
+    niv.loadTextures();
+
+    niv.loadObstacles();
+
+    Car car(500, 500, true, &niv.textures);// Création de la voiture
 
     Font font;
     if (!font.loadFromFile("src/font/arial.ttf"))
@@ -98,16 +104,7 @@ int main()
     spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/texture/cursor.png",window.getSize().y/2,window.getSize().x/2);
     cursor.scale({0.1,0.1});
     window.setMouseCursorVisible(false);
-    
 
-
-  
-     // Stockage des textures
-    Level niv = Level();
-
-    niv.loadTextures();
-
-    niv.loadObstacles();
     Car prev_car;   
 
 

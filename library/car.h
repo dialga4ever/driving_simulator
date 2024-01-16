@@ -6,6 +6,12 @@ using namespace std;
 using namespace sf;
 
 class Car{
+    struct Phare{
+        int x;
+        int y;
+
+        Sprite image;
+    };
 
     public:
     bool started;
@@ -24,7 +30,8 @@ class Car{
     int rpm;
     int power;
     int gear;
-
+    bool nocturne;
+    struct Phare phares;
     RectangleShape rectangle;
     RectangleShape wheelLeft;
     RectangleShape wheelRight;
@@ -33,7 +40,8 @@ class Car{
 
     // Constructor
     Car();
-    Car(int x_x, int y_y);
+    Car(int x_x, int y_y, bool nocturne);
+    Car(int x_x, int y_y, bool nocturne, map<string, Texture> *textures);
 
     int rpmToSpeed();
     int rpmToSpeed(int rpmToConvert, int gearToConvert);
@@ -49,3 +57,5 @@ class Car{
     void reinisialisationCar(int, int);
 
 };
+
+
