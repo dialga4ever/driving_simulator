@@ -1,17 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
-#include <map>
-#include <vector>
 #include "library/car.h"
 #include "library/textureUtility.h"
 #include "library/levelLoader.h"
+
 using namespace std;
 using namespace sf;
 
 #define PI 3.14159265
 
-bool isSpriteCliked(Sprite tarket,RenderWindow *window){
+bool IsSpriteCliked(Sprite tarket,RenderWindow *window){
     return tarket.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
 }
 void updateCursorSprite(Sprite *tarket,RenderWindow *window){
@@ -20,35 +19,33 @@ void updateCursorSprite(Sprite *tarket,RenderWindow *window){
 
 
 
+
+
 int main()
 {
-    // Stockage des textures
-    Level niv = Level();
-
-    niv.loadTextures();
-
-    niv.loadObstacles();
-
-
-
-    Font font;
-    if (!font.loadFromFile("src/font/arial.ttf")){ printf("pas de font");}
-
-
-
-    // Ouverture de la fenêtre
     RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60);
 
-    int fenetre = 0;
+    int fenetre =0;
 
 
-    Car car(500, 500, false);// Création de la voiture
+    Car car(500, 500);// Création de la voiture
 
-    
+    Font font;
+    if (!font.loadFromFile("src/font/arial.ttf"))
+    {
+        printf("pas de font");
+    }
 
-    
+    Text carInfo;
+    carInfo.setFont(font); 
+    carInfo.setString("Info");
+    carInfo.setCharacterSize(24); 
+    carInfo.setFillColor(Color::White);
+    carInfo.setStyle(Text::Bold | Text::Underlined);
+    carInfo.setPosition(0,0);
+
+
     Sprite play;
     Texture playTexture;
     centerOrigin(&play);
@@ -102,60 +99,66 @@ int main()
     cursor.scale({0.1,0.1});
     window.setMouseCursorVisible(false);
 
+    // Stockage des textures
+    Level niv = Level();
 
+    niv.loadTextures();
 
-  
-    Sprite phare;
-    phare.setTexture(niv.textures.at("phare.png"));
-    phare.setRotation(0);
-    phare.setPosition(200, 200);
-    centerOrigin(&phare);
+    niv.loadObstacles();
 
+    Car prev_car;
 
     while (window.isOpen())
     {
         Event event;
         switch (fenetre)
         {
+        case 1:
+            while (window.pollEvent(event))
+            {     
+                if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
 
-        case 1:{
-            // Fenetre de jeu principale
-            while (window.pollEvent(event)){     
-                if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Backspace)))
-                    window.close();    
+
+                
             }
-            Car prev_car;
-            prev_car.copyCar(car);
-            car.move();
-            car.deplacement(&niv.obstacles, prev_car);
-            car.deceleration();
 
+            //printf("started : %d\n",started);
+            //printf("speed : %f\n",speed);
+            //printf("rpm : %d\n",rpm);
+            //printf("vitesse : %d\n",gear);
+            char s[256];
+            sprintf(s,"started : %s\nspeed : %f\nrpm : %d\nvitesse : %d\n",((car.started == 1) ? "true" : "false"),car.speed,car.rpm,car.gear);
+            carInfo.setString(s);
+            prev_car = car;
+            car.move();
+            car.deplacement(prev_car, &niv.obstacles);
 
             window.clear();
-
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
             for(auto i : niv.obstacles){
                 window.draw(i);
             }
+            window.draw(car.wheelLeft);
+            window.draw(car.wheelRight);
             window.draw(car.rectangle);
-            window.draw(phare);
+            window.draw(carInfo);
             window.display();
-            break;}
-
-        default:{
-            //Fenetre du menu
+            break;
+        default:
+            
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed)
                     window.close();
                 if (event.mouseButton.button == Mouse::Left)
                 {
-                    if (isSpriteCliked(quit,&window)){
+                    if (IsSpriteCliked(quit,&window)){
                         window.close();
                     }
-                    if (isSpriteCliked(play,&window)){
+                    if (IsSpriteCliked(play,&window)){
                         fenetre = 1;
                     }
                 }
@@ -164,7 +167,6 @@ int main()
             }
 
             window.clear();
-            
             window.draw(play);
             window.draw(upgrade);
             window.draw(quit);
@@ -174,7 +176,7 @@ int main()
             window.draw(cursor);
 
             window.display();
-            break;}
+            break;
         }
 
 
