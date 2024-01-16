@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "textureUtility.h"
 #include "levelLoader.h"
-
+#include <bits/stdc++.h>  
+#include <fstream>
 #define OFFSET 64
 #define SIZE_MAP_Y 9
 #define SIZE_MAP_X 10
@@ -12,9 +13,48 @@ using namespace sf;
 Level::Level(){
     return;
 }
-Level::Level(string path){
-    
 
+
+Level::Level(string path){
+    string line;
+    ifstream myfile("level/test/non_osbstacle.txt");
+    pair<string, int> non_osbstacleMap [SIZE_MAP_Y][SIZE_MAP_X];
+    if (myfile.is_open())
+    {
+        int i;
+        while (myfile.good())
+        {
+            string str;
+            getline(myfile,line);
+            int j;
+            stringstream ss(line); 
+            while (getline(ss, str, ';')){
+                string elt;
+                string tex;
+                stringstream ssTwo(str); 
+                int temp=0;
+                while(getline(ssTwo, elt, ',')){
+                    switch (temp)
+                    {
+                        case 0:
+                            tex=elt;
+                            break;
+                        case 1:
+                            non_osbstacleMap[i][j]=pair<string,int>(tex,stoi(elt));
+                            break;
+                        temp++;
+                    }
+                }
+                j++
+            }
+            i++
+        }
+        myfile.close();
+    }
+    else 
+    {  
+        cout << "Unable to open file"; 
+    }
     return;
 }
 
