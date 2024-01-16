@@ -36,6 +36,7 @@ void Car::move(){
         }
     }
 
+<<<<<<< Updated upstream
     if (Keyboard::isKeyPressed(Keyboard::Right)){ 
         if(speed != 0){
             if(speed > 3){
@@ -47,6 +48,36 @@ void Car::move(){
             }else{
                 dir -= 3;
             }
+=======
+    int Car::rpmToSpeed(){
+        if(rpm<startRpm){
+            printf("Tu as calé\n");
+            started=false;
+            return 0;
+        }
+        if(rpm>maxRpm+200){
+            started=false;
+            printf("Tu as calé\n");
+            return 0;
+        }
+        
+
+
+        if(gear==0){
+            return 0;
+        }
+        if(gear==1){
+            return ((25)/(1+exp(-0.001*(rpm-3000))));
+        }
+        if(gear==2){
+            return 10+((35)/(1+exp(-0.001*(rpm-3500))));
+        }
+        if(gear==3){
+            return 25+((40)/(1+exp(-0.001*(rpm-3500))));
+        }
+        if(gear==-1){
+            return -((25)/(1+exp(-0.001*(rpm-3000))));
+>>>>>>> Stashed changes
         }
     }
 
