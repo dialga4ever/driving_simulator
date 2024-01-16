@@ -27,7 +27,7 @@ class Level{
 
     Sprite placeObject(string image, int x, int y);
 
-    Sprite placeObject(string image, int x, int y, int rotation);
+    Sprite placeObject(string image, int x, int y, int rotation,int scale);
 };
 
 

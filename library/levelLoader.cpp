@@ -13,6 +13,8 @@ Level::Level(){
     return;
 }
 Level::Level(string path){
+    
+
     return;
 }
 
@@ -93,11 +95,11 @@ void Level::loadObstacles(){
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
             printf("i %d, j %d\n\n", i, j);
-            non_obstacles.push_back(placeObject(map[i][j].first, j, i, map[i][j].second));
+            non_obstacles.push_back(placeObject(map[i][j].first, j, i, map[i][j].second,OFFSET/64));
         }
     }
 
-    obstacles.push_back(placeObject("ventilo.bmp", 4, 4, 90));
+    obstacles.push_back(placeObject("ventilo.bmp", 4, 4, 90,1));
     
 }
 
@@ -109,8 +111,9 @@ Sprite Level::placeObject(string image, int x, int y){
     return obs;
 }
 
-Sprite Level::placeObject(string image, int x, int y, int rotation){
+Sprite Level::placeObject(string image, int x, int y, int rotation,int scale){
     Sprite obs;
+    obs.scale({scale,scale});
     obs.setTexture(textures.at(image));
     obs.setRotation(rotation);
     obs.setPosition(x*OFFSET, y*OFFSET);

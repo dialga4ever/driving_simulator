@@ -102,11 +102,13 @@ int main()
 
 
   
-    Sprite phare;
-    phare.setTexture(niv.textures.at("phare.png"));
-    phare.setRotation(0);
-    phare.setPosition(200, 200);
-    centerOrigin(&phare);
+     // Stockage des textures
+    Level niv = Level();
+
+    niv.loadTextures();
+
+    niv.loadObstacles();
+    Car prev_car;   
 
 
     while (window.isOpen())
