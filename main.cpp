@@ -98,15 +98,16 @@ int main()
     spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/texture/cursor.png",window.getSize().y/2,window.getSize().x/2);
     cursor.scale({0.1,0.1});
     window.setMouseCursorVisible(false);
+    
 
-    // Stockage des textures
-    Level niv = Level();
 
-    niv.loadTextures();
+  
+    Sprite phare;
+    phare.setTexture(niv.textures.at("phare.png"));
+    phare.setRotation(0);
+    phare.setPosition(200, 200);
+    centerOrigin(&phare);
 
-    niv.loadObstacles();
-
-    Car prev_car;
 
     while (window.isOpen())
     {
