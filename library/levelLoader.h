@@ -6,16 +6,26 @@
 
 using namespace std;
 using namespace sf;
-
+#define SIZE_MAP_Y 9
+#define SIZE_MAP_X 10
 class Level{
 
     public:
     map<string, Texture> textures;
+    pair<string, int> non_osbstacleMap [SIZE_MAP_Y][SIZE_MAP_X];
     vector<Sprite> obstacles;
     vector<Sprite> non_obstacles;
-    
+    Sprite creation;
+    int creationTex=0;
+    int creationRotation=0;
+
+    bool loaded=false;
+    bool rotate=false;
+    bool nextTexture=false;
+    bool clicked=true;
     Level();
     Level(string path);
+
 
     void load(string path);
 
@@ -24,6 +34,7 @@ class Level{
     void loadTextures();
 
     void loadObstacles();
+    void createLevel(RenderWindow *window);
 
     Sprite placeObject(string image, int x, int y);
 
