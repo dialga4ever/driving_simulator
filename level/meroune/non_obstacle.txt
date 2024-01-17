@@ -1,0 +1,9 @@
+buisson_cote.png,0;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,90;buisson_cote.png,270;
+buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,270;buisson_cote.png,180;route_bord1.png,0;
+route1.png,90;route1.png,90;route1.png,90;route1.png,90;route_egout.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route_croisement1.png,90;
+route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_slow1.png,90;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;
+route1.png,270;route1.png,270;route1.png,270;route1.png,270;route1.png,270;route_slow2.png,90;route1.png,270;route1.png,270;route1.png,270;route1.png,270;
+trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;trotoire.png,90;
+route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;route1.png,90;
+route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_slow1.png,90;route_sans_bord.png,270;route_sans_bord.png,270;
+route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_sans_bord.png,270;route_croisement1.png,270;route_slow2.png,90;route_egout.png,270;route_croisement2.png,270;

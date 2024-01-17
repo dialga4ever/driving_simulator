@@ -105,18 +105,40 @@ int main()
      // Stockage des textures
     Level niv = Level();
 
-    niv.loadTextures();
-
-    niv.loadObstacles();
+    
     Car prev_car;   
 
 
+    char s[256];
     while (window.isOpen())
     {
         Event event;
         switch (fenetre)
         {
+        case 2:
+            if(niv.loaded==false){
+                niv.loadTextures();
+                niv.load("level/test/");
+            }
+            while (window.pollEvent(event))
+            {     
+                if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
+            }
+            window.clear();
+            for(auto i : niv.non_obstacles){
+                window.draw(i);
+            }
+            niv.createLevel(&window);
+            window.draw(niv.creation);
+            window.setMouseCursorVisible(true);
+            window.display();
+            break;
         case 1:
+            if(niv.loaded==false){
+                niv.loadTextures();
+                niv.loadObstacles();
+            }
             while (window.pollEvent(event))
             {     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
@@ -163,6 +185,9 @@ int main()
                     }
                     if (IsSpriteCliked(play,&window)){
                         fenetre = 1;
+                    }
+                    if (IsSpriteCliked(upgrade,&window)){
+                        fenetre = 2;
                     }
                 }
                 if(event.type == Event::MouseMoved)

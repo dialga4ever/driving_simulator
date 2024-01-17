@@ -27,10 +27,10 @@ using namespace sf;
         rpm=0;
 
 
-
+        
         rectangle.setSize({60,40});
         rectangle.setOrigin(10,10);
-        rectangle.setOutlineColor(Color::Blue);
+        rectangle.setOutlineColor(Color::Blue);rectangle.setOutlineThickness(5);
         rectangle.setPosition(x,y);
         rectangle.setSize({75,40});
         wheelLeft.setPosition(x+35,y);
@@ -375,6 +375,11 @@ using namespace sf;
         for(auto i : *obstacles){
             if( rectangle.getGlobalBounds().intersects(i.getGlobalBounds())){
                 isCollision = true;
+
+                
+                if(i.getGlobalBounds().intersects(rectangle.getGlobalBounds())){
+                    printf("ff\n");
+                }
             }
         }
         if(isCollision){
