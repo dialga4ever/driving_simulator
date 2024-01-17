@@ -129,7 +129,10 @@ int main()
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
-            niv.createLevel(&window);
+            for(auto i : niv.obstacles){
+                window.draw(i);
+            }
+            niv.createLevel(&window,"level/test/");
             window.draw(niv.creation);
             window.setMouseCursorVisible(true);
             window.display();
