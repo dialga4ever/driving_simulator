@@ -11,17 +11,6 @@ using namespace sf;
 
     Car::Car(){}
 
-    Car::Car(int x_x, int y_y, bool nocturne_, map<string, Texture> *textures){
-        if(nocturne){
-            struct Phare phares;
-            phares.x = x_x + 75;
-            phares.y = y_y;
-            phares.image.setOrigin(10,10);
-            phares.image.setTexture(textures->at("phare.png"));
-        }
-        Car(x_x, y_y, nocturne_);
-    }
-
     Car::Car(int x_x, int y_y, bool nocturne_){
         x = x_x;
         y = y_y;
@@ -36,17 +25,27 @@ using namespace sf;
         power=100;
         gear=0;
         rpm=0;
-        nocturne = nocturne_;
 
-        
+        nocturne = nocturne_;
+        phares.setOrigin(x+15,y-200);
+        phares.setPosition(x, y);
+        printf("\nx %f  y %f\n\n\n", phares.getPosition().x, phares.getPosition().y);
+        phares.setSize({1000,1000});
+        if(!pharesTexture.loadFromFile("src/texture/phare.png")){
+            std::cout << "Error: Couldn't load texture\n";
+        }
+        phares.setTexture(&pharesTexture);
+
         rectangle.setOrigin(10,10);
         rectangle.setOutlineColor(Color::Blue);
         rectangle.setPosition(x,y);
         rectangle.setSize({75,40});
+
         wheelLeft.setPosition(x+35,y);
         wheelLeft.setSize({15,6});
         wheelLeft.setFillColor(Color::Red);
         wheelLeft.setOrigin(7,0);
+
         wheelRight.setPosition(x+35,y);
         wheelRight.setSize({15,6});
         wheelRight.setFillColor(Color::Red);
@@ -130,12 +129,7 @@ using namespace sf;
 
         return 0;
     }
-class Phare{
-    int x;
-    int y;
 
-    Sprite image;
-};
 
     void Car::move(){
         if(Keyboard::isKeyPressed(Keyboard::LShift)){
@@ -400,6 +394,8 @@ class Phare{
         }else{
             prev_car= *this;
         }
+        phares.setPosition(rectangle.getPosition());
+        phares.setRotation(rectangle.getRotation()-90);
 
         wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)-(sin(rectangle.getRotation()*PI/180)*25),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)+(cos(rectangle.getRotation() * PI / 180.0)*25));
         wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
@@ -407,7 +403,8 @@ class Phare{
 
         wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)+(sin(rectangle.getRotation()*PI/180)*10),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)-(cos(rectangle.getRotation() * PI / 180.0)*10));
         wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
-    }
+    
+        }
 
     void Car::reinisialisationCar(int x, int y){
         rectangle.setPosition(x,y);

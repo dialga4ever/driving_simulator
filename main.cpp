@@ -35,7 +35,7 @@ int main()
 
     niv.loadObstacles();
 
-    Car car(500, 500, true, &niv.textures);// Création de la voiture
+    Car car(500, 500, true);// Création de la voiture
 
     Font font;
     if (!font.loadFromFile("src/font/arial.ttf"))
@@ -144,7 +144,12 @@ int main()
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
             window.draw(car.rectangle);
+            if(car.nocturne){
+                printf("\nx %f  y %f\n\n\n", car.phares.getPosition().x, car.phares.getPosition().y);
+                window.draw(car.phares);
+            }
             window.draw(carInfo);
+
             window.display();
             break;
         default:
@@ -174,7 +179,6 @@ int main()
             window.draw(upgradeText);
             window.draw(quitText);
             window.draw(cursor);
-
             window.display();
             break;
         }
