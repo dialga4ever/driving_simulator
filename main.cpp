@@ -140,7 +140,7 @@ int main()
         case 1:
             if(niv.loaded==false){
                 niv.loadTextures();
-                niv.loadObstacles();
+                niv.load("level/test/");
             }
             while (window.pollEvent(event))
             {     
