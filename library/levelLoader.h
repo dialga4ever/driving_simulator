@@ -14,6 +14,7 @@ class Level{
     map<string, Texture> textures;
     pair<string, int> non_osbstacleMap [SIZE_MAP_Y][SIZE_MAP_X];
     vector<Sprite> obstacles;
+    vector<String> obstaclesTexture;
     vector<Sprite> non_obstacles;
     Sprite creation;
     int creationTex=0;
@@ -23,6 +24,10 @@ class Level{
     bool rotate=false;
     bool nextTexture=false;
     bool clicked=true;
+    bool colissionMode=true;
+    bool ChangingMode=false;
+
+
     Level();
     Level(string path);
 
@@ -34,11 +39,12 @@ class Level{
     void loadTextures();
 
     void loadObstacles();
-    void createLevel(RenderWindow *window);
+    void createLevel(RenderWindow *window,String path);
 
     Sprite placeObject(string image, int x, int y);
 
-    Sprite placeObject(string image, int x, int y, int rotation,int scale);
+    Sprite placeObject(string image, int x, int y, int rotation,float scale);
+    Sprite placeObjectFix(string image, int x, int y, int rotation,float scale);        
 };
 
 

@@ -80,7 +80,6 @@ void Level::load(string path){
             
         }
     }
-    loaded=true;
 
     
     myfile.open(path+"obstacle.txt");
@@ -121,7 +120,8 @@ void Level::load(string path){
                 }
                 temp++;
             }
-            obstacles.push_back(placeObject(tex,x,y,rotation,OFFSET/64));
+            obstacles.push_back(placeObjectFix(tex,x,y,rotation,1));
+            obstaclesTexture.push_back(tex);
         }
         myfile.close();
     }
@@ -133,121 +133,219 @@ void Level::load(string path){
     }
 
 
+    loaded=true;
 
     return;
 }
 
 
-void Level::createLevel(RenderWindow *window){
-    if(Keyboard::isKeyPressed(Keyboard::R)){
-        if(!rotate){
-            creationRotation+=90;
-            if(creationRotation>=360){
-                creationRotation=0;
+void Level::createLevel(RenderWindow *window,String path){
+    if(Keyboard::isKeyPressed(Keyboard::Space)){
+        if(!ChangingMode){
+            if(colissionMode){
+                colissionMode=false;
             }
-            rotate=true;
+            else{
+                colissionMode=true;
+            }
+            ChangingMode=true;
         }
+        
     }
     else{
-        rotate=false;
+        ChangingMode=false;
     }
-    if(Keyboard::isKeyPressed(Keyboard::Right)){
-        if(!nextTexture){
-            creationTex+=1;
-            nextTexture=true;
-            bool tooLate=true;
-            std::multimap<string, Texture>::iterator it = textures.begin();
-            int temp=0;
-            for(;it!=textures.end();++it) {
-                if(temp==creationTex){
-                    tooLate=false;
+
+
+
+    if(!colissionMode){
+        if(Keyboard::isKeyPressed(Keyboard::R)){
+            if(!rotate){
+                creationRotation+=90;
+                if(creationRotation>=360){
+                    creationRotation=0;
                 }
-                temp+=1;
-            }
-            if(tooLate){
-                creationTex=0;
-            }
-            
-        }
-    }
-    else{
-        if(Keyboard::isKeyPressed(Keyboard::Left)){
-            if(!nextTexture){
-                creationTex-=1;
-                nextTexture=true;
-                if(creationTex<0){
-                    creationTex=0;
-                }
+                rotate=true;
             }
         }
         else{
-            nextTexture=false;
+            rotate=false;
         }
-    }
-    
-
-    int x=(Mouse::getPosition(*window).x+OFFSET/2)/OFFSET;
-    int y=(Mouse::getPosition(*window).y+OFFSET/2)/OFFSET;
-
-    String maTexture;
-    std::multimap<string, Texture>::iterator it = textures.begin();
-    int temp=0;
-    for(;it!=textures.end();++it) {
-        if(temp==creationTex){
-            maTexture=it->first;
+        if(Keyboard::isKeyPressed(Keyboard::Right)){
+            if(!nextTexture){
+                creationTex+=1;
+                nextTexture=true;
+                bool tooLate=true;
+                std::multimap<string, Texture>::iterator it = textures.begin();
+                int temp=0;
+                for(;it!=textures.end();++it) {
+                    if(temp==creationTex){
+                        tooLate=false;
+                    }
+                    temp+=1;
+                }
+                if(tooLate){
+                    creationTex=0;
+                }
+                
+            }
         }
-        temp+=1;
-    }
-
-    creation=placeObject(maTexture, x, y, creationRotation,OFFSET/64);
-    if(x>=SIZE_MAP_X||y>=SIZE_MAP_Y||x<0||y<0){
-        return;
-    }
-
-    
-    printf("%f %f\n",creation.getPosition().x,creation.getPosition().y);
-    
-    
-    
-
-
-
-    printf("x:%d y:%d\n",x,y);
-    if(Mouse::isButtonPressed(Mouse::Left)){
-        if(clicked==false){
-            non_osbstacleMap[y][x].first=maTexture;
-
-            non_osbstacleMap[y][x].second=creationRotation;
-            non_obstacles[x+SIZE_MAP_X*y]=creation;
+        else{
+            if(Keyboard::isKeyPressed(Keyboard::Left)){
+                if(!nextTexture){
+                    creationTex-=1;
+                    nextTexture=true;
+                    if(creationTex<0){
+                        creationTex=0;
+                    }
+                }
+            }
+            else{
+                nextTexture=false;
+            }
         }
-
-        
-    }
-    else{
-        clicked=false;
-    }
-
-    printf("x:%d y:%d\n",x,y);
-
-    std::ofstream of("./level/test/non_obstacle.txt");
-    if(of.is_open())
-    {
         
 
-        for(int i = 0; i < SIZE_MAP_Y; i++){
-            for(int j = 0; j < SIZE_MAP_X; j++){
-                of<<non_osbstacleMap[i][j].first<<","<<non_osbstacleMap[i][j].second<<";";
+        int x=(Mouse::getPosition(*window).x+OFFSET/2)/OFFSET;
+        int y=(Mouse::getPosition(*window).y+OFFSET/2)/OFFSET;
+
+        String maTexture;
+        std::multimap<string, Texture>::iterator it = textures.begin();
+        int temp=0;
+        for(;it!=textures.end();++it) {
+            if(temp==creationTex){
+                maTexture=it->first;
+            }
+            temp+=1;
+        }
+
+        creation=placeObject(maTexture, x, y, creationRotation,OFFSET/64);
+        if(x>=SIZE_MAP_X||y>=SIZE_MAP_Y||x<0||y<0){
+            return;
+        }
+        if(Mouse::isButtonPressed(Mouse::Left)){
+            if(clicked==false){
+                non_osbstacleMap[y][x].first=maTexture;
+
+                non_osbstacleMap[y][x].second=creationRotation;
+                non_obstacles[x+SIZE_MAP_X*y]=creation;
             }
 
-            of<<std::endl;
+            
+        }
+        else{
+            clicked=false;
+        }
+        printf("x:%d y:%d\n",x,y);
+        std::ofstream of(path+"non_obstacle.txt");
+        if(of.is_open())
+        {
+            for(int i = 0; i < SIZE_MAP_Y; i++){
+                for(int j = 0; j < SIZE_MAP_X; j++){
+                    of<<non_osbstacleMap[i][j].first<<","<<non_osbstacleMap[i][j].second<<";";
+                }
+                of<<std::endl;
+            }
+            of.flush();
+            of.close();
+        }
+    }
+    else{
+        if(Keyboard::isKeyPressed(Keyboard::R)){
+            if(!rotate){
+                creationRotation+=10;
+                if(creationRotation>=360){
+                    creationRotation=0;
+                }
+                rotate=true;
+            }
+        }
+        else{
+            rotate=false;
+        }
+        if(Keyboard::isKeyPressed(Keyboard::Right)){
+            if(!nextTexture){
+                creationTex+=1;
+                nextTexture=true;
+                bool tooLate=true;
+                std::multimap<string, Texture>::iterator it = textures.begin();
+                int temp=0;
+                for(;it!=textures.end();++it) {
+                    if(temp==creationTex){
+                        tooLate=false;
+                    }
+                    temp+=1;
+                }
+                if(tooLate){
+                    creationTex=0;
+                }
+                
+            }
+        }
+        else{
+            if(Keyboard::isKeyPressed(Keyboard::Left)){
+                if(!nextTexture){
+                    creationTex-=1;
+                    nextTexture=true;
+                    if(creationTex<0){
+                        creationTex=0;
+                    }
+                }
+            }
+            else{
+                nextTexture=false;
+            }
+        }
+        
+
+        int x=(Mouse::getPosition(*window).x);
+        int y=(Mouse::getPosition(*window).y);
+
+        String maTexture;
+        std::multimap<string, Texture>::iterator it = textures.begin();
+        int temp=0;
+        for(;it!=textures.end();++it) {
+            if(temp==creationTex){
+                maTexture=it->first;
+            }
+            temp+=1;
         }
 
 
-        of.flush();
 
 
-        of.close();
+        creation=placeObjectFix(maTexture, x, y, creationRotation,1);
+
+        if(x<0||y<0){
+            return;
+        }
+
+        if(Mouse::isButtonPressed(Mouse::Left)){
+            if(clicked==false){
+                obstacles.push_back(creation);
+                obstaclesTexture.push_back(maTexture);
+                clicked=true;
+            }
+        }
+        else{
+            clicked=false;
+        }
+
+        printf("x:%d y:%d\n",x,y);
+        std::ofstream of(path+"obstacle.txt");
+        if(of.is_open())
+        {
+            for(int i = 0; i < obstacles.size(); i++){
+                string textureReal=obstaclesTexture[i];
+                of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y;
+                of<<std::endl;
+            }
+            of.flush();
+            of.close();
+        }
     }
+
+
 }
 
 
@@ -339,10 +437,10 @@ Sprite Level::placeObject(string image, int x, int y){
     return obs;
 }
 
-Sprite Level::placeObject(string image, int x, int y, int rotation,int scale){
+Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
     printf("ff\n");
     Sprite obs;
-    obs.scale({float(scale),float(scale)});
+    obs.scale({scale,scale});
     printf("ff %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
@@ -354,6 +452,20 @@ Sprite Level::placeObject(string image, int x, int y, int rotation,int scale){
     printf("ff\n");
     obs.setRotation(rotation);
     obs.setPosition(x*OFFSET, y*OFFSET);
+    centerOrigin(&obs);
+    return obs;
+}
+
+Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scale){
+    printf("ff\n");
+    Sprite obs;
+    obs.scale({scale,scale});
+    printf("ff %s\n",image.c_str());
+    if(textures.count(image)){
+        obs.setTexture(textures.at(image));
+    }
+    obs.setRotation(rotation);
+    obs.setPosition(x, y);
     centerOrigin(&obs);
     return obs;
 }
