@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include "settings.h"
 
 using namespace std;
 using namespace sf;
@@ -33,9 +34,10 @@ class Car{
     Texture carTexture;
     Texture wheeltexture;
 
+    Keys* game_keys;
     // Constructor
     Car();
-    Car(int x_x, int y_y, bool nocturne);
+    Car(int x_x, int y_y, bool nocturne, Keys* game_keys);
 
     int rpmToSpeed();
     int rpmToSpeed(int rpmToConvert, int gearToConvert);

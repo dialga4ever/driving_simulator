@@ -35,13 +35,20 @@ int main()
 
     niv.loadObstacles();
 
-    Car car(500, 500, true);// Création de la voiture
 
     Font font;
     if (!font.loadFromFile("src/font/arial.ttf"))
     {
         printf("pas de font");
     }
+
+
+
+    Keys game_keys = Keys(&window, font);
+    string change_key = "null";
+    
+    Car car(500, 500, false, &game_keys);// Création de la voiture
+
 
     Text carInfo;
     carInfo.setFont(font); 
@@ -50,6 +57,11 @@ int main()
     carInfo.setFillColor(Color::White);
     carInfo.setStyle(Text::Bold | Text::Underlined);
     carInfo.setPosition(0,0);
+
+
+
+//  ------MENU------  //
+
 
 
     Sprite play;
@@ -67,7 +79,6 @@ int main()
     playText.setPosition(play.getPosition());
     centerTextOrigin(&playText);
 
-
     Sprite upgrade;
     Texture upgradeTexture;
     spriteLoadFromFilePos(&upgrade,&upgradeTexture,"./src/texture/test.jpg",window.getSize().y/2,450);
@@ -83,6 +94,19 @@ int main()
     upgradeText.setPosition(upgrade.getPosition());
     centerTextOrigin(&upgradeText);
     
+    Sprite settings;
+    Texture settingsTexture;
+    spriteLoadFromFilePos(&settings,&settingsTexture,"./src/texture/test.jpg",window.getSize().y/2,600);
+    settings.scale({1,0.5});
+    centerOrigin(&settings);
+    Text settingsText;
+    settingsText.setFont(font); 
+    settingsText.setString("Settings");
+    settingsText.setCharacterSize(24); 
+    settingsText.setFillColor(Color::Black);
+    settingsText.setStyle(Text::Bold | Text::Underlined);
+    settingsText.setPosition(settings.getPosition());
+    centerTextOrigin(&settingsText);
 
     Sprite quit;
     Texture quitTexture;
@@ -99,10 +123,30 @@ int main()
     centerTextOrigin(&quitText);
 
 
+//  ------FIN MENU------  //
+
+//  ------DEBUT SETTINGS------  //
+
+    Sprite returnSettings;
+    Texture returnSettingsTexture;
+    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/texture/test.jpg",window.getSize().y/10,50);
+    returnSettings.scale({0.5,0.3});
+    centerOrigin(&returnSettings);
+    Text returnSettingsText;
+    returnSettingsText.setFont(font); 
+    returnSettingsText.setString("Back");
+    returnSettingsText.setCharacterSize(32); 
+    returnSettingsText.setFillColor(Color::Black);
+    returnSettingsText.setStyle(Text::Bold);
+    returnSettingsText.setPosition(returnSettings.getPosition());
+    centerTextOrigin(&returnSettingsText);
+    
+//  ------FIN SETTINGS------  //
+
     Sprite cursor;
     Texture cursorTexture;
     spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/texture/cursor.png",window.getSize().y/2,window.getSize().x/2);
-    cursor.scale({0.1,0.1});
+    cursor.scale({0.01,0.01});
     window.setMouseCursorVisible(false);
 
     Car prev_car;   
@@ -152,6 +196,61 @@ int main()
 
             window.display();
             break;
+
+
+
+        
+
+
+
+
+        case 3:
+
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
+
+
+                if(event.type == Event::MouseMoved)
+                    updateCursorSprite(&cursor,&window);
+
+                if (event.mouseButton.button == Mouse::Left)
+                {
+                    if (IsSpriteCliked(returnSettings,&window)){
+                        fenetre = 0;
+                    }
+
+                    for(auto i : game_keys.map_keys){
+                        if(IsSpriteCliked(i.second.keySprite, &window)){
+                            
+                            printf("ton père mérouane\n");
+                            game_keys.button_is_pressed(i.first);
+                            change_key = i.first;
+                        }
+                    }
+                }
+                
+                if(event.type == Event::KeyPressed && (change_key != "null")){
+                    printf("ta mère aures\nChange %d to %d", game_keys.map_keys[change_key].keyCode, event.key.code);
+                    game_keys.changeKey(change_key, event.key.code);
+                    printf("ta mère aures\nAfter change %d", game_keys.map_keys[change_key].keyCode);
+                    change_key = "null";
+                }
+                
+            }
+            window.clear();
+                
+            for(auto i : game_keys.map_keys){
+                window.draw(i.second.keySprite);
+                window.draw(i.second.keyText);
+            }
+            window.draw(returnSettings);
+            window.draw(returnSettingsText);
+            
+            window.draw(cursor);
+            window.display();
+            break;
         default:
             
             while (window.pollEvent(event))
@@ -166,6 +265,9 @@ int main()
                     if (IsSpriteCliked(play,&window)){
                         fenetre = 1;
                     }
+                    if (IsSpriteCliked(settings,&window)){
+                        fenetre = 3;
+                    }
                 }
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
@@ -175,9 +277,11 @@ int main()
             window.draw(play);
             window.draw(upgrade);
             window.draw(quit);
+            window.draw(settings);
             window.draw(playText);
             window.draw(upgradeText);
             window.draw(quitText);
+            window.draw(settingsText);
             window.draw(cursor);
             window.display();
             break;
