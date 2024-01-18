@@ -167,7 +167,7 @@ int main()
         case 2:
             if(niv.loaded==false){
                 niv.loadTextures();
-                niv.load("level/test/");
+                niv.load("level/meroune/");
             }
             while (window.pollEvent(event))
             {     
@@ -181,7 +181,7 @@ int main()
             for(auto i : niv.obstacles){
                 window.draw(i);
             }
-            niv.createLevel(&window,"level/test/");
+            niv.createLevel(&window,"level/meroune/");
             window.draw(niv.creation);
             window.setMouseCursorVisible(true);
             window.display();

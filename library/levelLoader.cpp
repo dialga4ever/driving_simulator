@@ -3,6 +3,8 @@
 #include "levelLoader.h"
 #include <bits/stdc++.h>  
 #include <fstream>
+#include <iostream>
+#include <filesystem>
 #define OFFSET 64
 
 
@@ -38,6 +40,7 @@ void Level::load(string path){
             stringstream ss(line); 
             while (getline(ss, str, ';')){
                 printf("a\n");
+                printf("%s\n",str.c_str());
                 string elt;
                 string tex;
                 stringstream ssTwo(str); 
@@ -204,7 +207,7 @@ void Level::createLevel(RenderWindow *window,String path){
                     creationTex-=1;
                     nextTexture=true;
                     if(creationTex<0){
-                        creationTex=0;
+                        creationTex=textures.size()-1;
                     }
                 }
             }
@@ -389,53 +392,14 @@ void Level::createLevel(RenderWindow *window,String path){
 
 void Level::loadTextures(){
     Texture t;
+    filesystem::path path{"./src/texture/"};
+    for (auto const& dir_entry : std::filesystem::directory_iterator{ path }){
+        auto path=dir_entry.path();
+        if (!t.loadFromFile(path)){ std::cout << "Error: Couldn't load texture\n";}
+            textures.insert(pair<string, Texture>(path.filename(), t));
+    }
 
-    if (!t.loadFromFile("src/texture/cursor.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("cursor.png", t));
-    if (!t.loadFromFile("src/texture/test.jpg")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("test.jpg", t));
-    if (!t.loadFromFile("src/texture/voiture_orange.jpg")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("voiture_orange.jpg", t));
-    if (!t.loadFromFile("src/texture/brique.jpg")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("brique.jpg", t));
-    if (!t.loadFromFile("src/texture/route1.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route1.png", t));
-    if (!t.loadFromFile("src/texture/route2.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route2.png", t));
-    if (!t.loadFromFile("src/texture/route_slow1.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_slow1.png", t));
-    if (!t.loadFromFile("src/texture/route_slow2.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_slow2.png", t));
-    if (!t.loadFromFile("src/texture/route_egout.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_egout.png", t));
-    if (!t.loadFromFile("src/texture/route_virage_exte.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_virage_exte.png", t));
-    if (!t.loadFromFile("src/texture/route_virage_inte.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_virage_inte.png", t));
-    if (!t.loadFromFile("src/texture/trotoire.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("trotoire.png", t));
-    if (!t.loadFromFile("src/texture/route_parking_place.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_parking_place.png", t));
-    if (!t.loadFromFile("src/texture/route_sans_bord.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_sans_bord.png", t));
-    if (!t.loadFromFile("src/texture/route_bord1.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_bord1.png", t));
-    if (!t.loadFromFile("src/texture/route_bord2.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_bord2.png", t));
-    if (!t.loadFromFile("src/texture/route_bord3.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_bord3.png", t));
-    if (!t.loadFromFile("src/texture/buisson_coin.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("buisson_coin.png", t));
-    if (!t.loadFromFile("src/texture/buisson_cote.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("buisson_cote.png", t));
-    if (!t.loadFromFile("src/texture/route_croisement1.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_croisement1.png", t));
-    if (!t.loadFromFile("src/texture/route_croisement2.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("route_croisement2.png", t));
-    if (!t.loadFromFile("src/texture/ventilo.bmp")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("ventilo.bmp", t));
-    if (!t.loadFromFile("src/texture/phare.png")){ std::cout << "Error: Couldn't load texture\n";}
-    textures.insert(pair<string, Texture>("phare.png", t));
+
 }
 
 
