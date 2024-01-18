@@ -151,6 +151,27 @@ void Level::load(string path){
 
 
 void Level::createLevel(RenderWindow *window,String path){
+    if(Keyboard::isKeyPressed(Keyboard::Tab)){
+        tabMode=true;
+    }
+    if(tabMode){
+        if(Mouse::isButtonPressed(Mouse::Left)){
+            int j=0;
+            for(auto i:selectTile){
+                if(i.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y)){
+                    creationTex=j;
+                    tabMode=false;
+                    clicked=true;
+                }
+                j++;
+            }
+        }
+        return;
+    }
+
+
+
+
     if(Keyboard::isKeyPressed(Keyboard::Space)){
         if(!ChangingMode){
             if(colissionMode){
@@ -393,13 +414,21 @@ void Level::createLevel(RenderWindow *window,String path){
 void Level::loadTextures(){
     Texture t;
     filesystem::path path{"./src/texture/"};
+    
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path }){
         auto path=dir_entry.path();
-        if (!t.loadFromFile(path)){ std::cout << "Error: Couldn't load texture\n";}
+        if (!t.loadFromFile(path)){ std::cout << "Error: Couldn't load texture\n";}{
             textures.insert(pair<string, Texture>(path.filename(), t));
+            
+        }
     }
-
-
+    
+    int i=0;
+    for(auto t:textures){
+        selectTile.push_back(placeObject(t.first,i%16,int((i-i%16)/16),0,1));
+        i++;
+    }
+    
 }
 
 
@@ -442,7 +471,16 @@ Sprite Level::placeObject(string image, int x, int y){
 Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
     printf("ffB\n");
     Sprite obs;
-    obs.scale({scale,scale});
+    if(!textures.count(image)){
+        return obs;
+    }
+    Vector2u s=textures.at(image).getSize();
+    float xRatio=(64.0/float(s.x))*scale;
+    float yRatio=(64.0/float(s.y))*scale;
+
+
+
+    obs.scale({xRatio,yRatio});
     printf("ffC %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
@@ -461,7 +499,13 @@ Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
 Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scale){
     printf("ffE\n");
     Sprite obs;
-    obs.scale({scale,scale});
+    if(!textures.count(image)){
+        return obs;
+    }
+    Vector2u s=textures.at(image).getSize();
+    float xRatio=(64.0/float(s.x))*scale;
+    float yRatio=(64.0/float(s.y))*scale;
+    obs.scale({xRatio,yRatio});
     printf("ffF %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));

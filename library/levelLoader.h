@@ -16,6 +16,7 @@ class Level{
     vector<Sprite> obstacles;
     vector<String> obstaclesTexture;
     vector<Sprite> non_obstacles;
+    vector<Sprite> selectTile;
     Sprite creation;
     int creationTex=0;
     int creationRotation=0;
@@ -24,9 +25,9 @@ class Level{
     bool rotate=false;
     bool nextTexture=false;
     bool clicked=true;
-    bool colissionMode=false;
+    bool colissionMode=true;
     bool ChangingMode=false;
-
+    bool tabMode=false;
 
     Level();
     Level(string path);

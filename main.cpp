@@ -23,7 +23,7 @@ void updateCursorSprite(Sprite *tarket,RenderWindow *window){
 
 int main()
 {
-    RenderWindow window(VideoMode(1000, 1000), "Driving Simulator", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close );
     window.setVerticalSyncEnabled(true);
 
     int fenetre =0;
@@ -126,12 +126,21 @@ int main()
                     window.close();
             }
             window.clear();
-            for(auto i : niv.non_obstacles){
-                window.draw(i);
+            
+            if(niv.tabMode){
+                for(auto i:niv.selectTile){
+                    window.draw(i);
+                }
             }
-            for(auto i : niv.obstacles){
-                window.draw(i);
+            else{
+                for(auto i : niv.non_obstacles){
+                    window.draw(i);
+                }
+                for(auto i : niv.obstacles){
+                    window.draw(i);
+                }
             }
+
             niv.createLevel(&window,"level/meroune/");
             window.draw(niv.creation);
             window.setMouseCursorVisible(true);
