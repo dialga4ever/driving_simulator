@@ -6,8 +6,8 @@
 
 using namespace std;
 using namespace sf;
-#define SIZE_MAP_Y 9
-#define SIZE_MAP_X 10
+#define SIZE_MAP_Y 16
+#define SIZE_MAP_X 16
 class Level{
 
     public:
@@ -19,12 +19,12 @@ class Level{
     Sprite creation;
     int creationTex=0;
     int creationRotation=0;
-
+    float scale=1;
     bool loaded=false;
     bool rotate=false;
     bool nextTexture=false;
     bool clicked=true;
-    bool colissionMode=true;
+    bool colissionMode=false;
     bool ChangingMode=false;
 
 

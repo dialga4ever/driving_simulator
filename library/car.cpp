@@ -375,11 +375,7 @@ using namespace sf;
         for(auto i : *obstacles){
             if( rectangle.getGlobalBounds().intersects(i.getGlobalBounds())){
                 isCollision = true;
-
-                
-                if(i.getGlobalBounds().intersects(rectangle.getGlobalBounds())){
-                    printf("ff\n");
-                }
+                i.scale({2.0,2.0});
             }
         }
         if(isCollision){
