@@ -31,7 +31,7 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
     phares.setPosition(x, y);
     printf("\nx %f  y %f\n\n\n", phares.getPosition().x, phares.getPosition().y);
     phares.setSize({1000,1000});
-    if(!pharesTexture.loadFromFile("src/texture/phare.png")){
+    if(!pharesTexture.loadFromFile("src/other/phare.png")){
         std::cout << "Error: Couldn't load texture\n";
     }
     phares.setTexture(&pharesTexture);
@@ -60,40 +60,7 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
     rectangle.setTexture(&carTexture);
 }
 
-int Car::rpmToSpeed(){
-    if(rpm<startRpm){
-        printf("Tu a calé\n");
-        started=false;
-        maxRpm=7500;
-        startRpm=500;
-        power=100;
-        gear=0;
-        rpm=0;
 
-
-        
-        rectangle.setSize({60,40});
-        rectangle.setOrigin(10,10);
-        rectangle.setOutlineColor(Color::Blue);rectangle.setOutlineThickness(5);
-        rectangle.setPosition(x,y);
-        rectangle.setSize({75,40});
-        wheelLeft.setPosition(x+35,y);
-        wheelLeft.setSize({15,6});
-        wheelLeft.setFillColor(Color::Red);
-        wheelLeft.setOrigin(7,0);
-        wheelRight.setPosition(x+35,y);
-        wheelRight.setSize({15,6});
-        wheelRight.setFillColor(Color::Red);
-        wheelRight.setOrigin(7,0);
-
-
-        if (!carTexture.loadFromFile("src/texture/car.png"))
-        {
-            std::cout << "Error: Couldn't load texture\n";
-            
-        }
-        rectangle.setTexture(&carTexture);
-    }
 
 int Car::rpmToSpeed(){
     if(rpm<startRpm){
@@ -412,11 +379,15 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     
 
 
+    
+    phares.setPosition(rectangle.getPosition());
+    phares.setRotation(rectangle.getRotation()-90);
     bool isCollision = false;
     rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
     for(auto i : *obstacles){
         if( rectangle.getGlobalBounds().intersects(i.getGlobalBounds())){
             isCollision = true;
+            i.scale({2.0,2.0});
         }
     }
     if(isCollision){
@@ -427,24 +398,6 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     }else{
         prev_car= *this;
     }
-    phares.setPosition(rectangle.getPosition());
-    phares.setRotation(rectangle.getRotation()-90);
-        bool isCollision = false;
-        rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
-        for(auto i : *obstacles){
-            if( rectangle.getGlobalBounds().intersects(i.getGlobalBounds())){
-                isCollision = true;
-                i.scale({2.0,2.0});
-            }
-        }
-        if(isCollision){
-            *this = prev_car;
-            speed = 0;
-            rpm = 0;
-            started = false;
-        }else{
-            prev_car= *this;
-        }
 
     wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)-(sin(rectangle.getRotation()*PI/180)*25),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)+(cos(rectangle.getRotation() * PI / 180.0)*25));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);

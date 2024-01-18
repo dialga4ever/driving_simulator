@@ -28,12 +28,7 @@ int main()
 
     int fenetre = 0;
 
-    // Stockage des textures
-    Level niv = Level();
 
-    niv.loadTextures();
-
-    niv.loadObstacles();
 
 
     Font font;
@@ -67,7 +62,7 @@ int main()
     Sprite play;
     Texture playTexture;
     centerOrigin(&play);
-    spriteLoadFromFilePos(&play,&playTexture,"./src/texture/test.jpg",window.getSize().y/2,200);
+    spriteLoadFromFilePos(&play,&playTexture,"./src/other/test.jpg",window.getSize().y/2,200);
     play.scale({1,0.5});
     centerOrigin(&play);
     Text playText;
@@ -81,7 +76,7 @@ int main()
 
     Sprite upgrade;
     Texture upgradeTexture;
-    spriteLoadFromFilePos(&upgrade,&upgradeTexture,"./src/texture/test.jpg",window.getSize().y/2,450);
+    spriteLoadFromFilePos(&upgrade,&upgradeTexture,"./src/other/test.jpg",window.getSize().y/2,450);
     upgrade.scale({1,0.5});
     centerOrigin(&upgrade);
     upgrade.setColor(Color(255, 255, 255, 100));
@@ -96,7 +91,7 @@ int main()
     
     Sprite settings;
     Texture settingsTexture;
-    spriteLoadFromFilePos(&settings,&settingsTexture,"./src/texture/test.jpg",window.getSize().y/2,600);
+    spriteLoadFromFilePos(&settings,&settingsTexture,"./src/other/test.jpg",window.getSize().y/2,600);
     settings.scale({1,0.5});
     centerOrigin(&settings);
     Text settingsText;
@@ -110,7 +105,7 @@ int main()
 
     Sprite quit;
     Texture quitTexture;
-    spriteLoadFromFilePos(&quit,&quitTexture,"./src/texture/test.jpg",window.getSize().y/2,750);
+    spriteLoadFromFilePos(&quit,&quitTexture,"./src/other/test.jpg",window.getSize().y/2,750);
     quit.scale({1,0.5});
     centerOrigin(&quit);
     Text quitText;
@@ -129,7 +124,7 @@ int main()
 
     Sprite returnSettings;
     Texture returnSettingsTexture;
-    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/texture/test.jpg",window.getSize().y/10,50);
+    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/test.jpg",window.getSize().y/10,50);
     returnSettings.scale({0.5,0.3});
     centerOrigin(&returnSettings);
     Text returnSettingsText;
@@ -145,13 +140,12 @@ int main()
 
     Sprite cursor;
     Texture cursorTexture;
-    spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/texture/cursor.png",window.getSize().y/2,window.getSize().x/2);
+    spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/other/cursor.png",window.getSize().y/2,window.getSize().x/2);
     cursor.scale({0.01,0.01});
     window.setMouseCursorVisible(false);
     
 
 
-     // Stockage des textures
     Level niv = Level();
 
     
@@ -164,6 +158,49 @@ int main()
         Event event;
         switch (fenetre)
         {
+        case 3:
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
+                if(event.type == Event::MouseMoved)
+                    updateCursorSprite(&cursor,&window);
+                if (event.mouseButton.button == Mouse::Left)
+                {
+                    if (IsSpriteCliked(returnSettings,&window)){
+                        fenetre = 0;
+                    }
+
+                    for(auto i : game_keys.map_keys){
+                        if(IsSpriteCliked(i.second.keySprite, &window)){
+                            
+                            printf("ton père mérouane\n");
+                            game_keys.button_is_pressed(i.first);
+                            change_key = i.first;
+                        }
+                    }
+                }
+                
+                if(event.type == Event::KeyPressed && (change_key != "null")){
+                    printf("ta mère aures\nChange %d to %d", game_keys.map_keys[change_key].keyCode, event.key.code);
+                    game_keys.changeKey(change_key, event.key.code);
+                    printf("ta mère aures\nAfter change %d", game_keys.map_keys[change_key].keyCode);
+                    change_key = "null";
+                }
+                
+            }
+            window.clear();
+                
+            for(auto i : game_keys.map_keys){
+                window.draw(i.second.keySprite);
+                window.draw(i.second.keyText);
+            }
+            window.draw(returnSettings);
+            window.draw(returnSettingsText);
+            
+            window.draw(cursor);
+            window.display();
+            break;
         case 2:
             if(niv.loaded==false){
                 niv.loadTextures();
@@ -238,63 +275,7 @@ int main()
 
             window.display();
             break;
-
-
-
-        
-
-
-
-
-        case 3:
-
-            while (window.pollEvent(event))
-            {
-                if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
-                    window.close();
-
-
-                if(event.type == Event::MouseMoved)
-                    updateCursorSprite(&cursor,&window);
-
-                if (event.mouseButton.button == Mouse::Left)
-                {
-                    if (IsSpriteCliked(returnSettings,&window)){
-                        fenetre = 0;
-                    }
-
-                    for(auto i : game_keys.map_keys){
-                        if(IsSpriteCliked(i.second.keySprite, &window)){
-                            
-                            printf("ton père mérouane\n");
-                            game_keys.button_is_pressed(i.first);
-                            change_key = i.first;
-                        }
-                    }
-                }
-                
-                if(event.type == Event::KeyPressed && (change_key != "null")){
-                    printf("ta mère aures\nChange %d to %d", game_keys.map_keys[change_key].keyCode, event.key.code);
-                    game_keys.changeKey(change_key, event.key.code);
-                    printf("ta mère aures\nAfter change %d", game_keys.map_keys[change_key].keyCode);
-                    change_key = "null";
-                }
-                
-            }
-            window.clear();
-                
-            for(auto i : game_keys.map_keys){
-                window.draw(i.second.keySprite);
-                window.draw(i.second.keyText);
-            }
-            window.draw(returnSettings);
-            window.draw(returnSettingsText);
-            
-            window.draw(cursor);
-            window.display();
-            break;
         default:
-            
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed)
@@ -309,14 +290,14 @@ int main()
                     }
                     if (IsSpriteCliked(settings,&window)){
                         fenetre = 3;
+                    }
                     if (IsSpriteCliked(upgrade,&window)){
                         fenetre = 2;
                     }
                 }
-                if(event.type == Event::MouseMoved)
-                    updateCursorSprite(&cursor,&window);
+                
             }
-
+            updateCursorSprite(&cursor,&window);
             window.clear();
             window.draw(play);
             window.draw(upgrade);
@@ -334,7 +315,8 @@ int main()
 
 
         
-    }
+        }
+    
 
     return 0;
 }

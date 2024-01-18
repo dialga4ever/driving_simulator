@@ -14,8 +14,8 @@ Keys::Keys(){}
 Keys::Keys(RenderWindow* window, Font font_){
     font = font_;
 
-    button.loadFromFile("src/texture/touche.png");
-    buttonPressed.loadFromFile("src/texture/test.jpg");
+    button.loadFromFile("src/other/touche.png");
+    buttonPressed.loadFromFile("src/other/test.jpg");
     int y = 100;
 
     Button left;
