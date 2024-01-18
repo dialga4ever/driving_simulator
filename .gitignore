@@ -20,6 +20,8 @@
 *.mod
 *.smod
 
+main
+./main
 # Compiled Static libraries
 *.lai
 *.la
@@ -33,6 +35,9 @@
 
 #vscode
 .vscode
+<<<<<<< HEAD
 
 main
 ./main
+=======
+>>>>>>> ba0802e (mieux)

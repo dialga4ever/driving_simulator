@@ -76,8 +76,11 @@ void Level::load(string path){
     non_obstacles.clear();
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
+            printf("maybe\n");
+
             non_obstacles.push_back(placeObject(non_osbstacleMap[i][j].first, j, i, non_osbstacleMap[i][j].second,OFFSET/64));
             
+            printf("maybe\n");
         }
     }
 
@@ -95,11 +98,16 @@ void Level::load(string path){
             int x;
             int y;
             int rotation;
+            float ScaleTemp;
             string tex;
             while (getline(ss, str, ';')){
                 printf("a\n");
                 switch (temp)
                 {
+                    case 4:
+                        ScaleTemp=stof(str);
+                        printf("Scale :%d\n",stoi(str));
+                        break;
                     case 3:
                         y=stoi(str);
                         printf("y :%d\n",stoi(str));
@@ -120,7 +128,7 @@ void Level::load(string path){
                 }
                 temp++;
             }
-            obstacles.push_back(placeObjectFix(tex,x,y,rotation,1));
+            obstacles.push_back(placeObjectFix(tex,x,y,rotation,ScaleTemp));
             obstaclesTexture.push_back(tex);
         }
         myfile.close();
@@ -204,10 +212,13 @@ void Level::createLevel(RenderWindow *window,String path){
                 nextTexture=false;
             }
         }
+
+
+        
         
 
-        int x=(Mouse::getPosition(*window).x+OFFSET/2)/OFFSET;
-        int y=(Mouse::getPosition(*window).y+OFFSET/2)/OFFSET;
+        int x=(Mouse::getPosition(*window).x)/OFFSET;
+        int y=(Mouse::getPosition(*window).y)/OFFSET;
 
         String maTexture;
         std::multimap<string, Texture>::iterator it = textures.begin();
@@ -219,14 +230,13 @@ void Level::createLevel(RenderWindow *window,String path){
             temp+=1;
         }
 
-        creation=placeObject(maTexture, x, y, creationRotation,OFFSET/64);
+        creation=placeObject(maTexture, x, y, creationRotation,(OFFSET/64));
         if(x>=SIZE_MAP_X||y>=SIZE_MAP_Y||x<0||y<0){
             return;
         }
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
                 non_osbstacleMap[y][x].first=maTexture;
-
                 non_osbstacleMap[y][x].second=creationRotation;
                 non_obstacles[x+SIZE_MAP_X*y]=creation;
             }
@@ -293,10 +303,38 @@ void Level::createLevel(RenderWindow *window,String path){
                 }
             }
             else{
-                nextTexture=false;
+                if(Keyboard::isKeyPressed(Keyboard::Up)){
+                    if(!nextTexture){
+                        scale+=0.1;
+                        nextTexture=true;
+                        
+                    }
+                }
+                else{
+                    if(Keyboard::isKeyPressed(Keyboard::Down)){
+                        if(!nextTexture){
+                            scale-=0.1;
+                            nextTexture=true;
+                            if(scale<0.1){
+                                scale=0.1;
+                            }
+                        }
+                    }
+                    else{
+                        nextTexture=false;
+                    }
+                }
             }
+            
         }
         
+        if(Keyboard::isKeyPressed(Keyboard::BackSpace)){
+            for(int i = 0; i < obstacles.size(); i++){
+                if(obstacles.at(i).getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y)){
+                    obstacles.erase(obstacles.begin()+i);
+                }
+            }
+        }
 
         int x=(Mouse::getPosition(*window).x);
         int y=(Mouse::getPosition(*window).y);
@@ -314,7 +352,7 @@ void Level::createLevel(RenderWindow *window,String path){
 
 
 
-        creation=placeObjectFix(maTexture, x, y, creationRotation,1);
+        creation=placeObjectFix(maTexture, x, y, creationRotation,scale);
 
         if(x<0||y<0){
             return;
@@ -337,7 +375,7 @@ void Level::createLevel(RenderWindow *window,String path){
         {
             for(int i = 0; i < obstacles.size(); i++){
                 string textureReal=obstaclesTexture[i];
-                of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y;
+                of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y<<";"<<obstacles[i].getScale().x;
                 of<<std::endl;
             }
             of.flush();
@@ -438,10 +476,10 @@ Sprite Level::placeObject(string image, int x, int y){
 }
 
 Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
-    printf("ff\n");
+    printf("ffB\n");
     Sprite obs;
     obs.scale({scale,scale});
-    printf("ff %s\n",image.c_str());
+    printf("ffC %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
     }
@@ -449,18 +487,18 @@ Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
         printf("mouai %s\n",image.c_str());
     }
     
-    printf("ff\n");
+    printf("ffA\n");
     obs.setRotation(rotation);
-    obs.setPosition(x*OFFSET, y*OFFSET);
+    obs.setPosition(x*OFFSET+OFFSET/2, y*OFFSET+OFFSET/2);
     centerOrigin(&obs);
     return obs;
 }
 
 Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scale){
-    printf("ff\n");
+    printf("ffE\n");
     Sprite obs;
     obs.scale({scale,scale});
-    printf("ff %s\n",image.c_str());
+    printf("ffF %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
     }
