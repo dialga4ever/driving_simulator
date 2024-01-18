@@ -1,0 +1,4 @@
+trotoire.png;130;1146;118;2.9
+trotoire.png;130;1185;12;3
+trotoire.png;90;627;383;1
+trotoire.png;90;627;383;1
