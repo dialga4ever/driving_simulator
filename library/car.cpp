@@ -40,11 +40,12 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
     rectangle.setOutlineColor(Color::Blue);
     rectangle.setPosition(x,y);
     rectangle.setSize({75,40});
+    rectangle.setOrigin({0,20});
 
     wheelLeft.setPosition(x+35,y);
     wheelLeft.setSize({15,6});
     wheelLeft.setFillColor(Color::Red);
-    wheelLeft.setOrigin(7,0);
+    wheelLeft.setOrigin(7,6);
 
     wheelRight.setPosition(x+35,y);
     wheelRight.setSize({15,6});
@@ -194,7 +195,7 @@ void Car::move(){
         }
         else{
             if(rpm>500){
-                rpm=rpm-10;
+                rpm=rpm-40;
             }
             else{
                 if(started){
@@ -231,9 +232,9 @@ void Car::move(){
             if(abs(wheelDir)<maxDir||wheelDir>0){
                 
                 if(abs(speed) > 3){
-                    wheelDir -= 0.1;
-                }else{
                     wheelDir -= 0.2;
+                }else{
+                    wheelDir -= 0.3;
                 }
             }
         }
@@ -243,9 +244,9 @@ void Car::move(){
                 actif=true;
                 if(abs(wheelDir)<maxDir||wheelDir<0){
                     if(abs(speed) > 3){
-                        wheelDir += 0.1;
-                    }else{
                         wheelDir += 0.2;
+                    }else{
+                        wheelDir += 0.3;
                     }
                 }
             }
@@ -307,10 +308,10 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
             }
                 else{
                     if(wheelDir>0){
-                    wheelDir-=0.2;
+                    wheelDir-=0.1;
                 }
                 else{
-                    wheelDir+=0.2;
+                    wheelDir+=0.1;
                 }
             }
         }
@@ -320,13 +321,16 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
 
     if(speed!=0){
         if(speed<0){
-            rectangle.setRotation(carDir+(-wheelDir/6));
-            carDir=carDir+(-wheelDir/6);
+
+            
+            rectangle.setRotation(carDir+(-wheelDir/maxDir*(speed/maxSpeed))*2);
+            carDir=carDir+(-wheelDir/maxDir*(speed/maxSpeed));
         }else{
-            rectangle.setRotation(carDir+(wheelDir/3));
-            carDir=carDir+(wheelDir/3);
+            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed)));
+            carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
         }
     }
+    
     printf("started : %d\n",started);
     printf("speed : %f\n",speed);
     printf("rpm : %d\n",rpm);
@@ -336,25 +340,30 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     if (Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
         embrayage=true;
     }
-    else{
-        if(embrayage){
-            int tempRpm=convertSpeedToRpm(gear);
-            //print all info
-            printf("rpm : %d\n",rpm);
-            printf("tempRpm : %d\n",tempRpm);
-            printf("speed : %f\n",speed);
+    if(embrayage){
+        int tempRpm=convertSpeedToRpm(gear);
+        //print all info
+        printf("rpm : %d\n",rpm);
+        printf("tempRpm : %d\n",tempRpm);
+        printf("speed : %f\n",speed);
 
 
-            if(tempRpm+200<rpm){
-                rpm=tempRpm+500;
-            }
-            else{
-                if(tempRpm-200>rpm){
-                    rpm=tempRpm-500;
-                }
-            }
-            embrayage=false;
+        if(tempRpm+200<rpm){
+            rpm=tempRpm+500;
         }
+        else{
+            if(tempRpm-200>rpm){
+                rpm=tempRpm-500;
+            }
+        }
+        embrayage=false;
+        speed=speed-0.1;
+        if(speed<0.5){
+            printf("AAA\n");
+            speed=0;
+        }
+    }
+    else{
         int newSpeed=rpmToSpeed();
         if(newSpeed==0){
             speed=speed/1.1;
@@ -373,9 +382,10 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
                 speed=rpmToSpeed();
                 printf("Maybe tu cale\n\n\n\n");
             }
-            
         }
     }
+        
+    
     
 
 
@@ -399,11 +409,11 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         prev_car= *this;
     }
 
-    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)-(sin(rectangle.getRotation()*PI/180)*25),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)+(cos(rectangle.getRotation() * PI / 180.0)*25));
+    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*60)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*60)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
 
 
-    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*45)+(sin(rectangle.getRotation()*PI/180)*10),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*45)-(cos(rectangle.getRotation() * PI / 180.0)*10));
+    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*60)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*60)-(cos(rectangle.getRotation() * PI / 180.0)*12));
     wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
 
     }

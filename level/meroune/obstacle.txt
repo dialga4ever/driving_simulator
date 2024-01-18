@@ -2,14 +2,14 @@ trotoire.png;90;1172;436;0.5
 trotoire.png;0;714;55;0
 trotoire.png;0;866;529;0
 trotoire.png;0;0;0;1
-;0;619;82;0
+;0;0;0;1
 brique.jpg;0;1474;255;0
 brique.jpg;0;492;297;0
 brique.jpg;0;302;281;0
 brique.jpg;0;805;792;0
 brique.jpg;0;1508;385;0
-brique.jpg;0;0;0;1
-brique.jpg;0;0;0;1
+brique.jpg;0;0;0;0.104065
+brique.jpg;0;0;0;0.104065
 ;0;0;0;1
 voiture_orange.jpg;0;0;0;1
 voiture_orange.jpg;0;0;0;1
@@ -27,3 +27,4 @@ voiture_orange.jpg;0;0;0;1
 phare.png;0;0;0;1
 phare.png;0;0;0;1
 phare.png;0;0;0;1
+;0;0;0;1
