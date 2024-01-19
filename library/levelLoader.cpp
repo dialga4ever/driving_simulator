@@ -176,6 +176,9 @@ void Level::createLevel(RenderWindow *window,String path){
         if(!ChangingMode){
             if(colissionMode){
                 colissionMode=false;
+                if(creationRotation%90!=0){
+                    creationRotation=90*(creationRotation/90);
+                }
             }
             else{
                 colissionMode=true;

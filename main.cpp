@@ -60,9 +60,9 @@ int main()
 
 
     Sprite play;
-    Texture playTexture;
+    Texture boutonTexture;
     centerOrigin(&play);
-    spriteLoadFromFilePos(&play,&playTexture,"./src/other/test.jpg",window.getSize().y/2,200);
+    spriteLoadFromFilePos(&play,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,200);
     play.scale({1,0.5});
     centerOrigin(&play);
     Text playText;
@@ -74,9 +74,21 @@ int main()
     playText.setPosition(play.getPosition());
     centerTextOrigin(&playText);
 
+    Sprite levelCreator;
+    spriteLoadFromFilePos(&levelCreator,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,350);
+    levelCreator.scale({1,0.5});
+    centerOrigin(&levelCreator);
+    Text levelCreatorText;
+    levelCreatorText.setFont(font); 
+    levelCreatorText.setString("Level Creator");
+    levelCreatorText.setCharacterSize(24); 
+    levelCreatorText.setFillColor(Color::Black);
+    levelCreatorText.setStyle(Text::Bold | Text::Underlined);
+    levelCreatorText.setPosition(levelCreator.getPosition());
+    centerTextOrigin(&levelCreatorText);
+
     Sprite upgrade;
-    Texture upgradeTexture;
-    spriteLoadFromFilePos(&upgrade,&upgradeTexture,"./src/other/test.jpg",window.getSize().y/2,450);
+    spriteLoadFromFilePos(&upgrade,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,500);
     upgrade.scale({1,0.5});
     centerOrigin(&upgrade);
     upgrade.setColor(Color(255, 255, 255, 100));
@@ -90,8 +102,7 @@ int main()
     centerTextOrigin(&upgradeText);
     
     Sprite settings;
-    Texture settingsTexture;
-    spriteLoadFromFilePos(&settings,&settingsTexture,"./src/other/test.jpg",window.getSize().y/2,600);
+    spriteLoadFromFilePos(&settings,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,650);
     settings.scale({1,0.5});
     centerOrigin(&settings);
     Text settingsText;
@@ -104,8 +115,7 @@ int main()
     centerTextOrigin(&settingsText);
 
     Sprite quit;
-    Texture quitTexture;
-    spriteLoadFromFilePos(&quit,&quitTexture,"./src/other/test.jpg",window.getSize().y/2,750);
+    spriteLoadFromFilePos(&quit,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,800);
     quit.scale({1,0.5});
     centerOrigin(&quit);
     Text quitText;
@@ -143,7 +153,7 @@ int main()
     spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/other/cursor.png",window.getSize().y/2,window.getSize().x/2);
     cursor.scale({0.01,0.01});
     window.setMouseCursorVisible(false);
-    
+    cursor.setOrigin({0.0,0.0});
 
 
     Level niv = Level();
@@ -156,6 +166,10 @@ int main()
     while (window.isOpen())
     {
         Event event;
+        if(Keyboard::isKeyPressed(Keyboard::Escape)){
+            fenetre=0;
+        }
+
         switch (fenetre)
         {
         case 3:
@@ -225,10 +239,11 @@ int main()
                 for(auto i : niv.obstacles){
                     window.draw(i);
                 }
+
+                window.draw(niv.creation);
             }
 
             niv.createLevel(&window,"level/meroune/");
-            window.draw(niv.creation);
             window.setMouseCursorVisible(true);
             window.display();
             break;
@@ -291,7 +306,8 @@ int main()
                     if (IsSpriteCliked(settings,&window)){
                         fenetre = 3;
                     }
-                    if (IsSpriteCliked(upgrade,&window)){
+                    if (IsSpriteCliked(levelCreator,&window)){
+                        niv.clicked=true;
                         fenetre = 2;
                     }
                 }
@@ -305,6 +321,8 @@ int main()
             window.draw(settings);
             window.draw(playText);
             window.draw(upgradeText);
+            window.draw(levelCreator);
+            window.draw(levelCreatorText);
             window.draw(quitText);
             window.draw(settingsText);
             window.draw(cursor);

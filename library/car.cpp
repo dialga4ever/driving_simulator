@@ -40,7 +40,7 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
     rectangle.setOutlineColor(Color::Blue);
     rectangle.setPosition(x,y);
     rectangle.setSize({75,40});
-    rectangle.setOrigin({0,20});
+    rectangle.setOrigin({32,20});
 
     wheelLeft.setPosition(x+35,y);
     wheelLeft.setSize({15,6});
@@ -65,9 +65,16 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
 
 int Car::rpmToSpeed(){
     if(rpm<startRpm){
-        printf("Tu a calé\n");
-        started=false;
-        return 0;
+        if(!boiteAuto){
+            printf("Tu a calé\n");
+            started=false;
+            return 0;
+        }
+        else{
+            return 0;
+        }
+
+        
     }
     if(rpm>maxRpm+200){
         started=false;
@@ -135,51 +142,47 @@ int Car::convertSpeedToRpm(int newGear){
 
 
 void Car::move(){
-    if(Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
-        printf("a\n");
+    if(boiteAuto){
         if(Keyboard::isKeyPressed(game_keys->map_keys["gear0"].keyCode)){
-            printf("b\n");
             gear=0;
             rpm=500;
         }
         if(Keyboard::isKeyPressed(game_keys->map_keys["gear1"].keyCode)){
-            gear=1;
-            //rpm=convertSpeedToRpm(1);
-            //if(rpm=0){
-            //    printf("cA\n");
-            //    started=false;
-            //    printf("Impossible de passer la vitesse tu a calé\n");
-            //}
-        }
-        if(Keyboard::isKeyPressed(game_keys->map_keys["gear2"].keyCode)){
-            gear=2;
-            //rpm=convertSpeedToRpm(2);
-            //if(rpm==0){
-            //    printf("cB\n");
-            //    started=false;
-            //    printf("Impossible de passer la vitesse tu a calé\n");
-            //}
-        }
-        if(Keyboard::isKeyPressed(game_keys->map_keys["gear3"].keyCode)){
-            gear=3;
-            //rpm=convertSpeedToRpm(3);
-            //printf("rpm forReal%d\n",rpm);
-            //if(rpm==0){
-            //                            printf("cC\n");
-            //    started=false;
-            //    printf("Impossible de passer la vitesse tu a calé\n");
-            //}
+            if(speed>-2&&speed<26){
+                gear=1;
+            }
         }
         if(Keyboard::isKeyPressed(game_keys->map_keys["gear_back_1"].keyCode)){
-            gear=-1;
-            //rpm=convertSpeedToRpm(-1);
-            //if(rpm==0){                        printf("cD\n");
-
-            //    started=false;
-            //    printf("Impossible de passer la vitesse tu a calé\n");
-            //}
+            if(speed<=1){
+                gear=-1;
+            }
         }
     }
+    else{
+        if(Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["gear0"].keyCode)){
+                gear=0;
+                rpm=500;
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["gear1"].keyCode)){
+                gear=1;
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["gear2"].keyCode)){
+                
+                gear=2;
+                
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["gear3"].keyCode)){
+                
+                gear=3;
+                
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["gear_back_1"].keyCode)){
+                gear=-1;
+            }
+        }
+    }
+    
     if(started){
         
         if (Keyboard::isKeyPressed(game_keys->map_keys["up"].keyCode)){
@@ -202,7 +205,7 @@ void Car::move(){
                     rpm=500;
                 }
                 else{
-                    rpm=rpm-10;
+                    rpm=rpm-40;
                     if(rpm<0){
                         rpm=0;
                     }
@@ -213,12 +216,11 @@ void Car::move(){
         if (Keyboard::isKeyPressed(game_keys->map_keys["down"].keyCode)){
             if(!speed==0){
                 if(speed>0){
-                speed=speed-(200/(speed*speed));
-                if(speed<0){
-                    speed=0;
-                }
+                    speed=speed-(200/(speed*speed));
                 }
                 else{
+                    printf("%f\n",speed);
+                    printf("%f\n",(200/(-speed*-speed)));
                     speed=speed+(200/(-speed*-speed));
                     if(speed>0){
                         speed=0;
@@ -320,12 +322,11 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     actif=false;
 
     if(speed!=0){
-        if(speed<0){
-
-            
+        if(speed<0&&speed<-1&&speed>-27){
+            printf("NAN MAIS WAZEFUKWA");
             rectangle.setRotation(carDir+(-wheelDir/maxDir*(speed/maxSpeed))*2);
             carDir=carDir+(-wheelDir/maxDir*(speed/maxSpeed));
-        }else{
+        }else if(speed>1){
             rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed)));
             carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
         }
@@ -336,60 +337,85 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     printf("rpm : %d\n",rpm);
     printf("vitesse : %d\n",gear);
 
-    //if sift is pressed slow down the car
-    if (Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
-        embrayage=true;
-    }
-    if(embrayage){
-        int tempRpm=convertSpeedToRpm(gear);
-        //print all info
-        printf("rpm : %d\n",rpm);
-        printf("tempRpm : %d\n",tempRpm);
-        printf("speed : %f\n",speed);
 
+    if(boiteAuto){
+        if(gear>=1){
+            if(rpm>=7400){
+                if(gear<3){
+                    rpm=convertSpeedToRpm(gear+1);
+                    gear=gear+=1;
+                }
 
-        if(tempRpm+200<rpm){
-            rpm=tempRpm+500;
-        }
-        else{
-            if(tempRpm-200>rpm){
-                rpm=tempRpm-500;
+            }
+            else{
+                if(rpm<=700){
+                    if(gear>1){
+                        rpm=convertSpeedToRpm(gear-1);
+                        gear=gear-=1;
+                    }
+                    else{
+                        
+                    }
+                }
             }
         }
-        embrayage=false;
-        speed=speed-0.1;
-        if(speed<0.5){
-            printf("AAA\n");
-            speed=0;
-        }
+        speed=rpmToSpeed();
     }
     else{
-        int newSpeed=rpmToSpeed();
-        if(newSpeed==0){
-            speed=speed/1.1;
+        if (Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
+            embrayage=true;
+        }
+        if(embrayage){
+            int tempRpm=convertSpeedToRpm(gear);
+            //print all info
+            printf("rpm : %d\n",rpm);
+            printf("tempRpm : %d\n",tempRpm);
+            printf("speed : %f\n",speed);
+
+
+            if(tempRpm+200<rpm){
+                rpm=tempRpm+500;
+            }
+            else{
+                if(tempRpm-200>rpm){
+                    rpm=tempRpm-500;
+                }
+            }
+            embrayage=false;
+            speed=speed-0.1;
             if(speed<0.5){
+                printf("AAA\n");
                 speed=0;
             }
         }
         else{
-            printf("newSpeed : %d\n",newSpeed);
-            printf("newSpeed : %f\n",speed);
-            if(abs(float(newSpeed-speed))<3){
-                speed=newSpeed;
+            int newSpeed=rpmToSpeed();
+            if(newSpeed==0){
+                speed=speed/1.1;
+                if(speed<0.5){
+                    speed=0;
+                }
             }
             else{
-                rpm=convertSpeedToRpm(gear);
-                speed=rpmToSpeed();
-                printf("Maybe tu cale\n\n\n\n");
+                printf("newSpeed : %d\n",newSpeed);
+                printf("newSpeed : %f\n",speed);
+                if(abs(float(newSpeed-speed))<3){
+                    speed=newSpeed;
+                }
+                else{
+                    rpm=convertSpeedToRpm(gear);
+                    speed=rpmToSpeed();
+                    printf("Maybe tu cale\n\n\n\n");
+                }
             }
         }
     }
-        
-    
-    
 
 
     
+
+
+
     phares.setPosition(rectangle.getPosition());
     phares.setRotation(rectangle.getRotation()-90);
     bool isCollision = false;
@@ -409,11 +435,11 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         prev_car= *this;
     }
 
-    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*60)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*60)+(cos(rectangle.getRotation() * PI / 180.0)*13));
+    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*30)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*30)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
 
 
-    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*60)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*60)-(cos(rectangle.getRotation() * PI / 180.0)*12));
+    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*30)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*30)-(cos(rectangle.getRotation() * PI / 180.0)*12));
     wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
 
     }

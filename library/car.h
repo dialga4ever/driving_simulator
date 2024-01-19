@@ -15,7 +15,7 @@ class Car{
     int x;
     int y;
     float speed;
-    int carDir;// In degrees
+    float carDir;// In degrees
     float wheelDir;// In degrees
     int maxDir;
     int maxSpeed;
@@ -26,6 +26,7 @@ class Car{
     int power;
     int gear;
     bool nocturne;
+    bool boiteAuto=true;
     Texture pharesTexture;
     RectangleShape phares;
     RectangleShape rectangle;
