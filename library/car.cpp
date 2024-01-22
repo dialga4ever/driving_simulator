@@ -143,41 +143,41 @@ int Car::convertSpeedToRpm(int newGear){
 
 void Car::move(){
     if(boiteAuto){
-        if(Keyboard::isKeyPressed(game_keys->map_keys["gear0"].keyCode)){
+        if(Keyboard::isKeyPressed(game_keys->map_keys["Gear0"].keyCode)){
             gear=0;
             rpm=500;
         }
-        if(Keyboard::isKeyPressed(game_keys->map_keys["gear1"].keyCode)){
+        if(Keyboard::isKeyPressed(game_keys->map_keys["Gear1"].keyCode)){
             if(speed>-2&&speed<26){
                 gear=1;
             }
         }
-        if(Keyboard::isKeyPressed(game_keys->map_keys["gear_back_1"].keyCode)){
+        if(Keyboard::isKeyPressed(game_keys->map_keys["Gear_back_1"].keyCode)){
             if(speed<=1){
                 gear=-1;
             }
         }
     }
     else{
-        if(Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
-            if(Keyboard::isKeyPressed(game_keys->map_keys["gear0"].keyCode)){
+        if(Keyboard::isKeyPressed(game_keys->map_keys["Clutch"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear0"].keyCode)){
                 gear=0;
                 rpm=500;
             }
-            if(Keyboard::isKeyPressed(game_keys->map_keys["gear1"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear1"].keyCode)){
                 gear=1;
             }
-            if(Keyboard::isKeyPressed(game_keys->map_keys["gear2"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear2"].keyCode)){
                 
                 gear=2;
                 
             }
-            if(Keyboard::isKeyPressed(game_keys->map_keys["gear3"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear3"].keyCode)){
                 
                 gear=3;
                 
             }
-            if(Keyboard::isKeyPressed(game_keys->map_keys["gear_back_1"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear_back_1"].keyCode)){
                 gear=-1;
             }
         }
@@ -185,7 +185,7 @@ void Car::move(){
     
     if(started){
         
-        if (Keyboard::isKeyPressed(game_keys->map_keys["up"].keyCode)){
+        if (Keyboard::isKeyPressed(game_keys->map_keys["Up"].keyCode)){
             if(gear==0||started){
                 
                 if(rpm<maxRpm){
@@ -213,7 +213,7 @@ void Car::move(){
                 
             }
         }
-        if (Keyboard::isKeyPressed(game_keys->map_keys["down"].keyCode)){
+        if (Keyboard::isKeyPressed(game_keys->map_keys["Down"].keyCode)){
             if(!speed==0){
                 if(speed>0){
                     speed=speed-(200/(speed*speed));
@@ -229,7 +229,7 @@ void Car::move(){
                 rpm=convertSpeedToRpm(gear);
             }
         }
-        if (Keyboard::isKeyPressed(game_keys->map_keys["left"].keyCode)){
+        if (Keyboard::isKeyPressed(game_keys->map_keys["Left"].keyCode)){
             actif=true;
             if(abs(wheelDir)<maxDir||wheelDir>0){
                 
@@ -241,8 +241,7 @@ void Car::move(){
             }
         }
         else{
-            if (Keyboard::isKeyPressed(game_keys->map_keys["right"].keyCode)){
-                printf("Right : %d\n", game_keys->map_keys["right"].keyCode);
+            if (Keyboard::isKeyPressed(game_keys->map_keys["Right"].keyCode)){
                 actif=true;
                 if(abs(wheelDir)<maxDir||wheelDir<0){
                     if(abs(speed) > 3){
@@ -265,7 +264,7 @@ void Car::move(){
     if (Keyboard::isKeyPressed(Keyboard::Enter)){
         reinisialisationCar(500,500);
     }
-    if (Keyboard::isKeyPressed(game_keys->map_keys["start"].keyCode)){
+    if (Keyboard::isKeyPressed(game_keys->map_keys["Start"].keyCode)){
         if(!isStarteting){
             isStarteting=true;
             if(started){

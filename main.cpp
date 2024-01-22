@@ -179,7 +179,7 @@ int main()
                     window.close();
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
-                if (event.mouseButton.button == Mouse::Left)
+                if (event.mouseButton.button == Mouse::Left && (change_key == "null"))
                 {
                     if (IsSpriteCliked(returnSettings,&window)){
                         fenetre = 0;
