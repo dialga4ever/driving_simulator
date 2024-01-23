@@ -368,7 +368,7 @@ int main()
             {
                 if (event.type == Event::Closed)
                     window.close();
-                if (event.mouseButton.button == Mouse::Left)
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
                     if (IsSpriteCliked(quit,&window)){
                         fenetre = 4;
