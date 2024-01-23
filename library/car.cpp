@@ -255,10 +255,6 @@ void Car::move(){
                 //
             }
         }
-
-        
-        
-        
     }
     
     if (Keyboard::isKeyPressed(Keyboard::Enter)){
@@ -359,19 +355,24 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
             }
         }
         speed=rpmToSpeed();
+        if(speed<=1){
+            if(gear==-1){
+                if(speed>-1){
+                    speed=0;
+                }
+            }
+            else{
+                speed=0;
+            }
+            
+        }
     }
     else{
-        if (Keyboard::isKeyPressed(game_keys->map_keys["clutch"].keyCode)){
+        if (Keyboard::isKeyPressed(game_keys->map_keys["Clutch"].keyCode)){
             embrayage=true;
         }
         if(embrayage){
             int tempRpm=convertSpeedToRpm(gear);
-            //print all info
-            printf("rpm : %d\n",rpm);
-            printf("tempRpm : %d\n",tempRpm);
-            printf("speed : %f\n",speed);
-
-
             if(tempRpm+200<rpm){
                 rpm=tempRpm+500;
             }
@@ -383,7 +384,6 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
             embrayage=false;
             speed=speed-0.1;
             if(speed<0.5){
-                printf("AAA\n");
                 speed=0;
             }
         }
