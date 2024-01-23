@@ -152,9 +152,12 @@ void Car::move(){
                 gear=1;
             }
         }
-        if(Keyboard::isKeyPressed(game_keys->map_keys["Gear_back_1"].keyCode)){
+        if(Keyboard::isKeyPressed(game_keys->map_keys["Gear back 1"].keyCode)){
             if(speed<=1){
                 gear=-1;
+            }
+            else{
+                printf("???");
             }
         }
     }
@@ -318,9 +321,8 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
 
     if(speed!=0){
         if(speed<0&&speed<-1&&speed>-27){
-            printf("NAN MAIS WAZEFUKWA");
-            rectangle.setRotation(carDir+(-wheelDir/maxDir*(speed/maxSpeed))*2);
-            carDir=carDir+(-wheelDir/maxDir*(speed/maxSpeed));
+            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed))*2);
+            carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
         }else if(speed>1){
             rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed)));
             carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
@@ -357,7 +359,7 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         speed=rpmToSpeed();
         if(speed<=1){
             if(gear==-1){
-                if(speed>-1){
+                if(speed>=-1){
                     speed=0;
                 }
             }
