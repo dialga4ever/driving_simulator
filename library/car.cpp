@@ -160,7 +160,7 @@ void Car::move(){
                 printf("???");
             }
         }
-    }
+    } 
     else{
         if(Keyboard::isKeyPressed(game_keys->map_keys["Clutch"].keyCode)){
             if(Keyboard::isKeyPressed(game_keys->map_keys["Gear0"].keyCode)){
