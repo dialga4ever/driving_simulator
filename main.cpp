@@ -44,6 +44,27 @@ int main()
     
     Car car(500, 500, false, &game_keys);// Création de la voiture
 
+    Sprite compteur;
+    Texture compteurTex;
+    compteurTex.loadFromFile("src/other/compteur.png");
+    compteur.setTexture(compteurTex);
+    compteur.setPosition(window.getSize().x-(compteurTex.getSize().x/2),window.getSize().y);
+    compteur.setOrigin(compteurTex.getSize().x/2, compteurTex.getSize().y);
+
+
+    Texture aiguilleTex;
+    aiguilleTex.loadFromFile("src/other/aiguille.png");
+    Sprite aiguille1;
+    Sprite aiguille2;
+    aiguille1.setTexture(aiguilleTex);
+    aiguille1.setScale(0.8,0.8);
+    aiguille2.setTexture(aiguilleTex);
+    aiguille2.setScale(1.5,1.5);
+    aiguille1.setPosition(compteur.getPosition().x-compteurTex.getSize().x*0.243,compteur.getPosition().y-3);
+    aiguille1.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
+    aiguille2.setPosition(compteur.getPosition().x+compteurTex.getSize().x*0.155,compteur.getPosition().y-10);
+    aiguille2.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
+
 
     Text carInfo;
     carInfo.setFont(font); 
@@ -187,8 +208,6 @@ int main()
 
                     for(auto i : game_keys.map_keys){
                         if(IsSpriteCliked(i.second.keySprite, &window)){
-                            
-                            printf("ton père mérouane\n");
                             game_keys.button_is_pressed(i.first);
                             change_key = i.first;
                         }
@@ -196,9 +215,7 @@ int main()
                 }
                 
                 if(event.type == Event::KeyPressed && (change_key != "null")){
-                    printf("ta mère aures\nChange %d to %d", game_keys.map_keys[change_key].keyCode, event.key.code);
                     game_keys.changeKey(change_key, event.key.code);
-                    printf("ta mère aures\nAfter change %d", game_keys.map_keys[change_key].keyCode);
                     change_key = "null";
                 }
                 
@@ -255,10 +272,7 @@ int main()
             while (window.pollEvent(event))
             {     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
-                    window.close();
-
-
-                
+                    window.close(); 
             }
 
             //printf("started : %d\n",started);
@@ -271,6 +285,7 @@ int main()
             prev_car = car;
             car.move();
             car.deplacement(prev_car, &niv.obstacles);
+            
 
             window.clear();
             for(auto i : niv.non_obstacles){
@@ -287,6 +302,15 @@ int main()
                 window.draw(car.phares);
             }
             window.draw(carInfo);
+            window.draw(compteur);
+
+            aiguille1.setRotation(170 + car.rpm*100/7500);
+            aiguille2.setRotation(180 + abs(car.speed));
+
+            window.draw(aiguille1);
+            window.draw(aiguille2);
+
+
 
             window.display();
             break;

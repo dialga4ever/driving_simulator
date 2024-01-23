@@ -180,7 +180,7 @@ void Car::move(){
                 gear=3;
                 
             }
-            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear_back_1"].keyCode)){
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear back 1"].keyCode)){
                 gear=-1;
             }
         }
@@ -275,7 +275,6 @@ void Car::move(){
                 rpm=startRpm;
             }
         }
-        
     }
     else{
         isStarteting=false;

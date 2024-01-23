@@ -34,7 +34,7 @@ Keys::Keys(RenderWindow* window, Font font_){
     font = font_;
 
     button.loadFromFile("src/other/touche.png");
-    buttonPressed.loadFromFile("src/other/test.jpg");
+    buttonPressed.loadFromFile("src/other/touchePressed.png");
     int y = 100;
 
     createButton("Left", Keyboard::Left, {(float)(window->getSize().x/3), 100}, window);

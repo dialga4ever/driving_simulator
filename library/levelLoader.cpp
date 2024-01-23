@@ -59,9 +59,7 @@ void Level::load(string path){
                             printf("Stoi :%d\n",stoi(elt));
                             printf("i%d j%d\n",i,j);
                             non_osbstacleMap[i][j]=pair<string,int>(tex,stoi(elt));
-                            
                             break;
-                        
                     }
                 }
                 j++;
@@ -127,7 +125,6 @@ void Level::load(string path){
                         printf("Texture :%s\n",str.c_str());
                         tex=str;
                         break;
-                    
                 }
                 temp++;
             }
@@ -142,6 +139,8 @@ void Level::load(string path){
         cout << "Unable to open file";
         return;
     }
+
+
 
 
     loaded=true;
