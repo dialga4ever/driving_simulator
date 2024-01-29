@@ -20,8 +20,17 @@ ChoixMap::ChoixMap(sf::RenderWindow *window, sf::Font font){
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
         auto path1 = dir_entry.path();
         createButton(path1.filename(), {100,100},window,font);
+
+            printf("6\n");
     }
     loaded = true;
+}
+
+void ChoixMap::mettre_a_jour(RenderWindow *window, sf::Font font){
+    ChoixMap newChoix(window, font);
+    printf("1\n");
+    *this = newChoix;
+    printf("2\n");
 }
 
 void ChoixMap::createButton(string nom, Vector2f pos, RenderWindow* window, Font font){
@@ -31,9 +40,9 @@ void ChoixMap::createButton(string nom, Vector2f pos, RenderWindow* window, Font
     self.choix_map_sprite.setPosition(pos);
     self.choix_map_sprite.scale({1,0.5});
     centerOrigin(&self.choix_map_sprite);
-    self.choix_map_text.setFont(font); 
+    self.choix_map_text.setFont(font);
     self.choix_map_text.setString(nom);
-    self.choix_map_text.setCharacterSize(16); 
+    self.choix_map_text.setCharacterSize(16);
     self.choix_map_text.setFillColor(Color::Black);
     self.choix_map_text.setStyle(Text::Bold);
     self.choix_map_text.setPosition(self.choix_map_sprite.getPosition());

@@ -198,21 +198,25 @@ int main()
 
         switch (fenetre)
         {
-        case 4:
+        case 4://Choix de niveau
+        printf("5\n");
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
                     window.close();
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
-
                 
+                printf("3\n");
             }
-
+            printf("6\n");
             window.clear();
             for(auto i : list_choix.list_map){
+            printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_sprite);
                 window.draw(i.second.choix_map_text);
+
+                printf("4\n");
             }
 
 
@@ -368,7 +372,9 @@ int main()
                 if (event.mouseButton.button == Mouse::Left)
                 {
                     if (IsSpriteCliked(quit,&window)){
-                        window.close();
+                        fenetre = 4;
+
+                        list_choix.mettre_a_jour(&window, font);
                     }
                     if (IsSpriteCliked(play,&window)){
                         fenetre = 1;

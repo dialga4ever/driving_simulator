@@ -24,6 +24,8 @@ class ChoixMap{
         
         ChoixMap(sf::RenderWindow* window, sf::Font font);
 
+        void mettre_a_jour(RenderWindow *window, sf::Font font);
+
         void createButton(string nom, Vector2f pos, sf::RenderWindow* window, sf::Font font);
 
 
