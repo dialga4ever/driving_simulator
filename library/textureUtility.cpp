@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+#include "textureUtility.h"
 
 void centerOrigin(sf::Sprite *self){
     sf::FloatRect test = self->getLocalBounds();

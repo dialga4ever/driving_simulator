@@ -8,6 +8,9 @@ using namespace std;
 using namespace sf;
 #define SIZE_MAP_Y 16
 #define SIZE_MAP_X 16
+
+#define SIZE_MAP_Y 16
+#define SIZE_MAP_X 16
 class Level{
 
     public:
@@ -47,6 +50,3 @@ class Level{
     Sprite placeObject(string image, int x, int y, int rotation,float scale);
     Sprite placeObjectFix(string image, int x, int y, int rotation,float scale);        
 };
-
-
-

@@ -4,6 +4,8 @@
 #include "library/car.h"
 #include "library/textureUtility.h"
 #include "library/levelLoader.h"
+#include "library/choixLevel.h"
+
 
 using namespace std;
 using namespace sf;
@@ -179,6 +181,9 @@ int main()
 
     Level niv = Level();
 
+
+    ChoixMap list_choix(&window, font);
+
     
     Car prev_car;   
 
@@ -193,7 +198,26 @@ int main()
 
         switch (fenetre)
         {
-        case 3:
+        case 4:
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
+                if(event.type == Event::MouseMoved)
+                    updateCursorSprite(&cursor,&window);
+
+                
+            }
+
+            window.clear();
+            for(auto i : list_choix.list_map){
+                window.draw(i.second.choix_map_sprite);
+                window.draw(i.second.choix_map_text);
+            }
+
+
+            break;
+        case 3://Settings
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
@@ -232,7 +256,7 @@ int main()
             window.draw(cursor);
             window.display();
             break;
-        case 2:
+        case 2://Creation de niveau
             if(niv.loaded==false){
                 niv.loadTextures();
                 niv.load("level/meroune/");
@@ -264,7 +288,7 @@ int main()
             window.setMouseCursorVisible(true);
             window.display();
             break;
-        case 1:
+        case 1://Jeu de base
             if(niv.loaded==false){
                 niv.loadTextures();
                 niv.load("level/test/");
@@ -286,14 +310,21 @@ int main()
             car.move();
             car.deplacement(prev_car, &niv.obstacles);
             
+            car.deplacement(prev_car, &niv.obstacles);
+            
 
             window.clear();
+            for(auto i : niv.non_obstacles){
+                window.draw(i);
+            }
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
             for(auto i : niv.obstacles){
                 window.draw(i);
             }
+            window.draw(car.wheelLeft);
+            window.draw(car.wheelRight);
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
             window.draw(car.rectangle);
@@ -312,9 +343,24 @@ int main()
 
 
 
+            if(car.nocturne){
+                printf("\nx %f  y %f\n\n\n", car.phares.getPosition().x, car.phares.getPosition().y);
+                window.draw(car.phares);
+            }
+            window.draw(carInfo);
+            window.draw(compteur);
+
+            aiguille1.setRotation(170 + car.rpm*100/7500);
+            aiguille2.setRotation(180 + abs(car.speed));
+
+            window.draw(aiguille1);
+            window.draw(aiguille2);
+
+
+
             window.display();
             break;
-        default:
+        default://Menu principal
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed)

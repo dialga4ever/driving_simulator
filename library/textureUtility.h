@@ -1,4 +1,5 @@
-
+#include <SFML/Graphics.hpp>
+#include <iostream>
 /**
  * The function loads a texture from a file and sets it as the texture for a sprite, then sets the
  * position of the sprite.
