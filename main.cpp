@@ -181,10 +181,8 @@ int main()
 
     Level niv = Level();
 
+    ChoixMap list_choix(font);
 
-    ChoixMap list_choix(&window, font);
-
-    
     Car prev_car;   
 
 
@@ -195,7 +193,6 @@ int main()
         if(Keyboard::isKeyPressed(Keyboard::Escape)){
             fenetre=0;
         }
-
         switch (fenetre)
         {
         case 4://Choix de niveau
@@ -214,12 +211,15 @@ int main()
             for(auto i : list_choix.list_map){
             printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_sprite);
+                printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_text);
 
                 printf("4\n");
             }
 
+            window.draw(cursor);
 
+            window.display();
             break;
         case 3://Settings
             while (window.pollEvent(event))
@@ -374,7 +374,7 @@ int main()
                     if (IsSpriteCliked(quit,&window)){
                         fenetre = 4;
 
-                        list_choix.mettre_a_jour(&window, font);
+                        //list_choix.mettre_a_jour(&window, font);
                     }
                     if (IsSpriteCliked(play,&window)){
                         fenetre = 1;

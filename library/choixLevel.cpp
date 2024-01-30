@@ -14,34 +14,46 @@ using namespace sf;
 
 
 
-ChoixMap::ChoixMap(sf::RenderWindow *window, sf::Font font){
+ChoixMap::ChoixMap(sf::Font font_){
     filesystem::path path1{"./level"};
+    int x = 200;
+    int y = 100;
+
+    font = font_;
+    texture.loadFromFile("src/other/bouton.png");
+
     
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
         auto path1 = dir_entry.path();
-        createButton(path1.filename(), {100,100},window,font);
+
+        createButton(path1.filename(), {x,y},font);
+
+        y += 100;
+        printf("6 %d %d\n", x, y);
 
             printf("6\n");
     }
     loaded = true;
 }
 
-void ChoixMap::mettre_a_jour(RenderWindow *window, sf::Font font){
-    ChoixMap newChoix(window, font);
+
+
+void ChoixMap::mettre_a_jour(sf::Font font){
+    ChoixMap newChoix(font);
     printf("1\n");
     *this = newChoix;
     printf("2\n");
 }
 
-void ChoixMap::createButton(string nom, Vector2f pos, RenderWindow* window, Font font){
+void ChoixMap::createButton(string nom, Vector2f pos, Font font){
     Button self;
-    self.choix_map_texture.loadFromFile("src/other/bouton.png");
-    self.choix_map_sprite.setTexture(self.choix_map_texture);
+    self.choix_map_sprite.setTexture(texture);
     self.choix_map_sprite.setPosition(pos);
-    self.choix_map_sprite.scale({1,0.5});
+    self.choix_map_sprite.scale({0.5,0.5});
     centerOrigin(&self.choix_map_sprite);
     self.choix_map_text.setFont(font);
-    self.choix_map_text.setString(nom);
+    printf("%s\n",nom.c_str());
+    self.choix_map_text.setString((sf::String)nom);
     self.choix_map_text.setCharacterSize(16);
     self.choix_map_text.setFillColor(Color::Black);
     self.choix_map_text.setStyle(Text::Bold);

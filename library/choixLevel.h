@@ -15,18 +15,18 @@ class ChoixMap{
     public:
         struct Button{
             Sprite choix_map_sprite;
-            Texture choix_map_texture;
             Text choix_map_text;
         };
-
+        Font font;
         map<string, Button> list_map;
+        Texture texture;
         bool loaded;
         
-        ChoixMap(sf::RenderWindow* window, sf::Font font);
+        ChoixMap(sf::Font font);
 
-        void mettre_a_jour(RenderWindow *window, sf::Font font);
+        void mettre_a_jour(sf::Font font);
 
-        void createButton(string nom, Vector2f pos, sf::RenderWindow* window, sf::Font font);
+        void createButton(string nom, Vector2f pos, sf::Font font);
 
 
 };
