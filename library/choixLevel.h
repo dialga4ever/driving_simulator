@@ -24,9 +24,9 @@ class ChoixMap{
         
         ChoixMap(sf::Font font);
 
-        void mettre_a_jour(sf::Font font);
+        void mettre_a_jour();
 
-        void createButton(string nom, Vector2f pos, sf::Font font);
+        void createButton(string nom, Vector2f pos);
 
 
 };

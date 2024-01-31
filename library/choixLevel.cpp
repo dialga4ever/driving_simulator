@@ -26,7 +26,7 @@ ChoixMap::ChoixMap(sf::Font font_){
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
         auto path1 = dir_entry.path();
 
-        createButton(path1.filename(), {x,y},font);
+        createButton(path1.filename(), {x,y});
 
         y += 100;
         printf("6 %d %d\n", x, y);
@@ -38,14 +38,14 @@ ChoixMap::ChoixMap(sf::Font font_){
 
 
 
-void ChoixMap::mettre_a_jour(sf::Font font){
+void ChoixMap::mettre_a_jour(){
     ChoixMap newChoix(font);
     printf("1\n");
     *this = newChoix;
     printf("2\n");
 }
 
-void ChoixMap::createButton(string nom, Vector2f pos, Font font){
+void ChoixMap::createButton(string nom, Vector2f pos){
     Button self;
     self.choix_map_sprite.setTexture(texture);
     self.choix_map_sprite.setPosition(pos);

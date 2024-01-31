@@ -213,7 +213,6 @@ int main()
                 window.draw(i.second.choix_map_sprite);
                 printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_text);
-
                 printf("4\n");
             }
 
