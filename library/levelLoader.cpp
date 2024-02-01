@@ -101,14 +101,19 @@ void Level::load(string path){
             int x;
             int y;
             int rotation;
-            float ScaleTemp;
+            float ScaleTempX;
+            float ScaleTempY;
             string tex;
             while (getline(ss, str, ';')){
                 printf("a\n");
                 switch (temp)
                 {
+                    case 5:
+                        ScaleTempY=stof(str);
+                        printf("Scale :%d\n",stoi(str));
+                        break;
                     case 4:
-                        ScaleTemp=stof(str);
+                        ScaleTempX=stof(str);
                         printf("Scale :%d\n",stoi(str));
                         break;
                     case 3:
@@ -130,7 +135,7 @@ void Level::load(string path){
                 }
                 temp++;
             }
-            obstacles.push_back(placeObjectFix(tex,x,y,rotation,ScaleTemp));
+            obstacles.push_back(placeObjectReal(tex,x,y,rotation,ScaleTempX,ScaleTempY));
             obstaclesTexture.push_back(tex);
         }
         myfile.close();
@@ -163,16 +168,13 @@ void Level::createLevel(RenderWindow *window,String path){
                     creationTex=j;
                     tabMode=false;
                     clicked=true;
+                    printf("%d\n",j);
                 }
                 j++;
             }
         }
         return;
     }
-
-
-
-
     if(Keyboard::isKeyPressed(Keyboard::Space)){
         if(!ChangingMode){
             if(colissionMode){
@@ -274,7 +276,6 @@ void Level::createLevel(RenderWindow *window,String path){
         else{
             clicked=false;
         }
-        printf("x:%d y:%d\n",x,y);
         std::ofstream of(path+"non_obstacle.txt");
         if(of.is_open())
         {
@@ -397,13 +398,12 @@ void Level::createLevel(RenderWindow *window,String path){
             clicked=false;
         }
 
-        printf("x:%d y:%d\n",x,y);
         std::ofstream of(path+"obstacle.txt");
         if(of.is_open())
         {
             for(int i = 0; i < obstacles.size(); i++){
                 string textureReal=obstaclesTexture[i];
-                of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y<<";"<<obstacles[i].getScale().x;
+                of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y<<";"<<(obstacles[i].getScale().x)<<";"<<(obstacles[i].getScale().y);
                 of<<std::endl;
             }
             of.flush();
@@ -438,7 +438,6 @@ void Level::loadTextures(){
 
 
 void Level::loadObstacles(){
-    printf("1\n");
     pair<string, int> map [SIZE_MAP_Y][SIZE_MAP_X] = 
     {{{"trotoire.png",0},   {"trotoire.png",90},            {"trotoire.png",180},           {"trotoire.png",0},     {"trotoire.png",270},           {"trotoire.png",90},            {"trotoire.png",180},       {"trotoire.png",0},             {"trotoire.png",180},           {"trotoire.png",270}},
     {{"trotoire.png",270},  {"route_virage_exte.png",0},    {"route1.png",90},              {"route_egout.png",90}, {"route1.png",90},              {"route1.png",90},              {"route1.png",90},          {"route_egout.png",90},         {"route1.png",90},              {"route_virage_exte.png",90}},
@@ -455,7 +454,6 @@ void Level::loadObstacles(){
 
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
-            printf("i %d, j %d\n\n", i, j);
             non_obstacles.push_back(placeObject(map[i][j].first, j, i, map[i][j].second,OFFSET/64));
         }
     }
@@ -473,7 +471,6 @@ Sprite Level::placeObject(string image, int x, int y){
 }
 
 Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
-    printf("ffB\n");
     Sprite obs;
     if(!textures.count(image)){
         return obs;
@@ -485,15 +482,14 @@ Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
 
 
     obs.scale({xRatio,yRatio});
-    printf("ffC %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
     }
     else{
-        printf("mouai %s\n",image.c_str());
+        
     }
     
-    printf("ffA\n");
+    
     obs.setRotation(rotation);
     obs.setPosition(x*OFFSET+OFFSET/2, y*OFFSET+OFFSET/2);
     centerOrigin(&obs);
@@ -501,7 +497,6 @@ Sprite Level::placeObject(string image, int x, int y, int rotation,float scale){
 }
 
 Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scale){
-    printf("ffE\n");
     Sprite obs;
     if(!textures.count(image)){
         return obs;
@@ -510,6 +505,24 @@ Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scal
     float xRatio=(64.0/float(s.x))*scale;
     float yRatio=(64.0/float(s.y))*scale;
     obs.scale({xRatio,yRatio});
+    printf("ffF %s\n",image.c_str());
+    if(textures.count(image)){
+        obs.setTexture(textures.at(image));
+    }
+    obs.setRotation(rotation);
+    obs.setPosition(x, y);
+    centerOrigin(&obs);
+    return obs;
+}
+
+
+Sprite Level::placeObjectReal(string image, int x, int y, int rotation,float scaleX,float scaleY){
+    Sprite obs;
+    if(!textures.count(image)){
+        return obs;
+    }
+    Vector2u s=textures.at(image).getSize();
+    obs.scale({scaleX,scaleY});
     printf("ffF %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));

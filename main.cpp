@@ -181,7 +181,9 @@ int main()
 
 
     Level niv = Level();
-
+    printf("A\n");
+    niv.loadTextures();
+    printf("B\n");
     ChoixMap list_choix(font);
     string path;
 
@@ -274,7 +276,6 @@ int main()
         case 2://Creation de niveau
             printf("\n\n\n%s\n\n\n", path.c_str());
             if(niv.loaded==false){
-                niv.loadTextures();
                 niv.load("level/"+path+"/");
             }
             while (window.pollEvent(event))
@@ -307,7 +308,6 @@ int main()
         case 1://Jeu de base
             printf("\n\n\n%s\n\n\n", path.c_str());
             if(niv.loaded==false){
-                niv.loadTextures();
                 niv.load("level/"+path+"/");
             }
             while (window.pollEvent(event))

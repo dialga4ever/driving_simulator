@@ -48,5 +48,6 @@ class Level{
     Sprite placeObject(string image, int x, int y);
 
     Sprite placeObject(string image, int x, int y, int rotation,float scale);
-    Sprite placeObjectFix(string image, int x, int y, int rotation,float scale);        
+    Sprite placeObjectFix(string image, int x, int y, int rotation,float scale);
+    Sprite placeObjectReal(string image, int x, int y, int rotation,float scaleX,float scaleY);    
 };
