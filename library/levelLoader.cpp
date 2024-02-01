@@ -26,6 +26,7 @@ Level::Level(string path){
 
 
 void Level::load(string path){
+    obstacles.clear();
     string line;
     ifstream myfile(path+"non_obstacle.txt");
     if (myfile.is_open())
@@ -75,6 +76,8 @@ void Level::load(string path){
         return;
     }
     non_obstacles.clear();
+
+    obstacles.clear();
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
             printf("maybe\n");
@@ -84,7 +87,6 @@ void Level::load(string path){
             printf("maybe\n");
         }
     }
-
     
     myfile.open(path+"obstacle.txt");
     if (myfile.is_open())

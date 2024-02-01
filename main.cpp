@@ -29,6 +29,7 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     int fenetre = 0;
+    int next_fenetre = 0;
 
 
 
@@ -182,6 +183,7 @@ int main()
     Level niv = Level();
 
     ChoixMap list_choix(font);
+    string path;
 
     Car prev_car;   
 
@@ -192,28 +194,38 @@ int main()
         Event event;
         if(Keyboard::isKeyPressed(Keyboard::Escape)){
             fenetre=0;
+            niv.loaded = false;
         }
+        
         switch (fenetre)
         {
         case 4://Choix de niveau
-        printf("5\n");
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
                     window.close();
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
-                
-                printf("3\n");
+                if (event.mouseButton.button == Mouse::Left)
+                { 
+                    for(auto i : list_choix.list_map){
+                        if (IsSpriteCliked(i.second.choix_map_sprite,&window)){
+                            path = i.first;
+                            printf("\n\n\n%s\n\n\n", path.c_str());
+                            fenetre = next_fenetre;
+                        }
+                    }
+                }
             }
-            printf("6\n");
+
+
+
+
             window.clear();
             for(auto i : list_choix.list_map){
             printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_sprite);
-                printf("7 size : %d\n", list_choix.list_map.size());
                 window.draw(i.second.choix_map_text);
-                printf("4\n");
             }
 
             window.draw(cursor);
@@ -260,9 +272,10 @@ int main()
             window.display();
             break;
         case 2://Creation de niveau
+            printf("\n\n\n%s\n\n\n", path.c_str());
             if(niv.loaded==false){
                 niv.loadTextures();
-                niv.load("level/meroune/");
+                niv.load("level/"+path+"/");
             }
             while (window.pollEvent(event))
             {     
@@ -287,14 +300,15 @@ int main()
                 window.draw(niv.creation);
             }
 
-            niv.createLevel(&window,"level/meroune/");
+            niv.createLevel(&window,"level/"+path+"/");
             window.setMouseCursorVisible(true);
             window.display();
             break;
         case 1://Jeu de base
+            printf("\n\n\n%s\n\n\n", path.c_str());
             if(niv.loaded==false){
                 niv.loadTextures();
-                niv.load("level/test/");
+                niv.load("level/"+path+"/");
             }
             while (window.pollEvent(event))
             {     
@@ -351,11 +365,11 @@ int main()
                 window.draw(car.phares);
             }
             window.draw(carInfo);
-            window.draw(compteur);
 
+            //Compteur
+            window.draw(compteur);
             aiguille1.setRotation(170 + car.rpm*100/7500);
             aiguille2.setRotation(180 + abs(car.speed));
-
             window.draw(aiguille1);
             window.draw(aiguille2);
 
@@ -371,19 +385,20 @@ int main()
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
                     if (IsSpriteCliked(quit,&window)){
-                        fenetre = 4;
-
-                        //list_choix.mettre_a_jour(&window, font);
+                        window.close();
                     }
-                    if (IsSpriteCliked(play,&window)){
-                        fenetre = 1;
-                    }
+                    
                     if (IsSpriteCliked(settings,&window)){
                         fenetre = 3;
                     }
                     if (IsSpriteCliked(levelCreator,&window)){
                         niv.clicked=true;
-                        fenetre = 2;
+                        fenetre = 4;
+                        next_fenetre = 2;//Creation de niveau
+                    }
+                    if (IsSpriteCliked(play,&window)){
+                        fenetre = 4;
+                        next_fenetre = 1;//Jeu de base
                     }
                 }
                 
