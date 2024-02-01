@@ -14,10 +14,11 @@ using namespace sf;
 
 
 
-ChoixMap::ChoixMap(sf::Font font_){
+ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
     filesystem::path path1{"./level"};
-    int x = 200;
-    int y = 100;
+    window_x = (float)window_x_;
+    window_y = (float)window_y_;
+    float y = 150;
 
     font = font_;
     texture.loadFromFile("src/other/bouton.png");
@@ -26,20 +27,16 @@ ChoixMap::ChoixMap(sf::Font font_){
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
         auto path1 = dir_entry.path();
 
-        createButton(path1.filename(), {x,y});
+        createButton(path1.filename(), {window_x/2,y});
 
-        y += 100;
-        printf("6 %d %d\n", x, y);
-
-            printf("6\n");
+        y += 150;
     }
-    loaded = true;
 }
 
 
 
 void ChoixMap::mettre_a_jour(){
-    ChoixMap newChoix(font);
+    ChoixMap newChoix(window_x, window_y, font);
     printf("1\n");
     *this = newChoix;
     printf("2\n");

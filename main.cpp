@@ -5,6 +5,7 @@
 #include "library/textureUtility.h"
 #include "library/levelLoader.h"
 #include "library/choixLevel.h"
+#include "library/menu.h"
 
 
 using namespace std;
@@ -12,11 +13,13 @@ using namespace sf;
 
 #define PI 3.14159265
 
-bool IsSpriteCliked(Sprite tarket,RenderWindow *window){
-    return tarket.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
+
+
+bool IsSpriteCliked(Sprite target,RenderWindow *window){
+    return target.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
 }
-void updateCursorSprite(Sprite *tarket,RenderWindow *window){
-    tarket->setPosition(static_cast<Vector2f>(Mouse::getPosition(*window)));
+void updateCursorSprite(Sprite *target,RenderWindow *window){
+    target->setPosition(static_cast<Vector2f>(Mouse::getPosition(*window)));
 }
 
 
@@ -78,82 +81,6 @@ int main()
     carInfo.setPosition(0,0);
 
 
-
-//  ------MENU------  //
-
-
-
-    Sprite play;
-    Texture boutonTexture;
-    centerOrigin(&play);
-    spriteLoadFromFilePos(&play,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,200);
-    play.scale({1,0.5});
-    centerOrigin(&play);
-    Text playText;
-    playText.setFont(font); 
-    playText.setString("Play");
-    playText.setCharacterSize(24); 
-    playText.setFillColor(Color::Black);
-    playText.setStyle(Text::Bold | Text::Underlined);
-    playText.setPosition(play.getPosition());
-    centerTextOrigin(&playText);
-
-    Sprite levelCreator;
-    spriteLoadFromFilePos(&levelCreator,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,350);
-    levelCreator.scale({1,0.5});
-    centerOrigin(&levelCreator);
-    Text levelCreatorText;
-    levelCreatorText.setFont(font); 
-    levelCreatorText.setString("Level Creator");
-    levelCreatorText.setCharacterSize(24); 
-    levelCreatorText.setFillColor(Color::Black);
-    levelCreatorText.setStyle(Text::Bold | Text::Underlined);
-    levelCreatorText.setPosition(levelCreator.getPosition());
-    centerTextOrigin(&levelCreatorText);
-
-    Sprite upgrade;
-    spriteLoadFromFilePos(&upgrade,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,500);
-    upgrade.scale({1,0.5});
-    centerOrigin(&upgrade);
-    upgrade.setColor(Color(255, 255, 255, 100));
-    Text upgradeText;
-    upgradeText.setFont(font); 
-    upgradeText.setString("Upgrade car");
-    upgradeText.setCharacterSize(24); 
-    upgradeText.setFillColor(Color::Black);
-    upgradeText.setStyle(Text::Bold | Text::Underlined);
-    upgradeText.setPosition(upgrade.getPosition());
-    centerTextOrigin(&upgradeText);
-    
-    Sprite settings;
-    spriteLoadFromFilePos(&settings,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,650);
-    settings.scale({1,0.5});
-    centerOrigin(&settings);
-    Text settingsText;
-    settingsText.setFont(font); 
-    settingsText.setString("Settings");
-    settingsText.setCharacterSize(24); 
-    settingsText.setFillColor(Color::Black);
-    settingsText.setStyle(Text::Bold | Text::Underlined);
-    settingsText.setPosition(settings.getPosition());
-    centerTextOrigin(&settingsText);
-
-    Sprite quit;
-    spriteLoadFromFilePos(&quit,&boutonTexture,"./src/other/test.jpg",window.getSize().y/2,800);
-    quit.scale({1,0.5});
-    centerOrigin(&quit);
-    Text quitText;
-    quitText.setFont(font); 
-    quitText.setString("Quit");
-    quitText.setCharacterSize(24); 
-    quitText.setFillColor(Color::Black);
-    quitText.setStyle(Text::Bold | Text::Underlined);
-    quitText.setPosition(quit.getPosition());
-    centerTextOrigin(&quitText);
-
-
-//  ------FIN MENU------  //
-
 //  ------DEBUT SETTINGS------  //
 
     Sprite returnSettings;
@@ -184,8 +111,10 @@ int main()
     printf("A\n");
     niv.loadTextures();
     printf("B\n");
-    ChoixMap list_choix(font);
+    ChoixMap choix_niveaux(window.getSize().x, window.getSize().y, font);
     string path;
+
+    Menu menu(window.getSize().x, window.getSize().y, font);
 
     Car prev_car;   
 
@@ -210,7 +139,7 @@ int main()
                     updateCursorSprite(&cursor,&window);
                 if (event.mouseButton.button == Mouse::Left)
                 { 
-                    for(auto i : list_choix.list_map){
+                    for(auto i : choix_niveaux.list_map){
                         if (IsSpriteCliked(i.second.choix_map_sprite,&window)){
                             path = i.first;
                             printf("\n\n\n%s\n\n\n", path.c_str());
@@ -224,8 +153,7 @@ int main()
 
 
             window.clear();
-            for(auto i : list_choix.list_map){
-            printf("7 size : %d\n", list_choix.list_map.size());
+            for(auto i : choix_niveaux.list_map){
                 window.draw(i.second.choix_map_sprite);
                 window.draw(i.second.choix_map_text);
             }
@@ -384,19 +312,19 @@ int main()
                     window.close();
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
                 {
-                    if (IsSpriteCliked(quit,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Quit").choix_menu_sprite,&window)){
                         window.close();
                     }
                     
-                    if (IsSpriteCliked(settings,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Settings").choix_menu_sprite,&window)){
                         fenetre = 3;
                     }
-                    if (IsSpriteCliked(levelCreator,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window)){
                         niv.clicked=true;
                         fenetre = 4;
                         next_fenetre = 2;//Creation de niveau
                     }
-                    if (IsSpriteCliked(play,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window)){
                         fenetre = 4;
                         next_fenetre = 1;//Jeu de base
                     }
@@ -405,16 +333,10 @@ int main()
             }
             updateCursorSprite(&cursor,&window);
             window.clear();
-            window.draw(play);
-            window.draw(upgrade);
-            window.draw(quit);
-            window.draw(settings);
-            window.draw(playText);
-            window.draw(upgradeText);
-            window.draw(levelCreator);
-            window.draw(levelCreatorText);
-            window.draw(quitText);
-            window.draw(settingsText);
+            for(auto i : menu.list_menu){
+                window.draw(i.second.choix_menu_sprite);
+                window.draw(i.second.choix_menu_text);
+            }
             window.draw(cursor);
             window.display();
             break;

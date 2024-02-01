@@ -20,9 +20,10 @@ class ChoixMap{
         Font font;
         map<string, Button> list_map;
         Texture texture;
-        bool loaded;
+        float window_x;
+        float window_y;
         
-        ChoixMap(sf::Font font);
+        ChoixMap(int window_x, int window_y, sf::Font font);
 
         void mettre_a_jour();
 
