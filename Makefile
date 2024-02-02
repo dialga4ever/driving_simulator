@@ -20,8 +20,8 @@ lib: library/textureUtility.o library/car.o library/levelLoader.o library/settin
 library/textureUtility.o: library/textureUtility.cpp
 	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
 
-library/car.o: library/car.cpp library/settings.o library/settings.o
-	$(CC) -c $< library/settings.o library/settings.o $(LDFLAGS) $(OPTS) -o $@
+library/car.o: library/car.cpp library/settings.o
+	$(CC) -c $< library/settings.o $(LDFLAGS) $(OPTS) -o $@
 
 library/levelLoader.o: library/levelLoader.cpp
 	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@

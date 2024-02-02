@@ -48,20 +48,12 @@ int main(){
     Keys game_keys = Keys(&window, font);
     string change_key = "null";
     
-    Car car(500, 500, false, &game_keys, &window);// Création de la voiture
+    Car car(500, 500, false, &game_keys, &window, font);// Création de la voiture
     Car prev_car;   
-
-    Text carInfo;
-    carInfo.setFont(font); 
-    carInfo.setString("Info");
-    carInfo.setCharacterSize(24); 
-    carInfo.setFillColor(Color::White);
-    carInfo.setStyle(Text::Bold | Text::Underlined);
-    carInfo.setPosition(0,0);
-
 
     Level niv = Level();
     niv.loadTextures();
+
 
     char s[256];
     while (window.isOpen()){
@@ -70,10 +62,7 @@ int main(){
             fenetre=0;
             niv.loaded = false;
         }
-        
-        switch (fenetre)
-        {
-
+        switch (fenetre){
 
         case 4:    //Choix de niveau
             while (window.pollEvent(event))
@@ -117,10 +106,8 @@ int main(){
                     updateCursorSprite(&cursor,&window);
                 if (event.mouseButton.button == Mouse::Left && (change_key == "null"))
                 {
-                    if (IsSpriteCliked(game_keys.returnSettings,&window)){
+                    if (IsSpriteCliked(game_keys.returnSettings,&window))
                         fenetre = 0;
-                    }
-
                     for(auto i : game_keys.map_keys){
                         if(IsSpriteCliked(i.second.keySprite, &window)){
                             game_keys.button_is_pressed(i.first);
@@ -159,11 +146,11 @@ int main(){
             }
             window.clear();
             
-            if(niv.tabMode)
+            if(niv.tabMode){
                 for(auto i:niv.selectTile){
                     window.draw(i);
                 }
-            else
+            }else{
                 for(auto i : niv.non_obstacles){
                     window.draw(i);
                 }
@@ -171,7 +158,7 @@ int main(){
                     window.draw(i);
                 }
                 window.draw(niv.creation);
-
+            }
 
             niv.createLevel(&window,"level/"+path+"/");
             window.setMouseCursorVisible(true);
@@ -188,13 +175,6 @@ int main(){
                     window.close(); 
             }
 
-            //printf("started : %d\n",started);
-            //printf("speed : %f\n",speed);
-            //printf("rpm : %d\n",rpm);
-            //printf("vitesse : %d\n",gear);
-            char s[256];
-            sprintf(s,"started : %s\nspeed : %f\nrpm : %d\nvitesse : %d\n",((car.started == 1) ? "true" : "false"),car.speed,car.rpm,car.gear);
-            carInfo.setString(s);
             prev_car = car;
 
             car.move();
@@ -213,15 +193,11 @@ int main(){
             window.draw(car.rectangle);
             if(car.nocturne)
                 window.draw(car.phares);
-            
-            window.draw(carInfo);
+            window.draw(car.carInfo);
 
-            //Compteur
             window.draw(car.compteur);
             window.draw(car.aiguille1);
             window.draw(car.aiguille2);
-
-
 
             window.display();
             break;
@@ -229,23 +205,23 @@ int main(){
             while (window.pollEvent(event)){
                 if (event.type == Event::Closed)
                     window.close();
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                    if (IsSpriteCliked(menu.list_menu.at("Quit").choix_menu_sprite,&window))
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    if (IsSpriteCliked(menu.list_menu.at("Quit").choix_menu_sprite,&window)){
                         window.close();
-                    
-                    if (IsSpriteCliked(menu.list_menu.at("Settings").choix_menu_sprite,&window))
+                    }
+                    if (IsSpriteCliked(menu.list_menu.at("Settings").choix_menu_sprite,&window)){
                         fenetre = 3;//Settings
-                    
-                    if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window))
+                    }
+                    if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window)){
                         niv.clicked=true;
                         fenetre = 4;
                         next_fenetre = 2;//Creation de niveau
-                    
-                    if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window))
+                    }
+                    if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window)){
                         fenetre = 4;
                         next_fenetre = 1;//Jeu de base
-                    
-                
+                    }
+                }
             }
             updateCursorSprite(&cursor,&window);
             window.clear();

@@ -11,7 +11,8 @@ using namespace sf;
 
 Car::Car(){}
 
-Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* window){
+Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* window, Font font_){
+    font = font_;
     x = x_x;
     y = y_y;
     speed = 0;
@@ -75,6 +76,13 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
     aiguille1.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
     aiguille2.setPosition(compteur.getPosition().x+compteurTex.getSize().x*0.155,compteur.getPosition().y-10);
     aiguille2.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
+
+    carInfo.setFont(font); 
+    carInfo.setString("Info");
+    carInfo.setCharacterSize(24); 
+    carInfo.setFillColor(Color::White);
+    carInfo.setStyle(Text::Bold | Text::Underlined);
+    carInfo.setPosition(0,0);
 }
 
 
@@ -280,6 +288,10 @@ void Car::move(){
         reinisialisationCar(500,500);
     }
     if (Keyboard::isKeyPressed(game_keys->map_keys["Start"].keyCode)){
+        if(!game_started){
+            start_time = chrono::system_clock::now();
+            game_started = true;
+        }
         if(!isStarteting){
             isStarteting=true;
             if(started){
@@ -349,6 +361,15 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     printf("rpm : %d\n",rpm);
     printf("vitesse : %d\n",gear);
 
+
+    char s[256];
+    float time = 0;
+    if(game_started)
+        time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start_time).count();
+        time = time/1000;
+    sprintf(s,"Started : %s\nSpeed : %f\nrpm : %d\nVitesse : %d\nTime : %.3f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
+    carInfo.setString(s);
+    printf("\n\n\n%f\n%d\n\n", time, game_started);
 
     if(boiteAuto){
         if(gear>=1){
