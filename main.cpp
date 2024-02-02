@@ -14,7 +14,6 @@ using namespace sf;
 #define PI 3.14159265
 
 
-
 bool IsSpriteCliked(Sprite target,RenderWindow *window){
     return target.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
 }
@@ -23,54 +22,34 @@ void updateCursorSprite(Sprite *target,RenderWindow *window){
 }
 
 
-
-
-
-int main()
-{
+int main(){
     RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close );
     window.setVerticalSyncEnabled(true);
+
+    Sprite cursor;
+    Texture cursorTexture;
+    spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/other/cursor.png",window.getSize().y/2,window.getSize().x/2);
+    cursor.scale({0.01,0.01});
+    window.setMouseCursorVisible(false);
+    cursor.setOrigin({0.0,0.0});
 
     int fenetre = 0;
     int next_fenetre = 0;
 
-
-
-
     Font font;
     if (!font.loadFromFile("src/font/arial.ttf"))
-    {
         printf("pas de font");
-    }
 
+    ChoixMap choix_niveaux(window.getSize().x, window.getSize().y, font);
+    string path;
 
+    Menu menu(window.getSize().x, window.getSize().y, font);
 
     Keys game_keys = Keys(&window, font);
     string change_key = "null";
     
-    Car car(500, 500, false, &game_keys);// Création de la voiture
-
-    Sprite compteur;
-    Texture compteurTex;
-    compteurTex.loadFromFile("src/other/compteur.png");
-    compteur.setTexture(compteurTex);
-    compteur.setPosition(window.getSize().x-(compteurTex.getSize().x/2),window.getSize().y);
-    compteur.setOrigin(compteurTex.getSize().x/2, compteurTex.getSize().y);
-
-
-    Texture aiguilleTex;
-    aiguilleTex.loadFromFile("src/other/aiguille.png");
-    Sprite aiguille1;
-    Sprite aiguille2;
-    aiguille1.setTexture(aiguilleTex);
-    aiguille1.setScale(0.8,0.8);
-    aiguille2.setTexture(aiguilleTex);
-    aiguille2.setScale(1.5,1.5);
-    aiguille1.setPosition(compteur.getPosition().x-compteurTex.getSize().x*0.243,compteur.getPosition().y-3);
-    aiguille1.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
-    aiguille2.setPosition(compteur.getPosition().x+compteurTex.getSize().x*0.155,compteur.getPosition().y-10);
-    aiguille2.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
-
+    Car car(500, 500, false, &game_keys, &window);// Création de la voiture
+    Car prev_car;   
 
     Text carInfo;
     carInfo.setFont(font); 
@@ -81,47 +60,11 @@ int main()
     carInfo.setPosition(0,0);
 
 
-//  ------DEBUT SETTINGS------  //
-
-    Sprite returnSettings;
-    Texture returnSettingsTexture;
-    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/test.jpg",window.getSize().y/10,50);
-    returnSettings.scale({0.5,0.3});
-    centerOrigin(&returnSettings);
-    Text returnSettingsText;
-    returnSettingsText.setFont(font); 
-    returnSettingsText.setString("Back");
-    returnSettingsText.setCharacterSize(32); 
-    returnSettingsText.setFillColor(Color::Black);
-    returnSettingsText.setStyle(Text::Bold);
-    returnSettingsText.setPosition(returnSettings.getPosition());
-    centerTextOrigin(&returnSettingsText);
-    
-//  ------FIN SETTINGS------  //
-
-    Sprite cursor;
-    Texture cursorTexture;
-    spriteLoadFromFilePos(&cursor,&cursorTexture,"./src/other/cursor.png",window.getSize().y/2,window.getSize().x/2);
-    cursor.scale({0.01,0.01});
-    window.setMouseCursorVisible(false);
-    cursor.setOrigin({0.0,0.0});
-
-
     Level niv = Level();
-    printf("A\n");
     niv.loadTextures();
-    printf("B\n");
-    ChoixMap choix_niveaux(window.getSize().x, window.getSize().y, font);
-    string path;
-
-    Menu menu(window.getSize().x, window.getSize().y, font);
-
-    Car prev_car;   
-
 
     char s[256];
-    while (window.isOpen())
-    {
+    while (window.isOpen()){
         Event event;
         if(Keyboard::isKeyPressed(Keyboard::Escape)){
             fenetre=0;
@@ -130,7 +73,9 @@ int main()
         
         switch (fenetre)
         {
-        case 4://Choix de niveau
+
+
+        case 4:    //Choix de niveau
             while (window.pollEvent(event))
             {
                 if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
@@ -162,16 +107,17 @@ int main()
 
             window.display();
             break;
-        case 3://Settings
-            while (window.pollEvent(event))
-            {
+
+
+        case 3:    //Settings
+            while (window.pollEvent(event)){
                 if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
                     window.close();
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
                 if (event.mouseButton.button == Mouse::Left && (change_key == "null"))
                 {
-                    if (IsSpriteCliked(returnSettings,&window)){
+                    if (IsSpriteCliked(game_keys.returnSettings,&window)){
                         fenetre = 0;
                     }
 
@@ -195,51 +141,49 @@ int main()
                 window.draw(i.second.keySprite);
                 window.draw(i.second.keyText);
             }
-            window.draw(returnSettings);
-            window.draw(returnSettingsText);
+            window.draw(game_keys.returnSettings);
+            window.draw(game_keys.returnSettingsText);
             
             window.draw(cursor);
             window.display();
             break;
-        case 2://Creation de niveau
-            printf("\n\n\n%s\n\n\n", path.c_str());
-            if(niv.loaded==false){
+
+
+        case 2:    //Creation de niveau
+            if(niv.loaded==false)
                 niv.load("level/"+path+"/");
-            }
-            while (window.pollEvent(event))
-            {     
+            
+            while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
                     window.close();
             }
             window.clear();
             
-            if(niv.tabMode){
+            if(niv.tabMode)
                 for(auto i:niv.selectTile){
                     window.draw(i);
                 }
-            }
-            else{
+            else
                 for(auto i : niv.non_obstacles){
                     window.draw(i);
                 }
                 for(auto i : niv.obstacles){
                     window.draw(i);
                 }
-
                 window.draw(niv.creation);
-            }
+
 
             niv.createLevel(&window,"level/"+path+"/");
             window.setMouseCursorVisible(true);
             window.display();
             break;
-        case 1://Jeu de base
-            printf("\n\n\n%s\n\n\n", path.c_str());
-            if(niv.loaded==false){
+
+
+        case 1:    //Jeu de base
+            if(niv.loaded==false)
                 niv.load("level/"+path+"/");
-            }
-            while (window.pollEvent(event))
-            {     
+
+            while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
                     window.close(); 
             }
@@ -252,83 +196,55 @@ int main()
             sprintf(s,"started : %s\nspeed : %f\nrpm : %d\nvitesse : %d\n",((car.started == 1) ? "true" : "false"),car.speed,car.rpm,car.gear);
             carInfo.setString(s);
             prev_car = car;
+
             car.move();
             car.deplacement(prev_car, &niv.obstacles);
-            
-            car.deplacement(prev_car, &niv.obstacles);
-            
 
             window.clear();
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
-            for(auto i : niv.non_obstacles){
-                window.draw(i);
-            }
+
             for(auto i : niv.obstacles){
                 window.draw(i);
             }
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
-            window.draw(car.wheelLeft);
-            window.draw(car.wheelRight);
             window.draw(car.rectangle);
-            if(car.nocturne){
-                printf("\nx %f  y %f\n\n\n", car.phares.getPosition().x, car.phares.getPosition().y);
+            if(car.nocturne)
                 window.draw(car.phares);
-            }
-            window.draw(carInfo);
-            window.draw(compteur);
-
-            aiguille1.setRotation(170 + car.rpm*100/7500);
-            aiguille2.setRotation(180 + abs(car.speed));
-
-            window.draw(aiguille1);
-            window.draw(aiguille2);
-
-
-
-            if(car.nocturne){
-                printf("\nx %f  y %f\n\n\n", car.phares.getPosition().x, car.phares.getPosition().y);
-                window.draw(car.phares);
-            }
+            
             window.draw(carInfo);
 
             //Compteur
-            window.draw(compteur);
-            aiguille1.setRotation(170 + car.rpm*100/7500);
-            aiguille2.setRotation(180 + abs(car.speed));
-            window.draw(aiguille1);
-            window.draw(aiguille2);
+            window.draw(car.compteur);
+            window.draw(car.aiguille1);
+            window.draw(car.aiguille2);
 
 
 
             window.display();
             break;
         default://Menu principal
-            while (window.pollEvent(event))
-            {
+            while (window.pollEvent(event)){
                 if (event.type == Event::Closed)
                     window.close();
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
-                    if (IsSpriteCliked(menu.list_menu.at("Quit").choix_menu_sprite,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Quit").choix_menu_sprite,&window))
                         window.close();
-                    }
                     
-                    if (IsSpriteCliked(menu.list_menu.at("Settings").choix_menu_sprite,&window)){
-                        fenetre = 3;
-                    }
-                    if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window)){
+                    if (IsSpriteCliked(menu.list_menu.at("Settings").choix_menu_sprite,&window))
+                        fenetre = 3;//Settings
+                    
+                    if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window))
                         niv.clicked=true;
                         fenetre = 4;
                         next_fenetre = 2;//Creation de niveau
-                    }
-                    if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window)){
+                    
+                    if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window))
                         fenetre = 4;
                         next_fenetre = 1;//Jeu de base
-                    }
-                }
+                    
                 
             }
             updateCursorSprite(&cursor,&window);
@@ -341,11 +257,7 @@ int main()
             window.display();
             break;
         }
-
-
-
-        
-        }
+    }
     
 
     return 0;

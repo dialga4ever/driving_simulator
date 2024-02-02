@@ -11,7 +11,7 @@ using namespace sf;
 
 Car::Car(){}
 
-Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
+Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* window){
     x = x_x;
     y = y_y;
     speed = 0;
@@ -59,6 +59,22 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_){
         
     }
     rectangle.setTexture(&carTexture);
+
+    compteurTex.loadFromFile("src/other/compteur.png");
+    compteur.setTexture(compteurTex);
+    compteur.setPosition(window->getSize().x-(compteurTex.getSize().x/2),window->getSize().y);
+    compteur.setOrigin(compteurTex.getSize().x/2, compteurTex.getSize().y);
+
+
+    aiguilleTex.loadFromFile("src/other/aiguille.png");
+    aiguille1.setTexture(aiguilleTex);
+    aiguille1.setScale(0.8,0.8);
+    aiguille2.setTexture(aiguilleTex);
+    aiguille2.setScale(1.5,1.5);
+    aiguille1.setPosition(compteur.getPosition().x-compteurTex.getSize().x*0.243,compteur.getPosition().y-3);
+    aiguille1.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
+    aiguille2.setPosition(compteur.getPosition().x+compteurTex.getSize().x*0.155,compteur.getPosition().y-10);
+    aiguille2.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
 }
 
 
@@ -442,7 +458,9 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*30)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*30)-(cos(rectangle.getRotation() * PI / 180.0)*12));
     wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
 
-    }
+    aiguille1.setRotation(170 + rpm*100/7500);
+    aiguille2.setRotation(180 + abs(speed));
+}
 
 void Car::reinisialisationCar(int x, int y){
     rectangle.setPosition(x,y);

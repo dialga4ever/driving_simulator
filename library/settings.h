@@ -24,6 +24,10 @@ class Keys{
     Texture button;
     Texture buttonPressed;
 
+    Sprite returnSettings;
+    Texture returnSettingsTexture;
+    Text returnSettingsText;
+
     Keys();
     Keys(RenderWindow* window, Font font);
 

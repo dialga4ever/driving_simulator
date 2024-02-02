@@ -35,10 +35,16 @@ class Car{
     Texture carTexture;
     Texture wheeltexture;
 
+    Sprite compteur;
+    Texture compteurTex;
+    Texture aiguilleTex;
+    Sprite aiguille1;
+    Sprite aiguille2;
+
     Keys* game_keys;
     // Constructor
     Car();
-    Car(int x_x, int y_y, bool nocturne, Keys* game_keys);
+    Car(int x_x, int y_y, bool nocturne, Keys* game_keys, RenderWindow* window);
 
     int rpmToSpeed();
     int rpmToSpeed(int rpmToConvert, int gearToConvert);
