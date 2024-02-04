@@ -26,6 +26,11 @@ Level::Level(string path){
 
 
 void Level::load(string path){
+    //two dimensional array for scaleX and scaleY
+    int scaleX[SIZE_MAP_Y][SIZE_MAP_X];
+    int scaleY[SIZE_MAP_Y][SIZE_MAP_X];
+
+
     obstacles.clear();
     string line;
     ifstream myfile(path+"non_obstacle.txt");
@@ -60,6 +65,15 @@ void Level::load(string path){
                             printf("Stoi :%d\n",stoi(elt));
                             printf("i%d j%d\n",i,j);
                             non_osbstacleMap[i][j]=pair<string,int>(tex,stoi(elt));
+                            temp=-1;
+                            break;
+                        case -1:
+                            scaleX[i][j]=stoi(elt);
+                            temp=-2;
+                            break;
+                        case -2:
+                            scaleY[i][j]=stoi(elt);
+                            temp=-3;
                             break;
                     }
                 }
@@ -81,8 +95,7 @@ void Level::load(string path){
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
             printf("maybe\n");
-
-            non_obstacles.push_back(placeObject(non_osbstacleMap[i][j].first, j, i, non_osbstacleMap[i][j].second,OFFSET/64));
+            non_obstacles.push_back(placeObjectReal(non_osbstacleMap[i][j].first, j*OFFSET+OFFSET/2, i*OFFSET+OFFSET/2, non_osbstacleMap[i][j].second,scaleX[i][j],scaleY[i][j]));
             
             printf("maybe\n");
         }
@@ -95,6 +108,13 @@ void Level::load(string path){
         {
             string str;
             getline(myfile,line);
+            //check if the string is empty
+            if(line.empty()){
+                continue;
+            }
+            if(line=="\n"){
+                continue;
+            }
             int j=0;
             stringstream ss(line);
             int temp=0;
@@ -105,6 +125,14 @@ void Level::load(string path){
             float ScaleTempY;
             string tex;
             while (getline(ss, str, ';')){
+                //check if the string is empty
+                if(str.empty()){
+                    continue;
+                }
+                if(str=="\n"){
+                    continue;
+                }
+
                 printf("a\n");
                 switch (temp)
                 {
@@ -135,6 +163,7 @@ void Level::load(string path){
                 }
                 temp++;
             }
+            printf("???\n");
             obstacles.push_back(placeObjectReal(tex,x,y,rotation,ScaleTempX,ScaleTempY));
             obstaclesTexture.push_back(tex);
         }
@@ -210,36 +239,21 @@ void Level::createLevel(RenderWindow *window,String path){
             rotate=false;
         }
         if(Keyboard::isKeyPressed(Keyboard::Right)){
-            if(!nextTexture){
-                creationTex+=1;
-                nextTexture=true;
-                bool tooLate=true;
-                std::multimap<string, Texture>::iterator it = textures.begin();
-                int temp=0;
-                for(;it!=textures.end();++it) {
-                    if(temp==creationTex){
-                        tooLate=false;
-                    }
-                    temp+=1;
-                }
-                if(tooLate){
-                    creationTex=0;
-                }
+            if(!scaleSwitch){
+                scaleXCreate=-scaleXCreate;
+                scaleSwitch=true;
                 
             }
         }
         else{
             if(Keyboard::isKeyPressed(Keyboard::Left)){
-                if(!nextTexture){
-                    creationTex-=1;
-                    nextTexture=true;
-                    if(creationTex<0){
-                        creationTex=textures.size()-1;
-                    }
+                if(!scaleSwitch){
+                    scaleYCreate=-scaleYCreate;
+                    scaleSwitch=true;
                 }
             }
             else{
-                nextTexture=false;
+                scaleSwitch=false;
             }
         }
 
@@ -259,8 +273,10 @@ void Level::createLevel(RenderWindow *window,String path){
             }
             temp+=1;
         }
+        int xPos=x*OFFSET+OFFSET/2;
+        int yPos=y*OFFSET+OFFSET/2;
 
-        creation=placeObject(maTexture, x, y, creationRotation,(OFFSET/64));
+        creation=placeObjectReal(maTexture, xPos, yPos, creationRotation,scaleXCreate,scaleYCreate);
         if(x>=SIZE_MAP_X||y>=SIZE_MAP_Y||x<0||y<0){
             return;
         }
@@ -270,8 +286,6 @@ void Level::createLevel(RenderWindow *window,String path){
                 non_osbstacleMap[y][x].second=creationRotation;
                 non_obstacles[x+SIZE_MAP_X*y]=creation;
             }
-
-            
         }
         else{
             clicked=false;
@@ -281,7 +295,21 @@ void Level::createLevel(RenderWindow *window,String path){
         {
             for(int i = 0; i < SIZE_MAP_Y; i++){
                 for(int j = 0; j < SIZE_MAP_X; j++){
-                    of<<non_osbstacleMap[i][j].first<<","<<non_osbstacleMap[i][j].second<<";";
+                    int scaleX=non_obstacles[i*SIZE_MAP_X+j].getScale().x;
+                    int scaleY=non_obstacles[i*SIZE_MAP_X+j].getScale().y;
+                    if(scaleX>0){
+                        scaleX=1;
+                    }
+                    else{
+                        scaleX=-1;
+                    }
+                    if(scaleY>0){
+                        scaleY=1;
+                    }
+                    else{
+                        scaleY=-1;
+                    }
+                    of<<non_osbstacleMap[i][j].first<<","<<non_osbstacleMap[i][j].second<<","<<scaleX<<","<<scaleY<<";";
                 }
                 of<<std::endl;
             }
@@ -303,32 +331,17 @@ void Level::createLevel(RenderWindow *window,String path){
             rotate=false;
         }
         if(Keyboard::isKeyPressed(Keyboard::Right)){
-            if(!nextTexture){
-                creationTex+=1;
-                nextTexture=true;
-                bool tooLate=true;
-                std::multimap<string, Texture>::iterator it = textures.begin();
-                int temp=0;
-                for(;it!=textures.end();++it) {
-                    if(temp==creationTex){
-                        tooLate=false;
-                    }
-                    temp+=1;
-                }
-                if(tooLate){
-                    creationTex=0;
-                }
+            if(!scaleSwitch){
+                scaleXCreate=-scaleXCreate;
+                scaleSwitch=true;
                 
             }
         }
         else{
             if(Keyboard::isKeyPressed(Keyboard::Left)){
-                if(!nextTexture){
-                    creationTex-=1;
-                    nextTexture=true;
-                    if(creationTex<0){
-                        creationTex=0;
-                    }
+                if(!scaleSwitch){
+                    scaleYCreate=-scaleYCreate;
+                    scaleSwitch=true;
                 }
             }
             else{
@@ -361,6 +374,7 @@ void Level::createLevel(RenderWindow *window,String path){
             for(int i = 0; i < obstacles.size(); i++){
                 if(obstacles.at(i).getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y)){
                     obstacles.erase(obstacles.begin()+i);
+                    obstaclesTexture.erase(obstaclesTexture.begin()+i);
                 }
             }
         }
@@ -368,7 +382,7 @@ void Level::createLevel(RenderWindow *window,String path){
         int x=(Mouse::getPosition(*window).x);
         int y=(Mouse::getPosition(*window).y);
 
-        String maTexture;
+        string   maTexture;
         std::multimap<string, Texture>::iterator it = textures.begin();
         int temp=0;
         for(;it!=textures.end();++it) {
@@ -381,7 +395,7 @@ void Level::createLevel(RenderWindow *window,String path){
 
 
 
-        creation=placeObjectFix(maTexture, x, y, creationRotation,scale);
+        creation=placeObjectReal(maTexture, x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
 
         if(x<0||y<0){
             return;
@@ -389,6 +403,7 @@ void Level::createLevel(RenderWindow *window,String path){
 
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
+                printf("x :%d y :%d\n",x,y);
                 obstacles.push_back(creation);
                 obstaclesTexture.push_back(maTexture);
                 clicked=true;
@@ -401,6 +416,7 @@ void Level::createLevel(RenderWindow *window,String path){
         std::ofstream of(path+"obstacle.txt");
         if(of.is_open())
         {
+            printf("obstacle :%d\n",obstacles.size());
             for(int i = 0; i < obstacles.size(); i++){
                 string textureReal=obstaclesTexture[i];
                 of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y<<";"<<(obstacles[i].getScale().x)<<";"<<(obstacles[i].getScale().y);

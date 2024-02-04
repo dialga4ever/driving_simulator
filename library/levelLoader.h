@@ -31,6 +31,9 @@ class Level{
     bool colissionMode=true;
     bool ChangingMode=false;
     bool tabMode=false;
+    bool scaleSwitch=false;
+    int scaleXCreate=1;
+    int scaleYCreate=1;
 
     Level();
     Level(string path);

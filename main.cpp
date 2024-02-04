@@ -138,7 +138,10 @@ int main(){
 
         case 2:    //Creation de niveau
             if(niv.loaded==false)
+            {
+                niv.clicked=true;
                 niv.load("level/"+path+"/");
+            }
             
             while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
