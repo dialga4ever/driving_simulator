@@ -92,6 +92,7 @@ void Level::load(string path){
     non_obstacles.clear();
 
     obstacles.clear();
+    obstaclesTexture.clear();
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
             printf("maybe\n");
@@ -175,6 +176,8 @@ void Level::load(string path){
         cout << "Unable to open file";
         return;
     }
+    decos.clear();
+    decoTexture.clear();
     myfile.open(path+"deco.txt");
     if (myfile.is_open())
     {

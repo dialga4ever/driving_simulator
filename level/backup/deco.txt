@@ -1,10 +1,1 @@
-Tilemap_41_1.png;0;145;167;1;1
-Tilemap_41_1.png;0;1303;414;1;1
-FeuxRouge Copy.png;0;594;731;1;1
-feuxdos.png;0;435;462;1;1
-feuxdos Copy.png;0;435;461;1;1
-Tilemap_41_1.png;0;145;167;1;1
-Tilemap_41_1.png;0;1303;414;1;1
-FeuxRouge Copy.png;0;594;731;1;1
-feuxdos.png;0;435;462;1;1
-feuxdos Copy.png;0;435;461;1;1
+Arbre1.png;0;175;308;1;1
