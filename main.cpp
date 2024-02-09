@@ -234,10 +234,12 @@ int main(){
             }
             updateCursorSprite(&cursor,&window);
             window.clear();
+            window.draw(menu.background_sprite);
             for(auto i : menu.list_menu){
                 window.draw(i.second.choix_menu_sprite);
                 window.draw(i.second.choix_menu_text);
             }
+
             window.draw(cursor);
             window.display();
             break;

@@ -19,15 +19,19 @@ Menu::Menu(int window_x_, int window_y_, sf::Font font_){
     window_y = (float)window_y_;
     int nb_button = 6;
 
-    texture.loadFromFile("src/other/test.jpg");
+    texture.loadFromFile("src/other/bouton.png");
+    background.loadFromFile("src/other/background.png");
+    background_sprite.setTexture(background);
+    background_sprite.setPosition({0,0});
 
 
-    createButton("Play", {window_x/2, 150});
-    createButton("Level Creator", {window_x/2, 300});
-    createButton("Upgrade", {window_x/2, 450});
+
+    createButton("Play", {window_x/2, 300});
+    createButton("Level Creator", {window_x/2, 750});
+    createButton("Upgrade", {window_x/2, 825});
     list_menu.at("Upgrade").choix_menu_sprite.setColor(Color(255, 255, 255, 100));
-    createButton("Settings", {window_x/2, 600});
-    createButton("Quit", {window_x/2, 750});
+    createButton("Settings", {window_x/2, 900});
+    createButton("Quit", {window_x/2, 975});
 }
 
 
