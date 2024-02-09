@@ -23,7 +23,7 @@ void updateCursorSprite(Sprite *target,RenderWindow *window){
 
 
 int main(){
-    RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close );
+    RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close | sf::Style::Fullscreen );
     window.setVerticalSyncEnabled(true);
 
     Sprite cursor;
@@ -160,6 +160,9 @@ int main(){
                 for(auto i : niv.obstacles){
                     window.draw(i);
                 }
+                for(auto i : niv.decos){
+                    window.draw(i);
+                }
                 window.draw(niv.creation);
             }
 
@@ -194,6 +197,9 @@ int main(){
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
             window.draw(car.rectangle);
+            for(auto i : niv.decos){
+                window.draw(i);
+            }
             if(car.nocturne)
                 window.draw(car.phares);
             window.draw(car.carInfo);

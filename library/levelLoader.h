@@ -18,6 +18,10 @@ class Level{
     pair<string, int> non_osbstacleMap [SIZE_MAP_Y][SIZE_MAP_X];
     vector<Sprite> obstacles;
     vector<String> obstaclesTexture;
+    vector<Sprite> decos;
+    vector<String> decoTexture;
+
+
     vector<Sprite> non_obstacles;
     vector<Sprite> selectTile;
     Sprite creation;
@@ -28,7 +32,7 @@ class Level{
     bool rotate=false;
     bool nextTexture=false;
     bool clicked=true;
-    bool colissionMode=true;
+    int Mode=0;
     bool ChangingMode=false;
     bool tabMode=false;
     bool scaleSwitch=false;

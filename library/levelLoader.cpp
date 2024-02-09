@@ -175,8 +175,70 @@ void Level::load(string path){
         cout << "Unable to open file";
         return;
     }
+    myfile.open(path+"deco.txt");
+    if (myfile.is_open())
+    {
+        while (myfile.good())
+        {
+            string str;
+            getline(myfile,line);
+            if(line.empty()){
+                continue;
+            }
+            if(line=="\n"){
+                continue;
+            }
+            int j=0;
+            stringstream ss(line);
+            int temp=0;
+            int x;
+            int y;
+            int rotation;
+            float ScaleTempX;
+            float ScaleTempY;
+            string tex;
+            while (getline(ss, str, ';')){
+                if(str.empty()){
+                    continue;
+                }
+                if(str=="\n"){
+                    continue;
+                }
 
-
+                switch (temp)
+                {
+                    case 5:
+                        ScaleTempY=stof(str);
+                        break;
+                    case 4:
+                        ScaleTempX=stof(str);
+                        break;
+                    case 3:
+                        y=stoi(str);
+                        break;
+                    case 2:
+                        x=stoi(str);
+                        break;
+                    case 1:
+                        rotation=stoi(str);
+                        break;
+                    case 0:
+                        tex=str;
+                        break;
+                }
+                temp++;
+            }
+            decos.push_back(placeObjectReal(tex,x,y,rotation,ScaleTempX,ScaleTempY));
+            decoTexture.push_back(tex);
+        }
+        myfile.close();
+    }
+    else 
+    {  
+        perror("ifstream\n");
+        cout << "Unable to open file";
+        return;
+    }
 
 
     loaded=true;
@@ -205,17 +267,17 @@ void Level::createLevel(RenderWindow *window,String path){
         return;
     }
     if(Keyboard::isKeyPressed(Keyboard::Space)){
+        printf("Space\n");
         if(!ChangingMode){
-            if(colissionMode){
-                colissionMode=false;
-                if(creationRotation%90!=0){
-                    creationRotation=90*(creationRotation/90);
-                }
+            Mode+=1;
+            if(Mode>2){
+                Mode=0;
             }
-            else{
-                colissionMode=true;
+            if(Mode==0){
+                creationRotation=90*(creationRotation/90);
             }
             ChangingMode=true;
+            printf("Mode :%d\n",Mode);
         }
         
     }
@@ -225,7 +287,8 @@ void Level::createLevel(RenderWindow *window,String path){
 
 
 
-    if(!colissionMode){
+    if(Mode==0){ //mode fond
+        printf("Mode :%d\n",Mode);
         if(Keyboard::isKeyPressed(Keyboard::R)){
             if(!rotate){
                 creationRotation+=90;
@@ -317,7 +380,7 @@ void Level::createLevel(RenderWindow *window,String path){
             of.close();
         }
     }
-    else{
+    if(Mode==1){ //mode obstacle
         if(Keyboard::isKeyPressed(Keyboard::R)){
             if(!rotate){
                 creationRotation+=10;
@@ -391,10 +454,6 @@ void Level::createLevel(RenderWindow *window,String path){
             }
             temp+=1;
         }
-
-
-
-
         creation=placeObjectReal(maTexture, x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
 
         if(x<0||y<0){
@@ -426,7 +485,111 @@ void Level::createLevel(RenderWindow *window,String path){
             of.close();
         }
     }
+    if(Mode==2){//mode deco (comme mode obstacle)
+        if(Keyboard::isKeyPressed(Keyboard::R)){
+            if(!rotate){
+                creationRotation+=10;
+                if(creationRotation>=360){
+                    creationRotation=0;
+                }
+                rotate=true;
+            }
+        }
+        else{
+            rotate=false;
+        }
+        if(Keyboard::isKeyPressed(Keyboard::Right)){
+            if(!scaleSwitch){
+                scaleXCreate=-scaleXCreate;
+                scaleSwitch=true;
+                
+            }
+        }
+        else{
+            if(Keyboard::isKeyPressed(Keyboard::Left)){
+                if(!scaleSwitch){
+                    scaleYCreate=-scaleYCreate;
+                    scaleSwitch=true;
+                }
+            }
+            else{
+                if(Keyboard::isKeyPressed(Keyboard::Up)){
+                    if(!nextTexture){
+                        scale+=0.1;
+                        nextTexture=true;
+                        
+                    }
+                }
+                else{
+                    if(Keyboard::isKeyPressed(Keyboard::Down)){
+                        if(!nextTexture){
+                            scale-=0.1;
+                            nextTexture=true;
+                            if(scale<0.1){
+                                scale=0.1;
+                            }
+                        }
+                    }
+                    else{
+                        nextTexture=false;
+                    }
+                }
+            }
+            
+        }
+        
+        if(Keyboard::isKeyPressed(Keyboard::BackSpace)){
+            for(int i = 0; i < decos.size(); i++){
+                if(decos.at(i).getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y)){
+                    decos.erase(decos.begin()+i);
+                    decoTexture.erase(decoTexture.begin()+i);
+                }
+            }
+        }
 
+        int x=(Mouse::getPosition(*window).x);
+        int y=(Mouse::getPosition(*window).y);
+
+        string   maTexture;
+        std::multimap<string, Texture>::iterator it = textures.begin();
+        int temp=0;
+        for(;it!=textures.end();++it) {
+            if(temp==creationTex){
+                maTexture=it->first;
+            }
+            temp+=1;
+        }
+        creation=placeObjectReal(maTexture, x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
+
+        if(x<0||y<0){
+            return;
+        }
+        
+        if(Mouse::isButtonPressed(Mouse::Left)){
+            if(clicked==false){
+                printf("x :%d y :%d\n",x,y);
+                decos.push_back(creation);
+                decoTexture.push_back(maTexture);
+                clicked=true;
+            }
+        }
+        else{
+            clicked=false;
+        }
+
+        std::ofstream of(path+"deco.txt");
+        if(of.is_open())
+        {
+            printf("obstacle :%d\n",decos.size());
+            for(int i = 0; i < decos.size(); i++){
+                string textureReal=decoTexture[i];
+                of<<textureReal<<";"<<decos[i].getRotation()<<";"<<decos[i].getPosition().x<<";"<<decos[i].getPosition().y<<";"<<(decos[i].getScale().x)<<";"<<(decos[i].getScale().y);
+                of<<std::endl;
+            }
+            of.flush();
+            of.close();
+        }
+    }
 
 }
 
