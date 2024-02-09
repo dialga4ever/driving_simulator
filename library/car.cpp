@@ -31,29 +31,28 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
     nocturne = nocturne_;
     phares.setOrigin(x+15,y-200);
     phares.setPosition(x, y);
-    printf("\nx %f  y %f\n\n\n", phares.getPosition().x, phares.getPosition().y);
     phares.setSize({1000,1000});
     if(!pharesTexture.loadFromFile("src/other/phare.png")){
         std::cout << "Error: Couldn't load texture\n";
     }
     phares.setTexture(&pharesTexture);
 
-    rectangle.setOrigin(10,10);
+    rectangle.setOrigin(0,0);
     rectangle.setPosition(x,y);
-    rectangle.setOrigin({32,20});
+    rectangle.setOrigin({70,20});
 
-    wheelLeft.setPosition(x+35,y);
+    wheelLeft.setPosition(x+20,y);
     wheelLeft.setSize({15,6});
-    wheelLeft.setFillColor(Color::Red);
-    wheelLeft.setOrigin(7,6);
+    wheelLeft.setFillColor(Color::Black);
+    wheelLeft.setOrigin(7,3);
 
-    wheelRight.setPosition(x+35,y);
+    wheelRight.setPosition(x+20,y);
     wheelRight.setSize({15,6});
-    wheelRight.setFillColor(Color::Red);
-    wheelRight.setOrigin(7,0);
+    wheelRight.setFillColor(Color::Black);
+    wheelRight.setOrigin(7,-9);
     game_keys = game_keys_;
 
-    if (!carTexture.loadFromFile("src/texture/car.png"))
+    if (!carTexture.loadFromFile("src/other/voiture.png"))
     {
         std::cout << "Error: Couldn't load texture\n";
         
@@ -89,7 +88,6 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
 int Car::rpmToSpeed(){
     if(rpm<startRpm){
         if(!boiteAuto){
-            printf("Tu a calé\n");
             started=false;
             return 0;
         }
@@ -101,7 +99,6 @@ int Car::rpmToSpeed(){
     }
     if(rpm>maxRpm+200){
         started=false;
-        printf("Tu a calé\n");
         return 0;
     }
     
@@ -151,14 +148,10 @@ int Car::convertSpeedToRpm(int newGear){
     int last=0;
     for(int i=500;i<maxRpm;i=i+100){
         if(rpmToSpeed(i,newGear)>speed){
-            printf("Curr : %d   rpmToSpeed :%d\n",i,rpmToSpeed(i,newGear));
-            printf("Curr Speed : %f\n",speed);
-            printf("Last: %d\n",last);
             return last;
         }
         last=i;
     }
-    printf("Last : %d   rpmToSpeed :%d\n",last,rpmToSpeed(last,newGear));
 
     return 0;
 }
@@ -178,9 +171,6 @@ void Car::move(){
         if(Keyboard::isKeyPressed(game_keys->map_keys["Gear back 1"].keyCode)){
             if(speed<=1){
                 gear=-1;
-            }
-            else{
-                printf("???");
             }
         }
     } 
@@ -245,8 +235,6 @@ void Car::move(){
                     speed=speed-(200/(speed*speed));
                 }
                 else{
-                    printf("%f\n",speed);
-                    printf("%f\n",(200/(-speed*-speed)));
                     speed=speed+(200/(-speed*-speed));
                     if(speed>0){
                         speed=0;
@@ -347,18 +335,13 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
 
     if(speed!=0){
         if(speed<0&&speed<-1&&speed>-27){
-            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed))*2);
-            carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
-        }else if(speed>1){
             rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed)));
             carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
+        }else if(speed>1){
+            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed))/1.5);
+            carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed)/1.5);
         }
     }
-    
-    printf("started : %d\n",started);
-    printf("speed : %f\n",speed);
-    printf("rpm : %d\n",rpm);
-    printf("vitesse : %d\n",gear);
 
 
     char s[256];
@@ -367,8 +350,8 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start_time).count();
         time = time/1000;
     sprintf(s,"Started : %s\nSpeed : %f\nrpm : %d\nVitesse : %d\nTime : %.3f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
+    
     carInfo.setString(s);
-    printf("\n\n\n%f\n%d\n\n", time, game_started);
 
     if(boiteAuto){
         if(gear>=1){
@@ -433,22 +416,19 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
                 }
             }
             else{
-                printf("newSpeed : %d\n",newSpeed);
-                printf("newSpeed : %f\n",speed);
                 if(abs(float(newSpeed-speed))<3){
                     speed=newSpeed;
                 }
                 else{
                     rpm=convertSpeedToRpm(gear);
                     speed=rpmToSpeed();
-                    printf("Maybe tu cale\n\n\n\n");
                 }
             }
         }
     }
 
 
-    
+
 
 
 
@@ -471,11 +451,11 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         prev_car= *this;
     }
 
-    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*30)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*30)+(cos(rectangle.getRotation() * PI / 180.0)*13));
+    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*20)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*20)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
 
 
-    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*30)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*30)-(cos(rectangle.getRotation() * PI / 180.0)*12));
+    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*20)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*20)-(cos(rectangle.getRotation() * PI / 180.0)*12));
     wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
 
     aiguille1.setRotation(170 + rpm*100/7500);

@@ -23,7 +23,7 @@ void updateCursorSprite(Sprite *target,RenderWindow *window){
 
 
 int main(){
-    RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close | sf::Style::Fullscreen );
+    RenderWindow window(VideoMode(1024, 1024), "Driving Simulator", Style::Titlebar | Style::Close);
     window.setVerticalSyncEnabled(true);
 
     Sprite cursor;
