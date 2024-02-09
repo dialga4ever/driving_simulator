@@ -2,37 +2,18 @@ CC = g++
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 OPTS =  -g
 
-all: library/textureUtility.o car library/levelLoader.o library/settings.o library/choixLevel.o library/menu.o
-	$(CC) main.cpp  library/car.o library/textureUtility.o library/levelLoader.o library/settings.o library/choixLevel.o library/menu.o $(LDFLAGS) $(OPTS) -o main
+# List of source files
+SRC_FILES = main.cpp library/car.cpp library/textureUtility.cpp library/levelLoader.cpp library/settings.cpp library/choixLevel.cpp library/menu.cpp library/collision.cpp
 
-car: library/car.o  
+# List of object files
+OBJ_FILES = $(SRC_FILES:.cpp=.o)
 
-settings: library/settings.o
+all: $(OBJ_FILES)
+	$(CC) $(OBJ_FILES) $(LDFLAGS) $(OPTS) -o main
 
-levelLoader: library/levelLoader.o
-
-choixLevel: library/choixLevel.o
-
-menu: library/menu.o
-
-lib: library/textureUtility.o library/car.o library/levelLoader.o library/settings.o library/choixLevel.o library/settings.o library/menu.o
-
-library/textureUtility.o: library/textureUtility.cpp
+# Rules for compiling individual source files
+%.o: %.cpp
 	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
 
-library/car.o: library/car.cpp library/settings.o
-	$(CC) -c $< library/settings.o $(LDFLAGS) $(OPTS) -o $@
-
-library/levelLoader.o: library/levelLoader.cpp
-	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
-
-library/choixLevel.o: library/choixLevel.cpp
-	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
-
-library/menu.o: library/menu.cpp
-	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
-
-library/settings.o:	library/settings.cpp
-	$(CC) -c $< $(LDFLAGS) $(OPTS) -o $@
 clean:
-	rm main
+	rm -f main $(OBJ_FILES)

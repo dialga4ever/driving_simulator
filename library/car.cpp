@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "car.h"
+#include "collision.h"
 
 using namespace std;
 using namespace sf;
@@ -38,9 +39,7 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
     phares.setTexture(&pharesTexture);
 
     rectangle.setOrigin(10,10);
-    rectangle.setOutlineColor(Color::Blue);
     rectangle.setPosition(x,y);
-    rectangle.setSize({75,40});
     rectangle.setOrigin({32,20});
 
     wheelLeft.setPosition(x+35,y);
@@ -59,7 +58,7 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
         std::cout << "Error: Couldn't load texture\n";
         
     }
-    rectangle.setTexture(&carTexture);
+    rectangle.setTexture(carTexture);
 
     compteurTex.loadFromFile("src/other/compteur.png");
     compteur.setTexture(compteurTex);
@@ -458,9 +457,9 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     bool isCollision = false;
     rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
     for(auto i : *obstacles){
-        if( rectangle.getGlobalBounds().intersects(i.getGlobalBounds())){
+        //pixelPerfectTest
+        if(collision::pixelPerfectTest(rectangle, i, 0)){
             isCollision = true;
-            i.scale({2.0,2.0});
         }
     }
     if(isCollision){

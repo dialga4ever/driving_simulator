@@ -35,7 +35,7 @@ class Car{
 
     Texture pharesTexture;
     RectangleShape phares;
-    RectangleShape rectangle;
+    Sprite rectangle;
     RectangleShape wheelLeft;
     RectangleShape wheelRight;
     Texture carTexture;
