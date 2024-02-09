@@ -22,17 +22,6 @@ namespace collision
 	class BitmaskRegistry
 	{
 	public:
-
-		auto& get (const sf::Texture& tex) {
-			auto pair = bitmasks.find(&tex);
-			if (pair == bitmasks.end())
-			{
-				return create (tex, tex.copyToImage());
-			}
-			
-			return pair->second;
-		}
-
 		auto& create (const sf::Texture& tex, const sf::Image& img) {
 			auto mask = TextureMask( tex.getSize().y * tex.getSize().x );
 
@@ -45,6 +34,17 @@ namespace collision
             // store and return ref to the mask
 			return (bitmasks[&tex] = std::move(mask));
 		}
+		auto& get (const sf::Texture& tex) {
+			auto pair = bitmasks.find(&tex);
+			if (pair == bitmasks.end())
+			{
+				return create (tex, tex.copyToImage());
+			}
+			
+			return pair->second;
+		}
+
+		
 	private:
 		std::map<const sf::Texture*, TextureMask> bitmasks;
 	};
@@ -52,7 +52,7 @@ namespace collision
     // Gets global instance of BitmaskRegistry.
     // "static" to make sure this function doesn't leak to other source file
 	static BitmaskRegistry& bitmasks() {
-        static BitmaskRegistry& instance;
+        static BitmaskRegistry instance;
         return instance;
     }
 
@@ -176,12 +176,12 @@ namespace collision
 		auto OBB2 = OrientedBoundingBox(sprite2);
 
 		// Create the four distinct axes that are perpendicular to the edges of the two rectangles
-		auto axes = std::array<sf::Vector2f, 4>({
-			{ OBB1.points[1].x - OBB1.points[0].x, OBB1.points[1].y - OBB1.points[0].y },
-			{ OBB1.points[1].x - OBB1.points[2].x, OBB1.points[1].y - OBB1.points[2].y },
-			{ OBB2.points[0].x - OBB2.points[3].x, OBB2.points[0].y - OBB2.points[3].y },
-			{ OBB2.points[0].x - OBB2.points[1].x, OBB2.points[0].y - OBB2.points[1].y }
-		});
+		auto axes = std::array<sf::Vector2f, 4>();
+		axes[0] = sf::Vector2f(OBB1.points[1].x - OBB1.points[0].x, OBB1.points[1].y - OBB1.points[0].y);
+		axes[1] = sf::Vector2f(OBB1.points[1].x - OBB1.points[2].x, OBB1.points[1].y - OBB1.points[2].y);
+		axes[2] = sf::Vector2f(OBB2.points[0].x - OBB2.points[3].x, OBB2.points[0].y - OBB2.points[3].y);
+		axes[3] = sf::Vector2f(OBB2.points[0].x - OBB2.points[1].x, OBB2.points[0].y - OBB2.points[1].y);
+
 
 		for (auto& axis : axes)
 		{
