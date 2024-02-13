@@ -17,7 +17,7 @@ Level::Level(){
 
 
 Level::Level(string path){
-    
+
     return;
 }
 
@@ -614,7 +614,6 @@ void Level::loadTextures(){
         selectTile.push_back(placeObject(t.first,i%16,int((i-i%16)/16),0,1));
         i++;
     }
-    
 }
 
 

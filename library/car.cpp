@@ -39,14 +39,12 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
 
     rectangle.setOrigin(0,0);
     rectangle.setPosition(x,y);
-    rectangle.setOrigin({70,20});
-
-    wheelLeft.setPosition(x+20,y);
+    rectangle.setOrigin({0,20});
+    wheelLeft.setPosition(x-50,y);
     wheelLeft.setSize({15,6});
     wheelLeft.setFillColor(Color::Black);
     wheelLeft.setOrigin(7,3);
-
-    wheelRight.setPosition(x+20,y);
+    wheelRight.setPosition(x+50,y);
     wheelRight.setSize({15,6});
     wheelRight.setFillColor(Color::Black);
     wheelRight.setOrigin(7,-9);
@@ -451,11 +449,11 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
         prev_car= *this;
     }
 
-    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*20)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*20)+(cos(rectangle.getRotation() * PI / 180.0)*13));
+    wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
 
 
-    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*20)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*20)-(cos(rectangle.getRotation() * PI / 180.0)*12));
+    wheelLeft.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)+(sin(rectangle.getRotation()*PI/180)*12),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)-(cos(rectangle.getRotation() * PI / 180.0)*12));
     wheelLeft.setRotation(rectangle.getRotation()+wheelDir*2);
 
     aiguille1.setRotation(170 + rpm*100/7500);

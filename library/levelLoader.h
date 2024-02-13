@@ -9,8 +9,6 @@ using namespace sf;
 #define SIZE_MAP_Y 16
 #define SIZE_MAP_X 16
 
-#define SIZE_MAP_Y 16
-#define SIZE_MAP_X 16
 class Level{
 
     public:
@@ -20,11 +18,12 @@ class Level{
     vector<String> obstaclesTexture;
     vector<Sprite> decos;
     vector<String> decoTexture;
-
-
     vector<Sprite> non_obstacles;
     vector<Sprite> selectTile;
     Sprite creation;
+
+//    Sprite carStartPos;
+
     int creationTex=0;
     int creationRotation=0;
     float scale=1;
