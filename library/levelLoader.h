@@ -20,6 +20,8 @@ class Level{
     vector<String> decoTexture;
     vector<Sprite> non_obstacles;
     vector<Sprite> selectTile;
+    vector<Sprite> places_parking;
+    vector<String> place_park_Text;
     Sprite creation;
 
 //    Sprite carStartPos;

@@ -3,6 +3,7 @@
 #include <cmath>
 #include "car.h"
 #include "collision.h"
+#include <SFML/Graphics/Transformable.hpp>
 
 using namespace std;
 using namespace sf;
@@ -40,10 +41,12 @@ Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* windo
     rectangle.setOrigin(0,0);
     rectangle.setPosition(x,y);
     rectangle.setOrigin({0,20});
+
     wheelLeft.setPosition(x-50,y);
     wheelLeft.setSize({15,6});
     wheelLeft.setFillColor(Color::Black);
     wheelLeft.setOrigin(7,3);
+
     wheelRight.setPosition(x+50,y);
     wheelRight.setSize({15,6});
     wheelRight.setFillColor(Color::Black);
@@ -448,6 +451,12 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     }else{
         prev_car= *this;
     }
+
+    sf::Vector2f topLeft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
+    sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
+    sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
+    sf::Vector2f bottomRight = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
+
 
     wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
