@@ -48,8 +48,7 @@ int main(){
     Keys game_keys = Keys(&window, font);
     string change_key = "null";
     
-    Car car(500, 500, false, &game_keys, &window, font);// Création de la voiture
-    Car prev_car;   
+    Car car=Car(0, 512, 512, false, &game_keys, &window, font);
 
     Level niv = Level();
     niv.loadTextures();
@@ -149,7 +148,7 @@ int main(){
             }
             window.clear();
             
-            if(niv.tabMode){
+            if(niv.tabMode==true){
                 for(auto i:niv.selectTile){
                     window.draw(i);
                 }
@@ -160,6 +159,7 @@ int main(){
                 for(auto i : niv.obstacles){
                     window.draw(i);
                 }
+                window.draw(niv.car);
                 for(auto i : niv.decos){
                     window.draw(i);
                 }
@@ -176,8 +176,14 @@ int main(){
 
 
         case 1:    //Jeu de base
-            if(niv.loaded==false)
+            if(niv.loaded==false){
                 niv.load("level/"+path+"/");
+                car.x = niv.car.getPosition().x;
+                car.y = niv.car.getPosition().y;
+                car.defaultAngle = niv.car.getRotation();
+                car.reinisialisationCar();
+
+            }
 
             while (window.pollEvent(event)){     
                 if ((event.type == Event::Closed) || (Keyboard::isKeyPressed(Keyboard::Delete)))
@@ -186,12 +192,9 @@ int main(){
 
             if(car.win){
                 fenetre = 0;
-                car.reinisialisationCar(0, 0);
             }
-            prev_car = car;
-
             car.move();
-            car.deplacement(prev_car, &niv.obstacles, &niv.places_parking);
+            car.deplacement( &niv.obstacles, &niv.places_parking);
 
             window.clear();
             for(auto i : niv.non_obstacles){

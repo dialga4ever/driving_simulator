@@ -16,6 +16,7 @@ class Car{
     bool embrayage;
     int x;
     int y;
+    float defaultAngle;
     float speed;
     float carDir;// In degrees
     float wheelDir;// In degrees
@@ -55,7 +56,7 @@ class Car{
     Keys* game_keys;
     // Constructor
     Car();
-    Car(int x_x, int y_y, bool nocturne, Keys* game_keys, RenderWindow* window, Font font);
+    Car(float defaultAngle_A,int x_x, int y_y, bool nocturne, Keys* game_keys, RenderWindow* window, Font font);
 
     int rpmToSpeed();
     int rpmToSpeed(int rpmToConvert, int gearToConvert);
@@ -66,9 +67,9 @@ class Car{
 
     void deceleration();
 
-    void deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *places_parking);
+    void deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking);
 
-    void reinisialisationCar(int, int);
+    void reinisialisationCar();
 
 };
 

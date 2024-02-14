@@ -13,8 +13,9 @@ using namespace sf;
 
 Car::Car(){}
 
-Car::Car(int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* window, Font font_){
+Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys_, RenderWindow* window, Font font_){
     font = font_;
+    defaultAngle=defaultAngle_A;
     x = x_x;
     y = y_y;
     speed = 0;
@@ -273,7 +274,7 @@ void Car::move(){
     }
     
     if (Keyboard::isKeyPressed(Keyboard::Enter)){
-        reinisialisationCar(500,500);
+        reinisialisationCar();
     }
     if (Keyboard::isKeyPressed(game_keys->map_keys["Start"].keyCode)){
         if(!game_started){
@@ -315,7 +316,7 @@ void Car::deceleration(){
     }
 }
 
-void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *places_parking){
+void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking){
     if(!actif){
         if(speed!=0){
             if(abs(wheelDir)<0.19){
@@ -333,6 +334,10 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *p
         
     }
     actif=false;
+
+    float tempRotation = rectangle.getRotation();
+    float tempCarDir = carDir;
+    sf::Vector2f tempPos=rectangle.getPosition();
 
     if(speed!=0){
         if(speed<0&&speed<-1&&speed>-27){
@@ -433,8 +438,7 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *p
 
 
 
-    phares.setPosition(rectangle.getPosition());
-    phares.setRotation(rectangle.getRotation()-90);
+    
     bool isCollision = false;
     rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
     for(auto i : *obstacles){
@@ -444,14 +448,18 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *p
         }
     }
     if(isCollision){
-        *this = prev_car;
         speed = 0;
         rpm = 0;
         started = false;
-    }else{
-        prev_car= *this;
+        rectangle.setRotation(tempRotation);
+        carDir = tempCarDir;
+        rectangle.setPosition(tempPos);
+        return;
     }
 
+
+    phares.setPosition(rectangle.getPosition());
+    phares.setRotation(rectangle.getRotation()-90);
     sf::Vector2f topLeft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
     sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, 0));
     sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, rectangle.getLocalBounds().height));
@@ -475,9 +483,9 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *p
     aiguille2.setRotation(180 + abs(speed));
 }
 
-void Car::reinisialisationCar(int x, int y){
+void Car::reinisialisationCar(){
     rectangle.setPosition(x,y);
-    rectangle.setRotation(0);
+    rectangle.setRotation(defaultAngle);
     speed = 0;
     rpm = 0;
     win = false;

@@ -21,11 +21,10 @@ class Level{
     vector<Sprite> non_obstacles;
     vector<Sprite> selectTile;
     vector<Sprite> places_parking;
-    vector<String> place_park_Text;
     Sprite creation;
-
-//    Sprite carStartPos;
-
+    Sprite car;
+    sf::Texture place_park;
+    sf::Texture carTextureForPos;
     int creationTex=0;
     int creationRotation=0;
     float scale=1;
@@ -58,4 +57,6 @@ class Level{
     Sprite placeObject(string image, int x, int y, int rotation,float scale);
     Sprite placeObjectFix(string image, int x, int y, int rotation,float scale);
     Sprite placeObjectReal(string image, int x, int y, int rotation,float scaleX,float scaleY);    
+    Sprite placeParking(int x, int y, int rotation,float scaleX,float scaleY);
+    Sprite placeCar(int x, int y, int rotation);
 };

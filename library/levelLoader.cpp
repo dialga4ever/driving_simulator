@@ -12,6 +12,8 @@ using namespace std;
 using namespace sf;
 
 Level::Level(){
+    tabMode=false;
+    loaded=false;
     return;
 }
 
@@ -26,6 +28,7 @@ Level::Level(string path){
 
 
 void Level::load(string path){
+    
     //two dimensional array for scaleX and scaleY
     int scaleX[SIZE_MAP_Y][SIZE_MAP_X];
     int scaleY[SIZE_MAP_Y][SIZE_MAP_X];
@@ -244,8 +247,8 @@ void Level::load(string path){
     }
 
 
+
     places_parking.clear();
-    place_park_Text.clear();
     myfile.open(path+"place_parking.txt");
     if (myfile.is_open())
     {
@@ -261,7 +264,7 @@ void Level::load(string path){
             }
             int j=0;
             stringstream ss(line);
-            int temp=0;
+            int temp=1;
             int x;
             int y;
             int rotation;
@@ -293,14 +296,10 @@ void Level::load(string path){
                     case 1:
                         rotation=stoi(str);
                         break;
-                    case 0:
-                        tex=str;
-                        break;
                 }
                 temp++;
             }
-            places_parking.push_back(placeObjectReal(tex,x,y,rotation,ScaleTempX,ScaleTempY));
-            place_park_Text.push_back(tex);
+            places_parking.push_back(placeParking(x,y,rotation,ScaleTempX,ScaleTempY));
         }
         myfile.close();
     }
@@ -311,6 +310,50 @@ void Level::load(string path){
         return;
     }
 
+    myfile.open(path+"carPos.txt");
+    if (myfile.is_open())
+    {
+        while (myfile.good())
+        {
+            string str;
+            getline(myfile,line);
+            if(line.empty()){
+                continue;
+            }
+            if(line=="\n"){
+                continue;
+            }
+            int j=0;
+            stringstream ss(line);
+            int temp=1;
+            int x;
+            int y;
+            int rotation;
+            while (getline(ss, str, ';')){
+                switch (temp)
+                {
+                    case 3:
+                        y=stoi(str);
+                        break;
+                    case 2:
+                        x=stoi(str);
+                        break;
+                    case 1:
+                        rotation=stoi(str);
+                        break;
+                }
+                temp++;
+            }
+            car=placeCar(x,y,rotation);
+        }
+        myfile.close();
+    }
+    else 
+    {  
+        perror("ifstream\n");
+        cout << "Unable to open file";
+        return;
+    }
 
     loaded=true;
 
@@ -341,7 +384,7 @@ void Level::createLevel(RenderWindow *window,String path){
         printf("Space\n");
         if(!ChangingMode){
             Mode+=1;
-            if(Mode>3){
+            if(Mode>4){
                 Mode=0;
             }
             if(Mode==0){
@@ -663,6 +706,7 @@ void Level::createLevel(RenderWindow *window,String path){
     }
 
     if(Mode==3){//mode place de parking (comme mode obstacle)
+        tabMode=false;
         if(Keyboard::isKeyPressed(Keyboard::R)){
             if(!rotate){
                 creationRotation+=10;
@@ -719,24 +763,14 @@ void Level::createLevel(RenderWindow *window,String path){
             for(int i = 0; i < places_parking.size(); i++){
                 if(places_parking.at(i).getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y)){
                     places_parking.erase(places_parking.begin()+i);
-                    place_park_Text.erase(place_park_Text.begin()+i);
                 }
             }
         }
 
         int x=(Mouse::getPosition(*window).x);
         int y=(Mouse::getPosition(*window).y);
-
-        string   maTexture;
-        std::multimap<string, Texture>::iterator it = textures.begin();
         int temp=0;
-        for(;it!=textures.end();++it) {
-            if(temp==creationTex){
-                maTexture=it->first;
-            }
-            temp+=1;
-        }
-        creation=placeObjectReal(maTexture, x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
+        creation=placeParking(x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
 
         if(x<0||y<0){
             return;
@@ -746,7 +780,6 @@ void Level::createLevel(RenderWindow *window,String path){
             if(clicked==false){
                 printf("x :%d y :%d\n",x,y);
                 places_parking.push_back(creation);
-                place_park_Text.push_back(maTexture);
                 clicked=true;
             }
         }
@@ -759,10 +792,53 @@ void Level::createLevel(RenderWindow *window,String path){
         {
             printf("place de parking :%d\n",places_parking.size());
             for(int i = 0; i < places_parking.size(); i++){
-                string textureReal=place_park_Text[i];
-                of<<textureReal<<";"<<places_parking[i].getRotation()<<";"<<places_parking[i].getPosition().x<<";"<<places_parking[i].getPosition().y<<";"<<(places_parking[i].getScale().x)<<";"<<(places_parking[i].getScale().y);
+                of<<places_parking[i].getRotation()<<";"<<places_parking[i].getPosition().x<<";"<<places_parking[i].getPosition().y<<";"<<(places_parking[i].getScale().x)<<";"<<(places_parking[i].getScale().y);
                 of<<std::endl;
             }
+            of.flush();
+            of.close();
+        }
+    }
+    //save car position
+    if(Mode==4){
+        tabMode=false;
+        if(Keyboard::isKeyPressed(Keyboard::R)){
+            if(!rotate){
+                creationRotation+=10;
+                if(creationRotation>=360){
+                    creationRotation=0;
+                }
+                rotate=true;
+            }
+        }
+        else{
+            rotate=false;
+        }
+        int x=(Mouse::getPosition(*window).x);
+        int y=(Mouse::getPosition(*window).y);
+        int temp=0;
+        creation=placeCar(x, y, creationRotation);
+
+        if(x<0||y<0){
+            return;
+        }
+        
+        if(Mouse::isButtonPressed(Mouse::Left)){
+            if(clicked==false){
+                printf("x :%d y :%d\n",x,y);
+                car=creation;
+                clicked=true;
+            }
+        }
+        else{
+            clicked=false;
+        }
+
+        std::ofstream of(path+"carPos.txt");
+        if(of.is_open())
+        {
+            of<<car.getRotation()<<";"<<car.getPosition().x<<";"<<car.getPosition().y;
+            of<<std::endl;
             of.flush();
             of.close();
         }
@@ -779,7 +855,6 @@ void Level::loadTextures(){
         auto path=dir_entry.path();
         if (!t.loadFromFile(path)){ std::cout << "Error: Couldn't load texture\n";}{
             textures.insert(pair<string, Texture>(path.filename(), t));
-            
         }
     }
     
@@ -788,6 +863,12 @@ void Level::loadTextures(){
         selectTile.push_back(placeObject(t.first,i%16,int((i-i%16)/16),0,1));
         i++;
     }
+    if (!place_park.loadFromFile("./src/other/carPos.png")){ std::cout << "Error: Couldn't load texture\n";}
+
+    if(!carTextureForPos.loadFromFile("./src/other/voiture.png")){
+        printf("Error: Couldn't load texture\n");
+    }
+
 }
 
 
@@ -870,6 +951,25 @@ Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scal
     return obs;
 }
 
+Sprite Level::placeParking(int x, int y, int rotation,float scaleX,float scaleY){
+    Sprite obs;
+    obs.scale({scaleX,scaleY});
+    obs.setTexture(place_park);
+    obs.setRotation(rotation);
+    obs.setPosition(x, y);
+    centerOrigin(&obs);
+    return obs;
+}
+
+Sprite Level::placeCar(int x, int y, int rotation){
+    Sprite obs;
+    obs.scale({1,1});
+    obs.setTexture(carTextureForPos);
+    obs.setRotation(rotation);
+    obs.setPosition(x, y);
+    centerOrigin(&obs);
+    return obs;
+}
 
 Sprite Level::placeObjectReal(string image, int x, int y, int rotation,float scaleX,float scaleY){
     Sprite obs;
