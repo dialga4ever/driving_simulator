@@ -184,10 +184,14 @@ int main(){
                     window.close(); 
             }
 
+            if(car.win){
+                fenetre = 0;
+                car.reinisialisationCar(0, 0);
+            }
             prev_car = car;
 
             car.move();
-            car.deplacement(prev_car, &niv.obstacles);
+            car.deplacement(prev_car, &niv.obstacles, &niv.places_parking);
 
             window.clear();
             for(auto i : niv.non_obstacles){

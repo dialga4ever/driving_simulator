@@ -315,7 +315,7 @@ void Car::deceleration(){
     }
 }
 
-void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
+void Car::deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *places_parking){
     if(!actif){
         if(speed!=0){
             if(abs(wheelDir)<0.19){
@@ -453,10 +453,16 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
     }
 
     sf::Vector2f topLeft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
-    sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
-    sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
-    sf::Vector2f bottomRight = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
+    sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, 0));
+    sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, rectangle.getLocalBounds().height));
+    sf::Vector2f bottomRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, rectangle.getLocalBounds().height));
 
+    for(auto i : *places_parking){
+        if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
+            win = true;
+            printf("\n\nWIIIIIIIIIIIIIIIIIIN\n\n");
+        }
+    }
 
     wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);
@@ -472,6 +478,9 @@ void Car::deplacement(Car prev_car, vector<Sprite> *obstacles){
 void Car::reinisialisationCar(int x, int y){
     rectangle.setPosition(x,y);
     rectangle.setRotation(0);
+    speed = 0;
+    rpm = 0;
+    win = false;
 }
 
 

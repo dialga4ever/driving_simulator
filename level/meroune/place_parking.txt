@@ -1,0 +1,1 @@
+route_sans_bord3.png;0;171;855;3.1;3.1

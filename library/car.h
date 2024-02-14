@@ -29,6 +29,7 @@ class Car{
     int gear;
     bool nocturne;
     bool boiteAuto=true;
+    bool win = false;
 
     chrono::time_point<chrono::system_clock> start_time;
     bool game_started = false;
@@ -47,6 +48,8 @@ class Car{
     Sprite aiguille1;
     Sprite aiguille2;
 
+
+
     Text carInfo;
 
     Keys* game_keys;
@@ -63,7 +66,7 @@ class Car{
 
     void deceleration();
 
-    void deplacement(Car prev_car, vector<Sprite> *obstacles);
+    void deplacement(Car prev_car, vector<Sprite> *obstacles, vector<Sprite> *places_parking);
 
     void reinisialisationCar(int, int);
 
