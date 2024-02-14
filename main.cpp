@@ -163,6 +163,9 @@ int main(){
                 for(auto i : niv.decos){
                     window.draw(i);
                 }
+                for(auto i : niv.places_parking){
+                    window.draw(i);
+                }
                 window.draw(niv.creation);
             }
 
@@ -190,16 +193,18 @@ int main(){
             for(auto i : niv.non_obstacles){
                 window.draw(i);
             }
-
             for(auto i : niv.obstacles){
+                window.draw(i);
+            }
+            for(auto i : niv.decos){
+                window.draw(i);
+            }
+            for(auto i : niv.places_parking){
                 window.draw(i);
             }
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
             window.draw(car.rectangle);
-            for(auto i : niv.decos){
-                window.draw(i);
-            }
             if(car.nocturne)
                 window.draw(car.phares);
             window.draw(car.carInfo);
