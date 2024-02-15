@@ -489,6 +489,11 @@ void Car::reinisialisationCar(){
     speed = 0;
     rpm = 0;
     win = false;
+    started = false;
+    carDir = defaultAngle;
+    wheelDir = 0;
+    gear = 0;
+    
 }
 
 
