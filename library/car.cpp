@@ -160,6 +160,20 @@ int Car::convertSpeedToRpm(int newGear){
 
 
 void Car::move(){
+    if(Keyboard::isKeyPressed(Keyboard::Comma)&&TOUCHECHANGETEMPORAIRE){
+        if(boiteAuto){
+            TOUCHECHANGETEMPORAIRE=false;
+            boiteAuto=false;
+        }
+        else{
+            TOUCHECHANGETEMPORAIRE=false;
+            boiteAuto=true;
+        }
+    }else{
+        if(!Keyboard::isKeyPressed(Keyboard::Comma)){
+            TOUCHECHANGETEMPORAIRE=true;
+        }
+    }
     if(boiteAuto){
         if(Keyboard::isKeyPressed(game_keys->map_keys["Gear0"].keyCode)){
             gear=0;

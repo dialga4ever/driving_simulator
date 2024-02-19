@@ -1,1 +1,25 @@
-Tilemap_1_4.png;0;165;77;1;1
+FeuxRouge Copy.png;0;567;764;2.3;2.3
+feuxdos.png;0;463;522;2.3;2.3
+Arbre1.png;120;137;134;1;1
+Arbre1.png;120;262;178;1;1
+Arbre1.png;160;85;367;1;1
+SunFlower.png;190;118;483;1;1
+SunFlower.png;190;93;491;1;1
+SunFlower.png;190;312;253;1;1
+SunFlower.png;210;194;420;1;1
+Mushroom.png;240;104;442;1;1
+Mushroom.png;240;42;250;1;1
+Mushroom.png;240;316;115;1;1
+Mushroom.png;320;75;154;1;1
+FlowerA.png;10;253;366;1;1
+FlowerA.png;10;92;230;1;1
+FlowerA.png;70;261;466;1;1
+FlowerD.png;110;197;94;1;1
+FlowerD.png;180;182;300;1;1
+FlowerD.png;240;71;52;1;1
+Mushroom3.png;280;281;58;1;1
+Mushroom3.png;280;170;231;1;1
+Arbre2.png;320;214;254;1;1
+Arbre2.png;320;150;436;1;1
+Arbre2.png;320;49;426;1;1
+Arbre2.png;320;78;84;1;1
