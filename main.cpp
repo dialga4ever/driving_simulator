@@ -192,6 +192,7 @@ int main(){
 
             if(car.win){
                 fenetre = 0;
+                niv.loaded=false;
             }
             car.move();
             car.deplacement( &niv.obstacles, &niv.places_parking);
@@ -203,21 +204,23 @@ int main(){
             for(auto i : niv.obstacles){
                 window.draw(i);
             }
+
+            for(auto i : niv.places_parking){
+                window.draw(i);
+            }
             window.draw(car.wheelLeft);
             window.draw(car.wheelRight);
             window.draw(car.rectangle);
             if(car.nocturne)
                 window.draw(car.phares);
-            window.draw(car.carInfo);
             
             for(auto i : niv.decos){
                 window.draw(i);
             }
-            for(auto i : niv.places_parking){
-                window.draw(i);
-            }
+            
             
 
+            window.draw(car.carInfo);
             window.draw(car.compteur);
             window.draw(car.aiguille1);
             window.draw(car.aiguille2);

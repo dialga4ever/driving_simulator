@@ -32,3 +32,6 @@ VoiturePNJBleu.png;320;910;671;1;1
 VoiturePNJBlanche.png;320;908;769;1;1
 VoiturePNJNoir.png;320;915;397;1;1
 VoiturePNJGris.png;320;768;637;1;1
+SunFlower.png;90;213;927;1;1
+SunFlower.png;150;288;910;1;1
+SunFlower.png;150;133;928;2.3;2.3

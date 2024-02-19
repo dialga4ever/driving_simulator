@@ -161,6 +161,7 @@ int Car::convertSpeedToRpm(int newGear){
 
 void Car::move(){
     if(Keyboard::isKeyPressed(Keyboard::Comma)&&TOUCHECHANGETEMPORAIRE){
+        printf("IIC ::%d\n",boiteAuto);
         if(boiteAuto){
             TOUCHECHANGETEMPORAIRE=false;
             boiteAuto=false;
