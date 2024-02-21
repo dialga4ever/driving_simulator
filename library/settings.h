@@ -31,7 +31,7 @@ class Keys{
     Keys();
     Keys(RenderWindow* window, Font font);
 
-    void createButton(string nom, Keyboard::Key key, Vector2f pos, RenderWindow* window);
+    void createButton(string nom, Keyboard::Key key, Vector2f pos);
 
     void button_is_pressed(string key);
 

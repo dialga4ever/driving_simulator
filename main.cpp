@@ -6,6 +6,7 @@
 #include "library/levelLoader.h"
 #include "library/choixLevel.h"
 #include "library/menu.h"
+#include "library/victory.h"
 
 
 using namespace std;
@@ -45,6 +46,8 @@ int main(){
 
     Menu menu(window.getSize().x, window.getSize().y, font);
 
+    Victory victory(window.getSize().x, window.getSize().y, font);
+
     Keys game_keys = Keys(&window, font);
     string change_key = "null";
     
@@ -62,6 +65,42 @@ int main(){
             niv.loaded = false;
         }
         switch (fenetre){
+
+
+        case 5:    //Victoire
+            if(!victory.loaded){
+                victory.load(path);
+            }
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed || (Keyboard::isKeyPressed(Keyboard::Delete)))
+                    window.close();
+                if(event.type == Event::MouseMoved)
+                    updateCursorSprite(&cursor,&window);
+                if (event.mouseButton.button == Mouse::Left)
+                { 
+                    
+                }
+            }
+
+
+
+
+            window.clear();
+            for(auto i : victory.items){
+                window.draw(i.second.sprite);
+                window.draw(i.second.text);
+            }
+
+            for(auto i : victory.texts){
+                window.draw(i.second);
+            }
+
+            window.draw(cursor);
+
+            window.display();
+            break;
+
 
         case 4:    //Choix de niveau
             while (window.pollEvent(event))
@@ -191,7 +230,7 @@ int main(){
             }
 
             if(car.win){
-                fenetre = 0;
+                fenetre = 5;
                 niv.loaded=false;
             }
             car.move();

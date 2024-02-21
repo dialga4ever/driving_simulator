@@ -12,7 +12,7 @@ using namespace sf;
 
 Keys::Keys(){}
 
-void Keys::createButton(string nom, Keyboard::Key key, Vector2f pos, RenderWindow* window){
+void Keys::createButton(string nom, Keyboard::Key key, Vector2f pos){
     Button self;
     self.keyCode = key;
     self.keySprite.setTexture(button);
@@ -48,27 +48,27 @@ Keys::Keys(RenderWindow* window, Font font_){
     returnSettingsText.setPosition(returnSettings.getPosition());
     centerTextOrigin(&returnSettingsText);
 
-    createButton("Left", Keyboard::Left, {(float)(window->getSize().x/3), 100}, window);
+    createButton("Left", Keyboard::Left, {(float)(window->getSize().x/3), 100});
 
-    createButton("Right", Keyboard::Right, {(float)(window->getSize().x/3), 200}, window);
+    createButton("Right", Keyboard::Right, {(float)(window->getSize().x/3), 200});
 
-    createButton("Up", Keyboard::Up, {(float)(window->getSize().x/3), 300}, window);
+    createButton("Up", Keyboard::Up, {(float)(window->getSize().x/3), 300});
 
-    createButton("Down", Keyboard::Down, {(float)(window->getSize().x/3), 400}, window);
+    createButton("Down", Keyboard::Down, {(float)(window->getSize().x/3), 400});
 
-    createButton("Start", Keyboard::E, {(float)(window->getSize().x/3), 500}, window);
+    createButton("Start", Keyboard::E, {(float)(window->getSize().x/3), 500});
 
-    createButton("Clutch", Keyboard::LShift, {(float)(window->getSize().x/3), 600}, window);
+    createButton("Clutch", Keyboard::LShift, {(float)(window->getSize().x/3), 600});
 
-    createButton("Gear0", Keyboard::Num0, {(float)(window->getSize().x/1.33), 100}, window);
+    createButton("Gear0", Keyboard::Num0, {(float)(window->getSize().x/1.33), 100});
 
-    createButton("Gear1", Keyboard::Num1, {(float)(window->getSize().x/1.33), 200}, window);
+    createButton("Gear1", Keyboard::Num1, {(float)(window->getSize().x/1.33), 200});
 
-    createButton("Gear2", Keyboard::Num2, {(float)(window->getSize().x/1.33), 300}, window);
+    createButton("Gear2", Keyboard::Num2, {(float)(window->getSize().x/1.33), 300});
 
-    createButton("Gear3", Keyboard::Num3, {(float)(window->getSize().x/1.33), 400}, window);
+    createButton("Gear3", Keyboard::Num3, {(float)(window->getSize().x/1.33), 400});
 
-    createButton("Gear back 1", Keyboard::BackSpace, {(float)(window->getSize().x/1.33), 500}, window);
+    createButton("Gear back 1", Keyboard::BackSpace, {(float)(window->getSize().x/1.33), 500});
 }
 
 void Keys::button_is_pressed(string key){

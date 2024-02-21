@@ -3,7 +3,7 @@ LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 OPTS =  -g
 
 # List of source files
-SRC_FILES = main.cpp library/car.cpp library/textureUtility.cpp library/levelLoader.cpp library/settings.cpp library/choixLevel.cpp library/menu.cpp library/collision.cpp
+SRC_FILES = main.cpp library/car.cpp library/textureUtility.cpp library/levelLoader.cpp library/settings.cpp library/choixLevel.cpp library/menu.cpp library/collision.cpp library/victory.cpp
 
 # List of object files
 OBJ_FILES = $(SRC_FILES:.cpp=.o)
