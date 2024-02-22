@@ -275,7 +275,7 @@ int main(){
             }
             
             
-
+            window.draw(car.fondCarInfo);
             window.draw(car.carInfo);
             window.draw(car.compteur);
             window.draw(car.aiguille1);

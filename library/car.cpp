@@ -66,7 +66,12 @@ Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys
     compteur.setPosition(window->getSize().x-(compteurTex.getSize().x/2),window->getSize().y);
     compteur.setOrigin(compteurTex.getSize().x/2, compteurTex.getSize().y);
 
-
+    /*fondCompteurTex.loadFromFile("src/other/blanc.png");
+    fondCompteur.setTexture(fondCompteurTex);
+    fondCompteur.setPosition(window->getSize().x-(fondCompteurTex.getSize().x/2),window->getSize().y);
+    fondCompteur.setOrigin(fondCompteurTex.getSize().x/2, compteurTex.getSize().y);
+    fondCompteur.setColor(sf::Color(255, 255, 255, 180));
+    fondCompteur.setScale(1, 1);*/
     aiguilleTex.loadFromFile("src/other/aiguille.png");
     aiguille1.setTexture(aiguilleTex);
     aiguille1.setScale(0.8,0.8);
@@ -77,12 +82,19 @@ Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys
     aiguille2.setPosition(compteur.getPosition().x+compteurTex.getSize().x*0.155,compteur.getPosition().y-10);
     aiguille2.setOrigin(aiguilleTex.getSize().x*0.18, aiguilleTex.getSize().y/2);
 
+
+
+    fondCarInfoTex.loadFromFile("src/other/noir.png");
+    fondCarInfo.setTexture(fondCarInfoTex);
+    fondCarInfo.setPosition(0,0);
+    fondCarInfo.setColor(sf::Color(255, 255, 255, 200));
+    fondCarInfo.setScale(1, 0.73);
     carInfo.setFont(font); 
     carInfo.setString("Info");
     carInfo.setCharacterSize(24); 
     carInfo.setFillColor(Color::White);
     carInfo.setStyle(Text::Bold | Text::Underlined);
-    carInfo.setPosition(0,0);
+    carInfo.setPosition(10,10);
 }
 
 

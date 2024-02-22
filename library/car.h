@@ -44,14 +44,17 @@ class Car{
     Texture carTexture;
     Texture wheeltexture;
 
+
+    /*Texture fondCompteurTex;
+    Sprite fondCompteur;*/
     Sprite compteur;
     Texture compteurTex;
     Texture aiguilleTex;
     Sprite aiguille1;
     Sprite aiguille2;
 
-
-
+    Texture fondCarInfoTex;
+    Sprite fondCarInfo;
     Text carInfo;
 
     Keys* game_keys;
