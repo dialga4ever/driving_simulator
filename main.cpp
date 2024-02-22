@@ -69,7 +69,8 @@ int main(){
 
         case 5:    //Victoire
             if(!victory.loaded){
-                victory.load(path);
+                victory.load(path, 500);
+                victory.loaded = true;
             }
             while (window.pollEvent(event))
             {
@@ -79,17 +80,34 @@ int main(){
                     updateCursorSprite(&cursor,&window);
                 if (event.mouseButton.button == Mouse::Left)
                 { 
-                    
+                    if (IsSpriteCliked(victory.items.at("rejouer").sprite,&window)){
+                        fenetre = 1;
+                    }
+                    if (IsSpriteCliked(victory.items.at("menu").sprite,&window)){
+                        fenetre = 0;
+                    }
                 }
             }
 
 
 
-
             window.clear();
+            for(auto i : niv.non_obstacles){
+                window.draw(i);
+            }
+            for(auto i : niv.obstacles){
+                window.draw(i);
+            }
+            for(auto i : niv.decos){
+                window.draw(i);
+            }
+
+            window.draw(victory.items.at("ombre").sprite);
             for(auto i : victory.items){
-                window.draw(i.second.sprite);
-                window.draw(i.second.text);
+                if(i.first != "ombre"){
+                    window.draw(i.second.sprite);
+                    window.draw(i.second.text);
+                }
             }
 
             for(auto i : victory.texts){
@@ -114,7 +132,6 @@ int main(){
                     for(auto i : choix_niveaux.list_map){
                         if (IsSpriteCliked(i.second.choix_map_sprite,&window)){
                             path = i.first;
-                            printf("\n\n\n%s\n\n\n", path.c_str());
                             fenetre = next_fenetre;
                         }
                     }

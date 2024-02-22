@@ -508,6 +508,7 @@ void Car::reinisialisationCar(){
     carDir = defaultAngle;
     wheelDir = 0;
     gear = 0;
+    game_started = false;
     
 }
 
