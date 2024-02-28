@@ -26,6 +26,7 @@ class Car{
     int maxRpm;
     int startRpm;
     int rpm;
+    int nb_point=500;
     int power;
     int gear;
     bool nocturne;

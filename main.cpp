@@ -71,7 +71,7 @@ int main(){
 
         case 5:    //Victoire
             if(!victory.loaded){
-                victory.load(path, 500);
+                victory.load(path, car.nb_point, elapsed);
             }
             while (window.pollEvent(event))
             {
@@ -305,10 +305,13 @@ int main(){
                     if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window)){
                         niv.clicked=true;
                         fenetre = 4;
+                        choix_niveaux.updateStar(window.getSize().x, window.getSize().y);
+
                         realesed=false;
                         next_fenetre = 2;//Creation de niveau
                     }
                     if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window)){
+                        choix_niveaux.updateStar(window.getSize().x, window.getSize().y);
                         fenetre = 4;
                         realesed=false;
                         next_fenetre = 1;//Jeu de base

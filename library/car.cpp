@@ -29,6 +29,7 @@ Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys
     power=100;
     gear=0;
     rpm=0;
+    nb_point=500;
 
     nocturne = nocturne_;
     phares.setOrigin(x+15,y-200);
@@ -481,6 +482,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
         rectangle.setRotation(tempRotation);
         carDir = tempCarDir;
         rectangle.setPosition(tempPos);
+        nb_point=nb_point-100;
         return;
     }
 
@@ -521,7 +523,7 @@ void Car::reinisialisationCar(){
     wheelDir = 0;
     gear = 0;
     game_started = false;
-    
+    nb_point=500;
 }
 
 

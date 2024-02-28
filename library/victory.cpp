@@ -23,7 +23,7 @@ Victory::Victory(int window_x_, int window_y_, sf::Font font_){
 }
 
 
-void Victory::load(std::string map_name, int nb_points){
+void Victory::load(std::string map_name, int nb_points,std::chrono::seconds){
     loadTexture("étoile", "src/other/star_on.png");
     loadTexture("bouton", "src/other/touche.png");
     loadTexture("ombre", "src/other/noir.png");

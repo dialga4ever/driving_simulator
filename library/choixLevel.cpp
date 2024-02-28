@@ -44,6 +44,7 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         
         std::ifstream file(path);
         file >> nb_points;
+        printf("%d\n",nb_points);
         if(nb_points>100){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){
@@ -67,7 +68,50 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
     }
 }
 
+void ChoixMap::updateStar(int window_x_, int window_y_){
+    //delete all star
+    items.clear();
+    //add all star
 
+    filesystem::path path1{"./level"};
+    window_x = (float)window_x_;
+    window_y = (float)window_y_;
+    int number_of_map = 0;
+    for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
+        number_of_map++;
+    }
+    float y_add = window_y/number_of_map;
+
+    float y = y_add/2;
+    for (auto const& dir_entry : std::filesystem::directory_iterator{ "./level" }){
+        auto path1 = dir_entry.path();
+        std::filesystem::path path = std::filesystem::path("level") / path1.filename() / "NB_POINT.txt";
+        int nb_points=0;
+        
+        std::ifstream file(path);
+        file >> nb_points;
+        printf("%d\n",nb_points);
+        if(nb_points>100){
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
+            if(nb_points>=250){
+                createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
+                if(nb_points>=500){
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
+                }else{
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                }
+            }else{
+                createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
+                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+            }
+        }else{
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
+            createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
+            createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+        }
+        y += y_add;
+    }
+}
 
 void ChoixMap::mettre_a_jour(){
     ChoixMap newChoix(window_x, window_y, font);

@@ -34,5 +34,5 @@ class ChoixMap{
         void createButton(string nom, Vector2f pos);
         void loadTexture(std::string nom, std::string texture_path);
         void createItem(std::string nom, sf::Texture* texture, sf::Vector2f pos);
-
+        void updateStar(int window_x_, int window_y_);
 };
