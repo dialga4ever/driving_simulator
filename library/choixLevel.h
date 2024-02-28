@@ -10,7 +10,9 @@
 using namespace std;
 using namespace sf;
 
-
+struct Item{
+        sf::Sprite sprite;
+};
 class ChoixMap{
     public:
         struct Button{
@@ -22,12 +24,15 @@ class ChoixMap{
         Texture texture;
         float window_x;
         float window_y;
+        std::map<std::string, Item> items;
         
+        std::map<std::string, sf::Texture> textures;
         ChoixMap(int window_x, int window_y, sf::Font font);
 
         void mettre_a_jour();
 
         void createButton(string nom, Vector2f pos);
-
+        void loadTexture(std::string nom, std::string texture_path);
+        void createItem(std::string nom, sf::Texture* texture, sf::Vector2f pos);
 
 };

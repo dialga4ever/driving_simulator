@@ -47,10 +47,7 @@ void Victory::load(std::string map_name, int nb_points){
     createItem("menu", "Menu", &textures.at("bouton"), {window_x/2, (window_y/2)+150}, 1, 0.5);
     
     
-    #include <fstream>
-
-    #include <fstream>
-
+    
     createText("map name", map_name, {window_x/2, window_y/3+60});
     createText("points", std::to_string(nb_points), {window_x/2, window_y/3+100});
 

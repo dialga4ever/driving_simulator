@@ -15,6 +15,9 @@ using namespace sf;
 
 
 ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
+    loadTexture("étoile", "src/other/star_on.png");
+    loadTexture("star_off", "src/other/star_off.png");
+
     filesystem::path path1{"./level"};
     window_x = (float)window_x_;
     window_y = (float)window_y_;
@@ -28,13 +31,37 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
     float y = y_add/2;
     printf("%f\n",y);
     font = font_;
-    texture.loadFromFile("src/other/bouton.png");
+    texture.loadFromFile("src/other/bouton_map.png");
 
     
     for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
         auto path1 = dir_entry.path();
 
         createButton(path1.filename(), {window_x/2,y});
+
+        std::filesystem::path path = std::filesystem::path("level") / path1.filename() / "NB_POINT.txt";
+        int nb_points=0;
+        
+        std::ifstream file(path);
+        file >> nb_points;
+        if(nb_points>100){
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
+            if(nb_points>=250){
+                createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
+                if(nb_points>=500){
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
+                }else{
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                }
+            }else{
+                createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
+                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+            }
+        }else{
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
+            createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
+            createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+        }
 
         y += y_add;
     }
@@ -53,7 +80,7 @@ void ChoixMap::createButton(string nom, Vector2f pos){
     Button self;
     self.choix_map_sprite.setTexture(texture);
     self.choix_map_sprite.setPosition(pos);
-    self.choix_map_sprite.scale({0.5,0.5});
+    self.choix_map_sprite.scale({1,0.5});
     centerOrigin(&self.choix_map_sprite);
     self.choix_map_text.setFont(font);
     printf("%s\n",nom.c_str());
@@ -61,7 +88,24 @@ void ChoixMap::createButton(string nom, Vector2f pos){
     self.choix_map_text.setCharacterSize(16);
     self.choix_map_text.setFillColor(Color::Black);
     self.choix_map_text.setStyle(Text::Bold);
-    self.choix_map_text.setPosition(self.choix_map_sprite.getPosition());
+    self.choix_map_text.setPosition(100, self.choix_map_sprite.getPosition().y);
     centerTextOrigin(&self.choix_map_text);
     list_map.insert({nom, self});
+}
+
+void ChoixMap::loadTexture(std::string nom, std::string texture_path){
+    sf::Texture texture;
+    texture.loadFromFile(texture_path);
+    textures[nom] = texture;
+}
+
+void ChoixMap::createItem(std::string nom, sf::Texture* texture, sf::Vector2f pos){
+    Item self;
+
+    self.sprite.setTexture(*texture);
+    self.sprite.setPosition(pos);
+    printf("%f %f\n",pos.x, pos.y);
+    self.sprite.scale({1, 1});
+    centerOrigin(&self.sprite);
+    items.insert({nom, self});
 }

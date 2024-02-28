@@ -146,6 +146,10 @@ int main(){
             for(auto i : choix_niveaux.list_map){
                 window.draw(i.second.choix_map_sprite);
                 window.draw(i.second.choix_map_text);
+                
+            }
+            for(auto j : choix_niveaux.items){
+                window.draw(j.second.sprite);
             }
 
             window.draw(cursor);
@@ -253,9 +257,6 @@ int main(){
                 //get the time of the car (start_time) and the time of the end of the game
                 auto end_time = chrono::system_clock::now();
                 elapsed = chrono::duration_cast<chrono::seconds>(end_time - car.start_time);
-
-
-                
             }
             car.move();
             car.deplacement( &niv.obstacles, &niv.places_parking);
