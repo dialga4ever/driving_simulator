@@ -18,8 +18,15 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
     filesystem::path path1{"./level"};
     window_x = (float)window_x_;
     window_y = (float)window_y_;
-    float y = 150;
 
+    int number_of_map = 0;
+    for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
+        number_of_map++;
+    }
+    float y_add = window_y/number_of_map;
+
+    float y = y_add/2;
+    printf("%f\n",y);
     font = font_;
     texture.loadFromFile("src/other/bouton.png");
 
@@ -29,7 +36,7 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
 
         createButton(path1.filename(), {window_x/2,y});
 
-        y += 150;
+        y += y_add;
     }
 }
 

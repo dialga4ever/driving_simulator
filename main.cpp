@@ -55,7 +55,9 @@ int main(){
 
     Level niv = Level();
     niv.loadTextures();
-
+    //elapsed time
+    std::chrono::seconds elapsed;
+    bool realesed = true;
 
     char s[256];
     while (window.isOpen()){
@@ -70,7 +72,6 @@ int main(){
         case 5:    //Victoire
             if(!victory.loaded){
                 victory.load(path, 500);
-                victory.loaded = true;
             }
             while (window.pollEvent(event))
             {
@@ -88,9 +89,6 @@ int main(){
                     }
                 }
             }
-
-
-
             window.clear();
             for(auto i : niv.non_obstacles){
                 window.draw(i);
@@ -127,7 +125,7 @@ int main(){
                     window.close();
                 if(event.type == Event::MouseMoved)
                     updateCursorSprite(&cursor,&window);
-                if (event.mouseButton.button == Mouse::Left)
+                if (event.mouseButton.button == Mouse::Left&&realesed)
                 { 
                     for(auto i : choix_niveaux.list_map){
                         if (IsSpriteCliked(i.second.choix_map_sprite,&window)){
@@ -135,6 +133,9 @@ int main(){
                             fenetre = next_fenetre;
                         }
                     }
+                }
+                if(!event.mouseButton.button){  
+                    realesed = true;
                 }
             }
 
@@ -249,6 +250,12 @@ int main(){
             if(car.win){
                 fenetre = 5;
                 niv.loaded=false;
+                //get the time of the car (start_time) and the time of the end of the game
+                auto end_time = chrono::system_clock::now();
+                elapsed = chrono::duration_cast<chrono::seconds>(end_time - car.start_time);
+
+
+                
             }
             car.move();
             car.deplacement( &niv.obstacles, &niv.places_parking);
@@ -297,10 +304,12 @@ int main(){
                     if (IsSpriteCliked(menu.list_menu.at("Level Creator").choix_menu_sprite,&window)){
                         niv.clicked=true;
                         fenetre = 4;
+                        realesed=false;
                         next_fenetre = 2;//Creation de niveau
                     }
                     if (IsSpriteCliked(menu.list_menu.at("Play").choix_menu_sprite,&window)){
                         fenetre = 4;
+                        realesed=false;
                         next_fenetre = 1;//Jeu de base
                     }
                 }

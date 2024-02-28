@@ -5,6 +5,9 @@
 #include <iostream>
 #include <cmath>
 #include <map>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
 
 
 
@@ -29,16 +32,55 @@ void Victory::load(std::string map_name, int nb_points){
     createItem("ombre", " ", &textures.at("ombre"), {window_x/2, window_y/2}, 5, 5);
     items.at("ombre").sprite.setColor(sf::Color(255, 255, 255, 100));
 
-    createItem("étoile1", " ", &textures.at("étoile"), {window_x/2-150, window_y/3});
-    createItem("étoile2", " ", &textures.at("étoile"), {window_x/2, (window_y/3)-30});
-    createItem("étoile3", " ", &textures.at("étoile"), {window_x/2+150, window_y/3});
+
+    if(nb_points>100){
+        createItem("étoile1", " ", &textures.at("étoile"), {window_x/2-150, window_y/3});
+        if(nb_points>=250){
+            createItem("étoile2", " ", &textures.at("étoile"), {window_x/2, (window_y/3)-30});
+            if(nb_points>=500){
+                createItem("étoile3", " ", &textures.at("étoile"), {window_x/2+150, window_y/3});
+            }
+        }
+    }
 
     createItem("rejouer", "Retry", &textures.at("bouton"), {window_x/2, window_y/2+50}, 1, 0.5);
     createItem("menu", "Menu", &textures.at("bouton"), {window_x/2, (window_y/2)+150}, 1, 0.5);
     
     
+    #include <fstream>
+
+    #include <fstream>
+
     createText("map name", map_name, {window_x/2, window_y/3+60});
     createText("points", std::to_string(nb_points), {window_x/2, window_y/3+100});
+
+    //if nb_points > last save in NB_POINT.txt (folder location : level/map_name/)
+    //save nb_points in NB_POINT.txt
+
+    std::string path = "level/"+map_name+"/NB_POINT.txt";
+    std::ofstream file(path);
+    if(file){
+        //check if the file is empty
+        file.seekp(0, std::ios::end);
+        if(file.tellp() == 0){
+            file << nb_points;
+        }else{
+            int last_points;
+            std::ifstream file(path);
+            file >> last_points;
+            if(nb_points > last_points){
+                file.close();
+                std::ofstream file(path);
+                file << nb_points;
+            }
+        }
+    }
+    file.close();
+    loaded = true;
+
+
+
+
 }
 
 void Victory::loadTexture(std::string nom, std::string texture_path){
