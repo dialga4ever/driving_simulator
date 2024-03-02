@@ -56,13 +56,13 @@ Keys::Keys(RenderWindow* window, Font font_){
     buttonPressed.loadFromFile("src/other/touchePressed.png");
     int y = 100;
 
-    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/bouton_back.jpg",window->getSize().y/10,50);
+    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/bouton_back.png",window->getSize().y/10,50);
     returnSettings.scale({0.5,0.3});
     centerOrigin(&returnSettings);
     returnSettingsText.setFont(font); 
     returnSettingsText.setString("Back");
     returnSettingsText.setCharacterSize(32); 
-    returnSettingsText.setFillColor(Color::Black);
+    returnSettingsText.setFillColor(Color::White);
     returnSettingsText.setStyle(Text::Bold);
     returnSettingsText.setPosition(returnSettings.getPosition());
     centerTextOrigin(&returnSettingsText);

@@ -26,7 +26,7 @@ Menu::Menu(int window_x_, int window_y_, sf::Font font_){
 
 
 
-    createButton("Play", {window_x/2, 300});
+    createButton("Play", {window_x/2, 280});
     createButton("Level Creator", {window_x/2, 750});
     createButton("Upgrade", {window_x/2, 825});
     list_menu.at("Upgrade").choix_menu_sprite.setColor(Color(255, 255, 255, 100));
