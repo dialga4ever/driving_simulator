@@ -53,7 +53,10 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         int nb_points=0;
         
         std::ifstream file(path);
+        
         file >> nb_points;
+        file.close();
+        printf("%d\n",nb_points);
         if(nb_points>100){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){

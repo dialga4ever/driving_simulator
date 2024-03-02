@@ -16,6 +16,9 @@ using namespace sf;
 
 
 bool IsSpriteCliked(Sprite target,RenderWindow *window){
+    //check if the left mouse button is pressed
+    if(!Mouse::isButtonPressed(Mouse::Left))
+        return false;
     return target.getGlobalBounds().contains(Mouse::getPosition(*window).x, Mouse::getPosition(*window).y);
 }
 void updateCursorSprite(Sprite *target,RenderWindow *window){
