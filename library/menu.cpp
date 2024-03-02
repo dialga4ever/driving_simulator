@@ -23,7 +23,9 @@ Menu::Menu(int window_x_, int window_y_, sf::Font font_){
     background.loadFromFile("src/other/background.png");
     background_sprite.setTexture(background);
     background_sprite.setPosition({0,0});
-
+    background_alt.loadFromFile("src/other/background_alt.png");
+    background_alt_sprite.setTexture(background_alt);
+    background_alt_sprite.setPosition({0,0});
 
 
     createButton("Play", {window_x/2, 280});

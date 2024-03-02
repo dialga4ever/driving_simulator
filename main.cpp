@@ -143,6 +143,7 @@ int main(){
 
 
             window.clear();
+            window.draw(menu.background_alt_sprite);
             for(auto i : choix_niveaux.list_map){
                 window.draw(i.second.choix_map_sprite);
                 window.draw(i.second.choix_map_text);
@@ -183,7 +184,7 @@ int main(){
                 
             }
             window.clear();
-                
+            window.draw(menu.background_alt_sprite);
             for(auto i : game_keys.map_keys){
                 window.draw(i.second.keySprite);
                 window.draw(i.second.keyText);

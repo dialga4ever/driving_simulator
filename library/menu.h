@@ -14,6 +14,8 @@ class Menu{
         sf::Texture texture;
         sf::Texture background;
         sf::Sprite background_sprite;
+        sf::Texture background_alt;
+        sf::Sprite background_alt_sprite;
         sf::Font font;
         std::map<std::string, Button> list_menu;
         float window_x;
