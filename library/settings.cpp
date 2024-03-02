@@ -4,13 +4,32 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <fstream>
+
+
 
 
 using namespace std;
 using namespace sf;
 
 
-Keys::Keys(){}
+Keys::Keys(){
+    ifstream file;
+    file.open("src/other/settings.ini");
+    // Vérifier si le fichier est ouvert
+    if (file.is_open()) {
+        string key;
+        string value;
+        while (file >> key >> value) {
+            map_keys[key].keyCode = fromStringToKey(value);
+            map_keys[key].keyText.setString(map_keys[key].keyNom + " : " + fromKeytoSring(map_keys[key].keyCode));
+        }
+        // Fermer le fichier après la lecture
+        file.close();
+    } else {
+        std::cerr << "Erreur : Impossible d'ouvrir le fichier." << std::endl;
+    }
+}
 
 void Keys::createButton(string nom, Keyboard::Key key, Vector2f pos){
     Button self;
@@ -37,7 +56,7 @@ Keys::Keys(RenderWindow* window, Font font_){
     buttonPressed.loadFromFile("src/other/touchePressed.png");
     int y = 100;
 
-    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/test.jpg",window->getSize().y/10,50);
+    spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/boutonBack.jpg",window->getSize().y/10,50);
     returnSettings.scale({0.5,0.3});
     centerOrigin(&returnSettings);
     returnSettingsText.setFont(font); 
@@ -69,6 +88,21 @@ Keys::Keys(RenderWindow* window, Font font_){
     createButton("Gear3", Keyboard::Num3, {(float)(window->getSize().x/1.33), 400});
 
     createButton("Gear back 1", Keyboard::BackSpace, {(float)(window->getSize().x/1.33), 500});
+    ifstream file;
+    file.open("src/other/settings.ini");
+    // Vérifier si le fichier est ouvert
+    if (file.is_open()) {
+        string key;
+        string value;
+        while (file >> key >> value) {
+            map_keys[key].keyCode = fromStringToKey(value);
+            map_keys[key].keyText.setString(map_keys[key].keyNom + " : " + fromKeytoSring(map_keys[key].keyCode));
+        }
+        // Fermer le fichier après la lecture
+        file.close();
+    } else {
+        std::cerr << "Erreur : Impossible d'ouvrir le fichier." << std::endl;
+    }
 }
 
 void Keys::button_is_pressed(string key){
@@ -76,12 +110,25 @@ void Keys::button_is_pressed(string key){
 }
 
 void Keys::changeKey(string key, Keyboard::Key newKey){
-
     map_keys[key].keyCode = newKey;
     map_keys[key].keyText.setString(map_keys[key].keyNom + " : " + fromKeytoSring(newKey));
     map_keys[key].keySprite.setTexture(button);
-}
 
+    //save the new key in the file settings.ini
+    ofstream file;
+    file.open("src/other/settings.ini");
+    // Vérifier si le fichier est ouvert
+    if (file.is_open()) {
+        // Parcourir la map et écrire les clés dans le fichier
+        for (auto it = map_keys.begin(); it != map_keys.end(); it++) {
+            file << it->first.toAnsiString() << " " << fromKeytoSring(it->second.keyCode) << std::endl;
+        }
+        // Fermer le fichier après l'écriture
+        file.close();
+    } else {
+        std::cerr << "Erreur : Impossible d'ouvrir le fichier." << std::endl;
+    }
+}
 
 string Keys::fromKeytoSring(const sf::Keyboard::Key k){
     string ret;
@@ -296,4 +343,111 @@ string Keys::fromKeytoSring(const sf::Keyboard::Key k){
         ret="Unknow";break;
         }
     return ret;
+}
+
+
+sf::Keyboard::Key Keys::fromStringToKey(const std::string& k) {
+    if (k == "A") return sf::Keyboard::A;
+    else if (k == "B") return sf::Keyboard::B;
+    else if (k == "C") return sf::Keyboard::C;
+    else if (k == "D") return sf::Keyboard::D;
+    else if (k == "E") return sf::Keyboard::E;
+    else if (k == "F") return sf::Keyboard::F;
+    else if (k == "G") return sf::Keyboard::G;
+    else if (k == "H") return sf::Keyboard::H;
+    else if (k == "I") return sf::Keyboard::I;
+    else if (k == "J") return sf::Keyboard::J;
+    else if (k == "K") return sf::Keyboard::K;
+    else if (k == "L") return sf::Keyboard::L;
+    else if (k == "M") return sf::Keyboard::M;
+    else if (k == "N") return sf::Keyboard::N;
+    else if (k == "O") return sf::Keyboard::O;
+    else if (k == "P") return sf::Keyboard::P;
+    else if (k == "Q") return sf::Keyboard::Q;
+    else if (k == "R") return sf::Keyboard::R;
+    else if (k == "S") return sf::Keyboard::S;
+    else if (k == "T") return sf::Keyboard::T;
+    else if (k == "U") return sf::Keyboard::U;
+    else if (k == "V") return sf::Keyboard::V;
+    else if (k == "W") return sf::Keyboard::W;
+    else if (k == "X") return sf::Keyboard::X;
+    else if (k == "Y") return sf::Keyboard::Y;
+    else if (k == "Z") return sf::Keyboard::Z;
+    else if (k == "Num0") return sf::Keyboard::Num0;
+    else if (k == "Num1") return sf::Keyboard::Num1;
+    else if (k == "Num2") return sf::Keyboard::Num2;
+    else if (k == "Num3") return sf::Keyboard::Num3;
+    else if (k == "Num4") return sf::Keyboard::Num4;
+    else if (k == "Num5") return sf::Keyboard::Num5;
+    else if (k == "Num6") return sf::Keyboard::Num6;
+    else if (k == "Num7") return sf::Keyboard::Num7;
+    else if (k == "Num8") return sf::Keyboard::Num8;
+    else if (k == "Num9") return sf::Keyboard::Num9;
+    else if (k == "Escape") return sf::Keyboard::Escape;
+    else if (k == "LControl") return sf::Keyboard::LControl;
+    else if (k == "LShift") return sf::Keyboard::LShift;
+    else if (k == "LAlt") return sf::Keyboard::LAlt;
+    else if (k == "LSystem") return sf::Keyboard::LSystem;
+    else if (k == "RControl") return sf::Keyboard::RControl;
+    else if (k == "RShift") return sf::Keyboard::RShift;
+    else if (k == "RAlt") return sf::Keyboard::RAlt;
+    else if (k == "RSystem") return sf::Keyboard::RSystem;
+    else if (k == "Menu") return sf::Keyboard::Menu;
+    else if (k == "LBracket") return sf::Keyboard::LBracket;
+    else if (k == "RBracket") return sf::Keyboard::RBracket;
+    else if (k == "SemiColon") return sf::Keyboard::SemiColon;
+    else if (k == "Comma") return sf::Keyboard::Comma;
+    else if (k == "Period") return sf::Keyboard::Period;
+    else if (k == "Quote") return sf::Keyboard::Quote;
+    else if (k == "Slash") return sf::Keyboard::Slash;
+    else if (k == "BackSlash") return sf::Keyboard::BackSlash;
+    else if (k == "Tilde") return sf::Keyboard::Tilde;
+    else if (k == "Equal") return sf::Keyboard::Equal;
+    else if (k == "Dash") return sf::Keyboard::Dash;
+    else if (k == "Space") return sf::Keyboard::Space;
+    else if (k == "Return") return sf::Keyboard::Return;
+    else if (k == "BackSpace") return sf::Keyboard::BackSpace;
+    else if (k == "Tab") return sf::Keyboard::Tab;
+    else if (k == "PageUp") return sf::Keyboard::PageUp;
+    else if (k == "PageDown") return sf::Keyboard::PageDown;
+    else if (k == "End") return sf::Keyboard::End;
+    else if (k == "Home") return sf::Keyboard::Home;
+    else if (k == "Insert") return sf::Keyboard::Insert;
+    else if (k == "Delete") return sf::Keyboard::Delete;
+    else if (k == "Add") return sf::Keyboard::Add;
+    else if (k == "Subtract") return sf::Keyboard::Subtract;
+    else if (k == "Multiply") return sf::Keyboard::Multiply;
+    else if (k == "Divide") return sf::Keyboard::Divide;
+    else if (k == "Left") return sf::Keyboard::Left;
+    else if (k == "Right") return sf::Keyboard::Right;
+    else if (k == "Up") return sf::Keyboard::Up;
+    else if (k == "Down") return sf::Keyboard::Down;
+    else if (k == "Numpad0") return sf::Keyboard::Numpad0;
+    else if (k == "Numpad1") return sf::Keyboard::Numpad1;
+    else if (k == "Numpad2") return sf::Keyboard::Numpad2;
+    else if (k == "Numpad3") return sf::Keyboard::Numpad3;
+    else if (k == "Numpad4") return sf::Keyboard::Numpad4;
+    else if (k == "Numpad5") return sf::Keyboard::Numpad5;
+    else if (k == "Numpad6") return sf::Keyboard::Numpad6;
+    else if (k == "Numpad7") return sf::Keyboard::Numpad7;
+    else if (k == "Numpad8") return sf::Keyboard::Numpad8;
+    else if (k == "Numpad9") return sf::Keyboard::Numpad9;
+    else if (k == "F1") return sf::Keyboard::F1;
+    else if (k == "F2") return sf::Keyboard::F2;
+    else if (k == "F3") return sf::Keyboard::F3;
+    else if (k == "F4") return sf::Keyboard::F4;
+    else if (k == "F5") return sf::Keyboard::F5;
+    else if (k == "F6") return sf::Keyboard::F6;
+    else if (k == "F7") return sf::Keyboard::F7;
+    else if (k == "F8") return sf::Keyboard::F8;
+    else if (k == "F9") return sf::Keyboard::F9;
+    else if (k == "F10") return sf::Keyboard::F10;
+    else if (k == "F11") return sf::Keyboard::F11;
+    else if (k == "F12") return sf::Keyboard::F12;
+    else if (k == "F13") return sf::Keyboard::F13;
+    else if (k == "F14") return sf::Keyboard::F14;
+    else if (k == "F15") return sf::Keyboard::F15;
+    else if (k == "Pause") return sf::Keyboard::Pause;
+    else if (k == "KeyCount") return sf::Keyboard::KeyCount;
+    else return sf::Keyboard::Unknown;
 }

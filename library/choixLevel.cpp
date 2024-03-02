@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <set>
 
 
 using namespace std;
@@ -29,13 +30,22 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
     float y_add = window_y/number_of_map;
 
     float y = y_add/2;
-    printf("%f\n",y);
     font = font_;
     texture.loadFromFile("src/other/bouton_map.png");
 
+
     
-    for (auto const& dir_entry : std::filesystem::directory_iterator{ path1 }){
-        auto path1 = dir_entry.path();
+
+    const auto& dir_entry = std::filesystem::directory_iterator{ path1 };
+
+    set<std::filesystem::path> sorted_by_name;
+
+    for (auto &entry : std::filesystem::directory_iterator(path1))
+        sorted_by_name.insert(entry.path());
+        
+    for (auto &dir_entry : sorted_by_name) {
+        printf("%s\n",dir_entry.c_str());
+        auto path1 = dir_entry;
 
         createButton(path1.filename(), {window_x/2,y});
 
@@ -44,7 +54,6 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         
         std::ifstream file(path);
         file >> nb_points;
-        printf("%d\n",nb_points);
         if(nb_points>100){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){
@@ -83,14 +92,20 @@ void ChoixMap::updateStar(int window_x_, int window_y_){
     float y_add = window_y/number_of_map;
 
     float y = y_add/2;
-    for (auto const& dir_entry : std::filesystem::directory_iterator{ "./level" }){
-        auto path1 = dir_entry.path();
+    const auto& dir_entry = std::filesystem::directory_iterator{ path1 };
+
+    set<std::filesystem::path> sorted_by_name;
+
+    for (auto &entry : std::filesystem::directory_iterator(path1))
+        sorted_by_name.insert(entry.path());
+        
+    for (auto &dir_entry : sorted_by_name) {
+        auto path1 = dir_entry;
         std::filesystem::path path = std::filesystem::path("level") / path1.filename() / "NB_POINT.txt";
         int nb_points=0;
         
         std::ifstream file(path);
         file >> nb_points;
-        printf("%d\n",nb_points);
         if(nb_points>100){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){
@@ -115,9 +130,7 @@ void ChoixMap::updateStar(int window_x_, int window_y_){
 
 void ChoixMap::mettre_a_jour(){
     ChoixMap newChoix(window_x, window_y, font);
-    printf("1\n");
     *this = newChoix;
-    printf("2\n");
 }
 
 void ChoixMap::createButton(string nom, Vector2f pos){
@@ -127,7 +140,6 @@ void ChoixMap::createButton(string nom, Vector2f pos){
     self.choix_map_sprite.scale({1,0.5});
     centerOrigin(&self.choix_map_sprite);
     self.choix_map_text.setFont(font);
-    printf("%s\n",nom.c_str());
     self.choix_map_text.setString((sf::String)nom);
     self.choix_map_text.setCharacterSize(16);
     self.choix_map_text.setFillColor(Color::Black);
@@ -148,7 +160,6 @@ void ChoixMap::createItem(std::string nom, sf::Texture* texture, sf::Vector2f po
 
     self.sprite.setTexture(*texture);
     self.sprite.setPosition(pos);
-    printf("%f %f\n",pos.x, pos.y);
     self.sprite.scale({1, 1});
     centerOrigin(&self.sprite);
     items.insert({nom, self});

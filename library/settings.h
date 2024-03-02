@@ -38,6 +38,6 @@ class Keys{
     void changeKey(string key, Keyboard::Key newKey);
 
     string fromKeytoSring(const sf::Keyboard::Key k);
-
+    sf::Keyboard::Key fromStringToKey(const std::string& k);
 };
 
