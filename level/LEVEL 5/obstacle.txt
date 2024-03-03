@@ -1,0 +1,45 @@
+store.png;180;921;943;1.8;-1.8
+store.png;180;57;548;1.8;-1.8
+store2.png;180;641;951;3.4;-3.4
+store2.png;180;81;929;3.4;-3.4
+FlowerE.png;180;237;808;3.4;-3.4
+44jaune.png;180;607;708;1.1;-1.1
+VoiturePNJRouge.png;180;288;247;-1;1
+ambulance.png;180;281;511;-1;1
+VoiturePNJBleu.png;0;610;309;-1;1
+building2.png;0;72;93;-2.2;2.2
+poubelle2.png;0;868;726;-3;3
+poubelle2.png;0;1010;726;-3;3
+ventilo.bmp;0;148;28;-0.9;0.9
+Arbre1.png;30;912;86;-0.9;0.9
+Wood1.png;0;726;225;-0.9;0.9
+Wood1.png;0;727;174;-0.9;0.9
+Wood1.png;0;730;121;-0.9;0.9
+Wood1.png;0;734;68;-0.9;0.9
+Wood1.png;0;731;12;-0.9;0.9
+SunFlower.png;10;819;142;-0.9;0.9
+FlowerD.png;40;935;195;-0.9;0.9
+FlowerC.png;40;804;203;-0.9;0.9
+FlowerC.png;40;831;36;-0.9;0.9
+FlowerC.png;40;973;56;-0.9;0.9
+FlowerC.png;40;984;145;-0.9;0.9
+FlowerC.png;40;840;169;-0.9;0.9
+FlowerC.png;40;872;215;-0.9;0.9
+FlowerA.png;70;890;165;-0.9;0.9
+FlowerA.png;70;814;95;-0.9;0.9
+FlowerA.png;80;903;35;-0.9;0.9
+FlowerA.png;80;988;189;-0.9;0.9
+FlowerA.png;90;902;201;-0.9;0.9
+FlowerA.png;100;968;112;-0.9;0.9
+FlowerB.png;110;785;165;-0.9;0.9
+FlowerB.png;130;880;145;-0.9;0.9
+FlowerB.png;130;833;67;-0.9;0.9
+FeuxJaune.png;0;487;31;2.8;2.8
+paper.png;10;222;539;1;-1
+lampadaire Copy.png;180;482;768;-3.2;-3.2
+lampadaire Copy.png;180;575;370;-3.2;-3.2
+lampadaire Copy.png;180;588;608;-3.2;-3.2
+building1.png;180;936;452;-2.2;-2.2
+ventilo.bmp;180;863;246;-0.9;-0.9
+plot.png;180;106;670;-2.5;-2.5
+44Vert.png;0;612;583;1;1
