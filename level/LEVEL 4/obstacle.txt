@@ -42,3 +42,4 @@ lampadaire Copy.png;180;588;608;-3.2;-3.2
 building1.png;180;936;452;-2.2;-2.2
 ventilo.bmp;180;863;246;-0.9;-0.9
 plot.png;180;106;670;-2.5;-2.5
+dechet.png;0;784;103;1;1
