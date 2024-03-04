@@ -30,7 +30,7 @@ class Victory {
 
         Victory(int window_x, int window_y, sf::Font font);
 
-        void load(std::string map_name, int nb_points,std::chrono::seconds);
+        void load(std::string map_name, int nb_points,float time);
 
         void loadTexture(std::string nom, std::string texture_path);
 

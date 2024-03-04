@@ -74,7 +74,7 @@ int main(){
 
         case 5:    //Victoire
             if(!victory.loaded){
-                victory.load(path, car.nb_point, elapsed);
+                victory.load(path, car.nb_point, car.time);
             }
             while (window.pollEvent(event))
             {

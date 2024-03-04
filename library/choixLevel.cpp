@@ -61,7 +61,7 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
-                if(nb_points>=500){
+                if(nb_points>=450){
                     createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
                 }else{
                     createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
@@ -113,7 +113,7 @@ void ChoixMap::updateStar(int window_x_, int window_y_){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
             if(nb_points>=250){
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
-                if(nb_points>=500){
+                if(nb_points>=450){
                     createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
                 }else{
                     createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});

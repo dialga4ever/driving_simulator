@@ -23,21 +23,22 @@ Victory::Victory(int window_x_, int window_y_, sf::Font font_){
 }
 
 
-void Victory::load(std::string map_name, int nb_points,std::chrono::seconds){
+void Victory::load(std::string map_name, int nb_points,float time){
     loadTexture("étoile", "src/other/star_on.png");
     loadTexture("bouton", "src/other/touche.png");
     loadTexture("ombre", "src/other/noir.png");
-
+    
 
     createItem("ombre", " ", &textures.at("ombre"), {window_x/2, window_y/2}, 5, 5);
     items.at("ombre").sprite.setColor(sf::Color(255, 255, 255, 100));
 
-
+    
+    nb_points = nb_points - (int)time;
     if(nb_points>100){
         createItem("étoile1", " ", &textures.at("étoile"), {window_x/2-150, window_y/3});
         if(nb_points>=250){
             createItem("étoile2", " ", &textures.at("étoile"), {window_x/2, (window_y/3)-30});
-            if(nb_points>=500){
+            if(nb_points>=450){
                 createItem("étoile3", " ", &textures.at("étoile"), {window_x/2+150, window_y/3});
             }
         }

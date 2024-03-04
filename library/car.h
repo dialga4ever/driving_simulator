@@ -35,6 +35,7 @@ class Car{
     bool TOUCHECHANGETEMPORAIRE = false;
 
     chrono::time_point<chrono::system_clock> start_time;
+    float time = 0;
     bool game_started = false;
 
     Texture pharesTexture;
