@@ -13,7 +13,7 @@
 Make the game with :
 ./make
 
-And execute with:
+And execute with :
 ./main
 ```
 
