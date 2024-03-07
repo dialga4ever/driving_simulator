@@ -10,14 +10,18 @@
 ## Usage/Examples
 
 ```shell
-ouai ouai
+Make the game with :
+./make
+
+And execute with:
+./main
 ```
 
 
 ## Tech Stack
 **Base:** C++
 
-**Libreries:** OpenGL,SFML
+**Libraries:** SFML
 
 ## Info
 
