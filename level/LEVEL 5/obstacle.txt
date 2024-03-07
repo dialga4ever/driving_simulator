@@ -43,3 +43,8 @@ building1.png;180;936;452;-2.2;-2.2
 ventilo.bmp;180;863;246;-0.9;-0.9
 plot.png;180;106;670;-2.5;-2.5
 44Vert.png;0;612;583;1;1
+vache.png;0;807;53;-2;2
+vache.png;0;819;140;-2;2
+vache.png;0;959;151;-2;2
+vacheCowBoy.png;0;970;33;-2;2
+vacheCowBoy.png;0;876;115;-2;2
