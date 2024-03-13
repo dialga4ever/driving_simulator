@@ -484,13 +484,15 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
     topLeft.y += 0.1 * (topLeft.y - rectangle.getPosition().y);
     topRight.x -= 0.1 * (rectangle.getPosition().x + rectangle.getLocalBounds().width - topRight.x);
     topRight.y += 0.1 * (topRight.y - rectangle.getPosition().y);
-
-    for(auto i : *places_parking){
-        if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
-            win = true;
-            printf("\n\nWIIIIIIIIIIIIIIIIIIN\n\n");
+    if(speed<5&&speed>-5){
+        for(auto i : *places_parking){
+            if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
+                win = true;
+                printf("\n\nWIIIIIIIIIIIIIIIIIIN\n\n");
+            }
         }
     }
+    
 
     wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)+(cos(rectangle.getRotation() * PI / 180.0)*13));
     wheelRight.setRotation(rectangle.getRotation()+wheelDir*2);

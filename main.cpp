@@ -75,6 +75,11 @@ int main(){
         case 5:    //Victoire
             if(!victory.loaded){
                 victory.load(path, car.nb_point, car.time);
+                victory.update=true;
+            }
+            if(!victory.update){
+                victory.load(path, car.nb_point, car.time);
+                victory.update=true;
             }
             while (window.pollEvent(event))
             {
@@ -85,9 +90,11 @@ int main(){
                 if (event.mouseButton.button == Mouse::Left)
                 { 
                     if (IsSpriteCliked(victory.items.at("rejouer").sprite,&window)){
+                        victory.update=false;
                         fenetre = 1;
                     }
                     if (IsSpriteCliked(victory.items.at("menu").sprite,&window)){
+                        victory.update=false;
                         fenetre = 0;
                     }
                 }

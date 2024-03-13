@@ -20,6 +20,7 @@ class Victory {
         float window_x;
         float window_y;
         bool loaded;
+        bool update;
 
         std::map<std::string, sf::Texture> textures;
         std::map<std::string, Item> items;

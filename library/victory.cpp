@@ -27,8 +27,10 @@ void Victory::load(std::string map_name, int nb_points,float time){
     loadTexture("étoile", "src/other/star_on.png");
     loadTexture("bouton", "src/other/touche.png");
     loadTexture("ombre", "src/other/noir.png");
+    loadTexture("star_off", "src/other/star_off.png");
     
-
+    items.clear();
+    printf("victory\n");
     createItem("ombre", " ", &textures.at("ombre"), {window_x/2, window_y/2}, 5, 5);
     items.at("ombre").sprite.setColor(sf::Color(255, 255, 255, 100));
 
@@ -60,13 +62,12 @@ void Victory::load(std::string map_name, int nb_points,float time){
     createItem("rejouer", "Retry", &textures.at("bouton"), {window_x/2, window_y/2+50}, 1, 0.5);
     createItem("menu", "Menu", &textures.at("bouton"), {window_x/2, (window_y/2)+150}, 1, 0.5);
     
-    
+    texts.clear();
     
     createText("map name", map_name, {window_x/2, window_y/3+60});
     createText("points", std::to_string(nb_points), {window_x/2, window_y/3+100});
 
-    //if nb_points > last save in NB_POINT.txt (folder location : level/map_name/)
-    //save nb_points in NB_POINT.txt
+
 
     std::string path = "level/"+map_name+"/NB_POINT.txt";
     std::ofstream file(path);
@@ -93,6 +94,7 @@ void Victory::load(std::string map_name, int nb_points,float time){
 
 
 }
+
 
 void Victory::loadTexture(std::string nom, std::string texture_path){
     sf::Texture texture;
