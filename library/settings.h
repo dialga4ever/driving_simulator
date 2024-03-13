@@ -23,7 +23,10 @@ class Keys{
     Font font;
     Texture button;
     Texture buttonPressed;
-
+    bool autoMatique=true;
+    Sprite autoSettings;
+    Texture autoSettingsTextureOFF;
+    Texture autoSettingsTextureON;
     Sprite returnSettings;
     Texture returnSettingsTexture;
     Text returnSettingsText;

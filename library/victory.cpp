@@ -41,7 +41,20 @@ void Victory::load(std::string map_name, int nb_points,float time){
             if(nb_points>=450){
                 createItem("étoile3", " ", &textures.at("étoile"), {window_x/2+150, window_y/3});
             }
+            else{
+                createItem("étoile3", " ", &textures.at("star_off"), {window_x/2+150, window_y/3});
+            }
         }
+        else{
+            createItem("étoile2", " ", &textures.at("star_off"), {window_x/2, (window_y/3)-30});
+            createItem("étoile3", " ", &textures.at("star_off"), {window_x/2+150, window_y/3});
+        }
+
+    }
+    else{
+        createItem("étoile1", " ", &textures.at("star_off"), {window_x/2-150, window_y/3});
+        createItem("étoile2", " ", &textures.at("star_off"), {window_x/2, (window_y/3)-30});
+        createItem("étoile3", " ", &textures.at("star_off"), {window_x/2+150, window_y/3});        
     }
 
     createItem("rejouer", "Retry", &textures.at("bouton"), {window_x/2, window_y/2+50}, 1, 0.5);

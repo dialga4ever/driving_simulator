@@ -172,6 +172,16 @@ int main(){
                 {
                     if (IsSpriteCliked(game_keys.returnSettings,&window))
                         fenetre = 0;
+                    if (IsSpriteCliked(game_keys.autoSettings,&window)){
+                        game_keys.autoMatique = !game_keys.autoMatique;
+                        if(game_keys.autoMatique ){
+                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureON);
+                        }
+                        else{
+                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureOFF);
+                        }
+                    }
+                        
                     for(auto i : game_keys.map_keys){
                         if(IsSpriteCliked(i.second.keySprite, &window)){
                             game_keys.button_is_pressed(i.first);
@@ -194,6 +204,8 @@ int main(){
             }
             window.draw(game_keys.returnSettings);
             window.draw(game_keys.returnSettingsText);
+
+            window.draw(game_keys.autoSettings);
             
             window.draw(cursor);
             window.display();
@@ -247,7 +259,7 @@ int main(){
                 car.y = niv.car.getPosition().y;
                 car.defaultAngle = niv.car.getRotation();
                 car.reinisialisationCar();
-
+                car.boiteAuto = game_keys.autoMatique;
             }
 
             while (window.pollEvent(event)){     

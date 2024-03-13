@@ -58,17 +58,17 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         file.close();
         printf("%d\n",nb_points);
         if(nb_points>100){
-            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
             if(nb_points>=250){
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
                 if(nb_points>=450){
-                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
                 }else{
-                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
                 }
             }else{
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
-                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
             }
         }else{
             createItem("étoile1" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
@@ -110,17 +110,17 @@ void ChoixMap::updateStar(int window_x_, int window_y_){
         std::ifstream file(path);
         file >> nb_points;
         if(nb_points>100){
-            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
+            createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
             if(nb_points>=250){
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("étoile"), {window_x-200, y});
                 if(nb_points>=450){
-                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("étoile"), {window_x-150, y});
                 }else{
-                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                    createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
                 }
             }else{
                 createItem("étoile2" + std::string(path1.filename()), &textures.at("star_off"), {window_x-200, y});
-                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-250, y});
+                createItem("étoile3" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});
             }
         }else{
             createItem("étoile1" + std::string(path1.filename()), &textures.at("star_off"), {window_x-150, y});

@@ -32,7 +32,6 @@ class Car{
     bool nocturne;
     bool boiteAuto=true;
     bool win = false;
-    bool TOUCHECHANGETEMPORAIRE = false;
 
     chrono::time_point<chrono::system_clock> start_time;
     float time = 0;

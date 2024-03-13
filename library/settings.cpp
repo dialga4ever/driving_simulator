@@ -57,8 +57,15 @@ Keys::Keys(RenderWindow* window, Font font_){
     int y = 100;
 
     spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/bouton_back.png",window->getSize().y/10,50);
+    spriteLoadFromFilePos(&autoSettings,&autoSettingsTextureON,"./src/other/boiteAutoON.png",500,window->getSize().y/1.3);
+    if (!autoSettingsTextureOFF.loadFromFile("./src/other/boiteAutoOFF.png"))
+    {
+        std::cout << "Error: Couldn't load texture\n";
+    }
+
     returnSettings.scale({0.5,0.3});
     centerOrigin(&returnSettings);
+    centerOrigin(&autoSettings);
     returnSettingsText.setFont(font); 
     returnSettingsText.setString("Back");
     returnSettingsText.setCharacterSize(32); 

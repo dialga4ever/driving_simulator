@@ -24,7 +24,7 @@ Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys
     maxDir=8;
     maxSpeed=15;
     started=false;
-    maxRpm=7500;
+    maxRpm=7500; 
     startRpm=500;
     power=100;
     gear=0;
@@ -173,21 +173,6 @@ int Car::convertSpeedToRpm(int newGear){
 
 
 void Car::move(){
-    if(Keyboard::isKeyPressed(Keyboard::Comma)&&TOUCHECHANGETEMPORAIRE){
-        printf("IIC ::%d\n",boiteAuto);
-        if(boiteAuto){
-            TOUCHECHANGETEMPORAIRE=false;
-            boiteAuto=false;
-        }
-        else{
-            TOUCHECHANGETEMPORAIRE=false;
-            boiteAuto=true;
-        }
-    }else{
-        if(!Keyboard::isKeyPressed(Keyboard::Comma)){
-            TOUCHECHANGETEMPORAIRE=true;
-        }
-    }
     if(boiteAuto){
         if(Keyboard::isKeyPressed(game_keys->map_keys["Gear0"].keyCode)){
             gear=0;
@@ -494,6 +479,11 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
     sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, 0));
     sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, rectangle.getLocalBounds().height));
     sf::Vector2f bottomRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, rectangle.getLocalBounds().height));
+
+    topLeft.x += 0.1 * (topLeft.x - rectangle.getPosition().x);
+    topLeft.y += 0.1 * (topLeft.y - rectangle.getPosition().y);
+    topRight.x -= 0.1 * (rectangle.getPosition().x + rectangle.getLocalBounds().width - topRight.x);
+    topRight.y += 0.1 * (topRight.y - rectangle.getPosition().y);
 
     for(auto i : *places_parking){
         if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
