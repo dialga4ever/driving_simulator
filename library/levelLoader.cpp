@@ -556,8 +556,8 @@ void Level::createLevel(RenderWindow *window,String path){
             }
         }
 
-        int x=(Mouse::getPosition(*window).x);
-        int y=(Mouse::getPosition(*window).y);
+        int x=(Mouse::getPosition(*window).x)/OFFSET;
+        int y=-OFFSET;
 
         string   maTexture;
         std::multimap<string, Texture>::iterator it = textures.begin();
@@ -568,7 +568,11 @@ void Level::createLevel(RenderWindow *window,String path){
             }
             temp+=1;
         }
-        creation=placeObjectReal(maTexture, x, y, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
+
+        int xPos=x*OFFSET+OFFSET/2;
+        int yPos=y*OFFSET+OFFSET/2;
+
+        creation=placeObjectReal(maTexture, xPos, yPos, creationRotation,scale*scaleXCreate,scale*scaleYCreate);
 
         if(x<0||y<0){
             return;

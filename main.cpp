@@ -282,7 +282,7 @@ int main(){
                 elapsed = chrono::duration_cast<chrono::seconds>(end_time - car.start_time);
             }
             car.move();
-            car.deplacement( &niv.obstacles, &niv.places_parking);
+            car.deplacement( &niv.obstacles, &niv.decos);
 
             window.clear();
             for(auto i : niv.non_obstacles){

@@ -1,5 +1,0 @@
-FeuxJaune Copy.png;0;490;31;2.8;2.8
-lampadaire.png;180;482;769;-3.2;-3.2
-lampadaire.png;180;589;611;-3.2;-3.2
-lampadaire.png;180;574;374;-3.2;-3.2
-lampadaire.png;180;578;374;-3.2;-3.2

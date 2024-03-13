@@ -1,0 +1,14 @@
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+lumire.png;0;0;0;1;1
+bench.png;0;852;855;3.7;3.7
+barrer.png;0;413;33;2;2
+VoiturePNJBleu.png;180;405;155;1.1;1.1
+store.png;0;159;243;1.4;1.4
+lumire.png;0;511;939;1.8;1.8
+lumire.png;0;510;613;1.8;1.8
+lumire.png;0;513;251;1.8;1.8

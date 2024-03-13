@@ -329,7 +329,7 @@ void Car::deceleration(){
     }
 }
 
-void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking){
+void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *deco){
     if(!actif){
         if(speed!=0){
             if(abs(wheelDir)<0.19){
@@ -354,11 +354,30 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
 
     if(speed!=0){
         if(speed<0&&speed<-1&&speed>-27){
-            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed)));
             carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed));
         }else if(speed>1){
-            rectangle.setRotation(carDir+(wheelDir/maxDir*(speed/maxSpeed))/1.5);
             carDir=carDir+(wheelDir/maxDir*(speed/maxSpeed)/1.5);
+        }
+    }
+    for(int i = 0; i < obstacles->size(); i++){
+        obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y+speed/2);
+        
+        if(obstacles->at(i).getPosition().y > 1024){
+            obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y-1024);
+        }
+        else if(obstacles->at(i).getPosition().y < -100){
+            obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y+1024);
+        }
+    }
+
+    for(int i = 0; i < deco->size(); i++){
+        deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y+speed/2);
+        
+        if(deco->at(i).getPosition().y > 1100){
+            deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y-1200);
+        }
+        else if(deco->at(i).getPosition().y < -100){
+            deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y+1200);
         }
     }
 
@@ -369,7 +388,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
         time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start_time).count();
         time = time/1000;
     }
-    sprintf(s,"Started : %s\nSpeed : %f\nrpm : %d\nVitesse : %d\nTime : %.3f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
+    sprintf(s,"Started : %s\nSpeed : %.1f\nrpm : %d\nVitesse : %d\nTime : %.1f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
     
     carInfo.setString(s);
 
@@ -453,45 +472,9 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
 
 
     
-    bool isCollision = false;
-    rectangle.move(cos(carDir * PI / 180.0)*speed/10.0, sin(carDir * PI / 180.0)*speed/10.0);
-    for(auto i : *obstacles){
-        //pixelPerfectTest
-        if(collision::pixelPerfectTest(rectangle, i, 0)){
-            isCollision = true;
-        }
-    }
-    if(isCollision){
-        speed = 0;
-        rpm = 0;
-        started = false;
-        rectangle.setRotation(tempRotation);
-        carDir = tempCarDir;
-        rectangle.setPosition(tempPos);
-        nb_point=nb_point-100;
-        return;
-    }
 
 
-    phares.setPosition(rectangle.getPosition());
-    phares.setRotation(rectangle.getRotation()-90);
-    sf::Vector2f topLeft = rectangle.getTransform().transformPoint(sf::Vector2f(0, 0));
-    sf::Vector2f topRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, 0));
-    sf::Vector2f bottomleft = rectangle.getTransform().transformPoint(sf::Vector2f(0, rectangle.getLocalBounds().height));
-    sf::Vector2f bottomRight = rectangle.getTransform().transformPoint(sf::Vector2f(rectangle.getLocalBounds().width, rectangle.getLocalBounds().height));
 
-    topLeft.x += 0.1 * (topLeft.x - rectangle.getPosition().x);
-    topLeft.y += 0.1 * (topLeft.y - rectangle.getPosition().y);
-    topRight.x -= 0.1 * (rectangle.getPosition().x + rectangle.getLocalBounds().width - topRight.x);
-    topRight.y += 0.1 * (topRight.y - rectangle.getPosition().y);
-    if(speed<5&&speed>-5){
-        for(auto i : *places_parking){
-            if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
-                win = true;
-                printf("\n\nWIIIIIIIIIIIIIIIIIIN\n\n");
-            }
-        }
-    }
     
 
     wheelRight.setPosition(rectangle.getPosition().x+(cos(rectangle.getRotation() * PI / 180.0)*90)-(sin(rectangle.getRotation()*PI/180)*13),rectangle.getPosition().y+(sin(rectangle.getRotation() * PI / 180.0)*90)+(cos(rectangle.getRotation() * PI / 180.0)*13));
