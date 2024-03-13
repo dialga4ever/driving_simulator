@@ -369,7 +369,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
         time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start_time).count();
         time = time/1000;
     }
-    sprintf(s,"Started : %s\nSpeed : %f\nrpm : %d\nVitesse : %d\nTime : %.3f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
+    sprintf(s,"Started : %s\nSpeed : %.1f\nrpm : %d\nVitesse : %d\nTime : %.1f",((started == 1) ? "true" : "false"),speed,rpm,gear,time);
     
     carInfo.setString(s);
 
