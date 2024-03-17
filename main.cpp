@@ -182,10 +182,10 @@ int main(){
                     if (IsSpriteCliked(game_keys.autoSettings,&window)){
                         game_keys.autoMatique = !game_keys.autoMatique;
                         if(game_keys.autoMatique ){
-                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureON);
+                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureOFF);
                         }
                         else{
-                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureOFF);
+                            game_keys.autoSettings.setTexture(game_keys.autoSettingsTextureON);
                         }
                     }
                         

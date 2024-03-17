@@ -57,8 +57,8 @@ Keys::Keys(RenderWindow* window, Font font_){
     int y = 100;
 
     spriteLoadFromFilePos(&returnSettings,&returnSettingsTexture,"./src/other/bouton_back.png",window->getSize().y/10,50);
-    spriteLoadFromFilePos(&autoSettings,&autoSettingsTextureON,"./src/other/boiteAutoON.png",500,window->getSize().y/1.3);
-    if (!autoSettingsTextureOFF.loadFromFile("./src/other/boiteAutoOFF.png"))
+    spriteLoadFromFilePos(&autoSettings,&autoSettingsTextureON,"./src/other/boiteAutoOFF.png",500,window->getSize().y/1.3);
+    if (!autoSettingsTextureOFF.loadFromFile("./src/other/boiteAutoON.png"))
     {
         std::cout << "Error: Couldn't load texture\n";
     }
@@ -93,8 +93,10 @@ Keys::Keys(RenderWindow* window, Font font_){
     createButton("Gear2", Keyboard::Num2, {(float)(window->getSize().x/1.33), 300});
 
     createButton("Gear3", Keyboard::Num3, {(float)(window->getSize().x/1.33), 400});
+    createButton("Gear4", Keyboard::Num4, {(float)(window->getSize().x/1.33), 500});
+    createButton("Gear5", Keyboard::Num5, {(float)(window->getSize().x/1.33), 600});
 
-    createButton("Gear back 1", Keyboard::BackSpace, {(float)(window->getSize().x/1.33), 500});
+    createButton("Gear back 1", Keyboard::BackSpace, {(float)(window->getSize().x/1.33), 700});
     ifstream file;
     file.open("src/other/settings.ini");
     // Vérifier si le fichier est ouvert

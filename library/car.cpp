@@ -131,6 +131,12 @@ int Car::rpmToSpeed(){
     if(gear==3){
         return 25+((40)/(1+exp(-0.001*(rpm-3500))));
     }
+    if(gear==4){
+        return 40+((55)/(1+exp(-0.001*(rpm-3500))));
+    }
+    if(gear==5){
+        return 60+((70)/(1+exp(-0.001*(rpm-3500))));
+    }
     if(gear==-1){
         return -((25)/(1+exp(-0.001*(rpm-3000))));
     }
@@ -149,6 +155,12 @@ int Car::rpmToSpeed(int rpmToConvert, int gearToConvert){
     }
     if(gearToConvert==3){
         return 25+((40)/(1+exp(-0.001*(rpmToConvert-3500))));
+    }
+    if(gearToConvert==4){
+        return 40+((55)/(1+exp(-0.001*(rpmToConvert-3500))));
+    }
+    if(gearToConvert==5){
+        return 60+((70)/(1+exp(-0.001*(rpmToConvert-3500))));
     }
     if(gearToConvert==-1){
         return -((25)/(1+exp(-0.001*(rpmToConvert-3000))));
@@ -204,9 +216,13 @@ void Car::move(){
                 
             }
             if(Keyboard::isKeyPressed(game_keys->map_keys["Gear3"].keyCode)){
-                
                 gear=3;
-                
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear4"].keyCode)){
+                gear=4;
+            }
+            if(Keyboard::isKeyPressed(game_keys->map_keys["Gear5"].keyCode)){
+                gear=5;
             }
             if(Keyboard::isKeyPressed(game_keys->map_keys["Gear back 1"].keyCode)){
                 gear=-1;
@@ -360,7 +376,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *deco){
         }
     }
     for(int i = 0; i < obstacles->size(); i++){
-        obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y+speed/2);
+        obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y+speed/5);
         
         if(obstacles->at(i).getPosition().y > 1024){
             obstacles->at(i).setPosition(obstacles->at(i).getPosition().x, obstacles->at(i).getPosition().y-1024);
@@ -371,7 +387,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *deco){
     }
 
     for(int i = 0; i < deco->size(); i++){
-        deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y+speed/2);
+        deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y+speed/5);
         
         if(deco->at(i).getPosition().y > 1100){
             deco->at(i).setPosition(deco->at(i).getPosition().x, deco->at(i).getPosition().y-1200);
@@ -395,7 +411,7 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *deco){
     if(boiteAuto){
         if(gear>=1){
             if(rpm>=7400){
-                if(gear<3){
+                if(gear<5){
                     rpm=convertSpeedToRpm(gear+1);
                     gear=gear+=1;
                 }
