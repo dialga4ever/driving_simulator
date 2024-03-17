@@ -312,6 +312,45 @@ int main(){
             window.draw(car.aiguille1);
             window.draw(car.aiguille2);
 
+            if(car.boiteAuto){
+                //switch case for the automatic gearbox
+                switch(car.gear){
+                    case -1:
+                        car.boite.setTexture(car.boiteRA);
+                        break;
+                    case 0:
+                        car.boite.setTexture(car.boite0A);
+                        break;
+                    default:
+                        car.boite.setTexture(car.boiteDA);
+                        break;
+                }
+            }
+            else{
+                switch(car.gear){
+                    case -1:
+                        car.boite.setTexture(car.boiteRM);
+                        break;
+                    case 0:
+                        car.boite.setTexture(car.boite0M);
+                        break;
+                    case 1:
+                        car.boite.setTexture(car.boite1M);
+                        break;
+                    case 2:
+                        car.boite.setTexture(car.boite2M);
+                        break;
+                    case 3:
+                        car.boite.setTexture(car.boite3M);
+                        break;
+                }
+            }
+
+
+
+
+            window.draw(car.boite);
+
             window.display();
             break;
         default://Menu principal
