@@ -67,12 +67,21 @@ Car::Car(float defaultAngle_A ,int x_x, int y_y, bool nocturne_, Keys* game_keys
     compteur.setPosition(window->getSize().x-(compteurTex.getSize().x/2),window->getSize().y);
     compteur.setOrigin(compteurTex.getSize().x/2, compteurTex.getSize().y);
 
-    /*fondCompteurTex.loadFromFile("src/other/blanc.png");
-    fondCompteur.setTexture(fondCompteurTex);
-    fondCompteur.setPosition(window->getSize().x-(fondCompteurTex.getSize().x/2),window->getSize().y);
-    fondCompteur.setOrigin(fondCompteurTex.getSize().x/2, compteurTex.getSize().y);
-    fondCompteur.setColor(sf::Color(255, 255, 255, 180));
-    fondCompteur.setScale(1, 1);*/
+    boiteRM.loadFromFile("src/other/RM.png");
+    boite0M.loadFromFile("src/other/0M.png");
+    boite1M.loadFromFile("src/other/1M.png");
+    boite2M.loadFromFile("src/other/2M.png");
+    boite3M.loadFromFile("src/other/3M.png");
+    boite4M.loadFromFile("src/other/4M.png");
+    boite5M.loadFromFile("src/other/5M.png");
+
+    boiteRA.loadFromFile("src/other/RA.png");
+    boite0A.loadFromFile("src/other/0A.png");
+    boiteDA.loadFromFile("src/other/DA.png");
+
+    boite.setTexture(boiteRM);
+    /*botome left pos*/
+    boite.setPosition({0,1024-75});
     aiguilleTex.loadFromFile("src/other/aiguille.png");
     aiguille1.setTexture(aiguilleTex);
     aiguille1.setScale(0.8,0.8);

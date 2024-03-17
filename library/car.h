@@ -53,7 +53,18 @@ class Car{
     Texture aiguilleTex;
     Sprite aiguille1;
     Sprite aiguille2;
+    Sprite boite;
+    Texture boiteRM; 
+    Texture boite0M;
+    Texture boite1M;
+    Texture boite2M;
+    Texture boite3M;
+    Texture boite4M;
+    Texture boite5M;
 
+    Texture boiteRA;
+    Texture boite0A;
+    Texture boiteDA;   
     Texture fondCarInfoTex;
     Sprite fondCarInfo;
     Text carInfo;
