@@ -499,7 +499,6 @@ void Car::deplacement( vector<Sprite> *obstacles, vector<Sprite> *places_parking
         for(auto i : *places_parking){
             if(collision::singlePixelTest(i, topLeft, 0) && collision::singlePixelTest(i, topRight, 0) && collision::singlePixelTest(i, bottomleft, 0) && collision::singlePixelTest(i, bottomRight, 0)){
                 win = true;
-                printf("\n\nWIIIIIIIIIIIIIIIIIIN\n\n");
             }
         }
     }

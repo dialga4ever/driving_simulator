@@ -30,7 +30,6 @@ void Victory::load(std::string map_name, int nb_points,float time){
     loadTexture("star_off", "src/other/star_off.png");
     
     items.clear();
-    printf("victory\n");
     createItem("ombre", " ", &textures.at("ombre"), {window_x/2, window_y/2}, 5, 5);
     items.at("ombre").sprite.setColor(sf::Color(255, 255, 255, 100));
 

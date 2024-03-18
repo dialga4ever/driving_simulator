@@ -42,14 +42,11 @@ void Level::load(string path){
         int i=0;
         while (myfile.good())
         {
-            printf("A\n");
             string str;
             getline(myfile,line);
             int j=0;
             stringstream ss(line); 
             while (getline(ss, str, ';')){
-                printf("a\n");
-                printf("%s\n",str.c_str());
                 string elt;
                 string tex;
                 stringstream ssTwo(str); 
@@ -59,14 +56,9 @@ void Level::load(string path){
                     {
                         case 1:
                             tex=elt;
-                            printf("%s\n",elt.c_str());
                             temp=0;
                             break;
                         case 0:
-                            printf("Texture :%s\n",tex.c_str());
-                            printf("Rotate: %s\n",elt.c_str());
-                            printf("Stoi :%d\n",stoi(elt));
-                            printf("i%d j%d\n",i,j);
                             non_osbstacleMap[i][j]=pair<string,int>(tex,stoi(elt));
                             temp=-1;
                             break;
@@ -98,10 +90,8 @@ void Level::load(string path){
     obstaclesTexture.clear();
     for(int i = 0; i < SIZE_MAP_Y; i++){
         for(int j = 0; j < SIZE_MAP_X; j++){
-            printf("maybe\n");
             non_obstacles.push_back(placeObjectReal(non_osbstacleMap[i][j].first, j*OFFSET+OFFSET/2, i*OFFSET+OFFSET/2, non_osbstacleMap[i][j].second,scaleX[i][j],scaleY[i][j]));
             
-            printf("maybe\n");
         }
     }
     
@@ -137,37 +127,29 @@ void Level::load(string path){
                     continue;
                 }
 
-                printf("a\n");
                 switch (temp)
                 {
                     case 5:
                         ScaleTempY=stof(str);
-                        printf("Scale :%d\n",stoi(str));
                         break;
                     case 4:
                         ScaleTempX=stof(str);
-                        printf("Scale :%d\n",stoi(str));
                         break;
                     case 3:
                         y=stoi(str);
-                        printf("y :%d\n",stoi(str));
                         break;
                     case 2:
                         x=stoi(str);
-                        printf("x :%d\n",stoi(str));
                         break;
                     case 1:
                         rotation=stoi(str);
-                        printf("rotation :%d\n",stoi(str));
                         break;
                     case 0:
-                        printf("Texture :%s\n",str.c_str());
                         tex=str;
                         break;
                 }
                 temp++;
             }
-            printf("???\n");
             obstacles.push_back(placeObjectReal(tex,x,y,rotation,ScaleTempX,ScaleTempY));
             obstaclesTexture.push_back(tex);
         }
@@ -373,7 +355,6 @@ void Level::createLevel(RenderWindow *window,String path){
                     creationTex=j;
                     tabMode=false;
                     clicked=true;
-                    printf("%d\n",j);
                 }
                 j++;
             }
@@ -381,7 +362,6 @@ void Level::createLevel(RenderWindow *window,String path){
         return;
     }
     if(Keyboard::isKeyPressed(Keyboard::Space)){
-        printf("Space\n");
         if(!ChangingMode){
             Mode+=1;
             if(Mode>4){
@@ -391,7 +371,6 @@ void Level::createLevel(RenderWindow *window,String path){
                 creationRotation=90*(creationRotation/90);
             }
             ChangingMode=true;
-            printf("Mode :%d\n",Mode);
         }
         
     }
@@ -402,7 +381,6 @@ void Level::createLevel(RenderWindow *window,String path){
 
 
     if(Mode==0){ //mode fond
-        printf("Mode :%d\n",Mode);
         if(Keyboard::isKeyPressed(Keyboard::R)){
             if(!rotate){
                 creationRotation+=90;
@@ -576,7 +554,6 @@ void Level::createLevel(RenderWindow *window,String path){
 
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
-                printf("x :%d y :%d\n",x,y);
                 obstacles.push_back(creation);
                 obstaclesTexture.push_back(maTexture);
                 clicked=true;
@@ -589,7 +566,6 @@ void Level::createLevel(RenderWindow *window,String path){
         std::ofstream of(path+"obstacle.txt");
         if(of.is_open())
         {
-            printf("obstacle :%d\n",obstacles.size());
             for(int i = 0; i < obstacles.size(); i++){
                 string textureReal=obstaclesTexture[i];
                 of<<textureReal<<";"<<obstacles[i].getRotation()<<";"<<obstacles[i].getPosition().x<<";"<<obstacles[i].getPosition().y<<";"<<(obstacles[i].getScale().x)<<";"<<(obstacles[i].getScale().y);
@@ -681,7 +657,6 @@ void Level::createLevel(RenderWindow *window,String path){
         
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
-                printf("x :%d y :%d\n",x,y);
                 decos.push_back(creation);
                 decoTexture.push_back(maTexture);
                 clicked=true;
@@ -694,7 +669,6 @@ void Level::createLevel(RenderWindow *window,String path){
         std::ofstream of(path+"deco.txt");
         if(of.is_open())
         {
-            printf("obstacle :%d\n",decos.size());
             for(int i = 0; i < decos.size(); i++){
                 string textureReal=decoTexture[i];
                 of<<textureReal<<";"<<decos[i].getRotation()<<";"<<decos[i].getPosition().x<<";"<<decos[i].getPosition().y<<";"<<(decos[i].getScale().x)<<";"<<(decos[i].getScale().y);
@@ -778,7 +752,6 @@ void Level::createLevel(RenderWindow *window,String path){
         
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
-                printf("x :%d y :%d\n",x,y);
                 places_parking.push_back(creation);
                 clicked=true;
             }
@@ -790,7 +763,6 @@ void Level::createLevel(RenderWindow *window,String path){
         std::ofstream of(path+"place_parking.txt");
         if(of.is_open())
         {
-            printf("place de parking :%d\n",places_parking.size());
             for(int i = 0; i < places_parking.size(); i++){
                 of<<places_parking[i].getRotation()<<";"<<places_parking[i].getPosition().x<<";"<<places_parking[i].getPosition().y<<";"<<(places_parking[i].getScale().x)<<";"<<(places_parking[i].getScale().y);
                 of<<std::endl;
@@ -825,7 +797,6 @@ void Level::createLevel(RenderWindow *window,String path){
         
         if(Mouse::isButtonPressed(Mouse::Left)){
             if(clicked==false){
-                printf("x :%d y :%d\n",x,y);
                 car=creation;
                 clicked=true;
             }
@@ -941,7 +912,6 @@ Sprite Level::placeObjectFix(string image, int x, int y, int rotation,float scal
     float xRatio=(64.0/float(s.x))*scale;
     float yRatio=(64.0/float(s.y))*scale;
     obs.scale({xRatio,yRatio});
-    printf("ffF %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
     }
@@ -978,7 +948,6 @@ Sprite Level::placeObjectReal(string image, int x, int y, int rotation,float sca
     }
     Vector2u s=textures.at(image).getSize();
     obs.scale({scaleX,scaleY});
-    printf("ffF %s\n",image.c_str());
     if(textures.count(image)){
         obs.setTexture(textures.at(image));
     }

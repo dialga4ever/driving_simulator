@@ -44,7 +44,6 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         sorted_by_name.insert(entry.path());
         
     for (auto &dir_entry : sorted_by_name) {
-        printf("%s\n",dir_entry.c_str());
         auto path1 = dir_entry;
 
         createButton(path1.filename(), {window_x/2,y});
@@ -56,7 +55,6 @@ ChoixMap::ChoixMap(int window_x_, int window_y_, sf::Font font_){
         
         file >> nb_points;
         file.close();
-        printf("%d\n",nb_points);
         if(nb_points>100){
             createItem("étoile1" + std::string(path1.filename()), &textures.at("étoile"), {window_x-250, y});
             if(nb_points>=250){
